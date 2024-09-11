@@ -13,7 +13,7 @@ from webdriver_manager.chrome import ChromeDriverManager #Webdriver_manager -> C
 import openpyxl #openpyxl: Allows for storage of data and creation of .xlsx sheet 
 
 """Variables"""
-header_list = ["Name","KD", "Win %","Top Agent"] # List to store all headers I want, 
+header_list = ["Name","KD", "Win %","Top Agent","HS %"] # List to store all headers I want, 
                                             #just make sure the data being pulled is in the same position as the list position
 
 data_list = [] # Initialize empty list to store data
@@ -46,12 +46,16 @@ agent_finder = driver.find_elements(By.CLASS_NAME, 'info-name') #Finds Top 3 age
 top_agent = agent_finder[0] #Limits it to top agent
 top_agent_name = top_agent.text #stores top agent
 
+hs_percentage_finder = driver.find_elements(By.CLASS_NAME,'ov-stat-value') #Finds where HS% is stored
+hs_percentage = hs_percentage_finder[2] #Limits element to HS%
+hs_percentage_number = hs_percentage.text #stores HS%
+
 #Adding all calculated stats to data_list
 data_list.append(name) #Add name to list
 data_list.append(kd_number) #Add kd to list
 data_list.append(winp_number) #Add win% to list
 data_list.append(top_agent_name) #Add top agent to list
-
+data_list.append(hs_percentage_number) #Add HS% to list
 
 
 
@@ -70,6 +74,7 @@ sheet.cell(row=2,column=1,value = data_list[0]) #Store name into (2,1)
 sheet.cell(row=2,column=2,value = data_list[1]) #Store KD into (2,2)
 sheet.cell(row=2,column=3,value = data_list[2]) #Store Win% into (2,3)
 sheet.cell(row=2,column=4,value = data_list[3]) #Store Top agent into (2,4)
+sheet.cell(row=2,column=5,value = data_list[4]) #Store Top agent into (2,4)
 
 workbook.save("SlackR_stats.xlsx") #Saves file to workbook
 print("Data has been saved to SlackR_stats.xlsx") #Ouput to show program is done running
