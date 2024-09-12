@@ -78,3 +78,24 @@ def getKnifeKills(url):
     driver.quit() #Once all data is taken and stored into data_list, quit the driver
 
     return knife_kills
+
+def getFirstDeaths(url):
+    """Selenium"""
+    options = Options() #intialize option variable to class Options
+    options.add_argument('--headless') #Take away window from being open on program run
+
+    driver = webdriver.Chrome(service = Service(ChromeDriverManager().install()), options = options) #Initializes driver var to chrome driver
+    driver.get(url) #URL for what html page I want
+    driver.implicitly_wait(10) #Makes driver wait 10 ms before doing anything: Allows for everything to load before accessing HTML elements
+
+    element_list = []
+
+    limit_elements = driver.find_elements(By.CLASS_NAME, 'type-body2.left')
+
+    for element in limit_elements:
+        element_list.append(element.text)
+    
+    first_death = int(element_list[2])
+
+    return first_death
+
