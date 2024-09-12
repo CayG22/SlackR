@@ -4,7 +4,7 @@
     Fall 2024 - Advanced Software Engineering
     Will call all main functions of SlackR
 """
-from stats import getStats
+from stats_file import getStats
 
 
 print("Hello, and welcome to SlackR\n\n")
