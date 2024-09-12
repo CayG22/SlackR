@@ -79,23 +79,88 @@ def getKnifeKills(url):
 
     return knife_kills
 
-def getFirstDeaths(url):
+#Gets first deaths for a single game
+def getFirstDeathsForOneGame(x):
     """Selenium"""
     options = Options() #intialize option variable to class Options
     options.add_argument('--headless') #Take away window from being open on program run
 
     driver = webdriver.Chrome(service = Service(ChromeDriverManager().install()), options = options) #Initializes driver var to chrome driver
-    driver.get(url) #URL for what html page I want
+    driver.get(x) #URL for what html page I want
     driver.implicitly_wait(10) #Makes driver wait 10 ms before doing anything: Allows for everything to load before accessing HTML elements
 
-    element_list = []
+    element_list = [] #Stores elements pulled
 
     limit_elements = driver.find_elements(By.CLASS_NAME, 'type-body2.left')
 
+    #Adds all elements pulled into list
     for element in limit_elements:
         element_list.append(element.text)
     
-    first_death = int(element_list[2])
+    
+    # Ensure we have at least 3 elements
+    if len(element_list) > 2:
+        # Handle conversion of None to 0
+        first_death_text = element_list[2]
+        first_death = int(first_death_text) if first_death_text is not None else 0
+    else:
+        first_death = 0
 
+    driver.quit()
+    
+    
+    
+    
+    
+    
     return first_death
+   
+
+    
+ 
+    
+    
+
+#Opens last ten games to access elements
+def openLastTenGames(url):
+    """Selenium"""
+    #options = Options() #intialize option variable to class Options
+    #options.add_argument('--headless') #Take away window from being open on program run
+    driver = webdriver.Chrome(service = Service(ChromeDriverManager().install()))
+    #driver = webdriver.Chrome(service = Service(ChromeDriverManager().install()), options = options) #Initializes driver var to chrome driver
+    driver.get(url) #URL for what html page I want
+    driver.implicitly_wait(10) #Makes driver wait 10 ms before doing anything: Allows for everything to load before accessing HTML elements
+    
+    total_deaths = 0
+
+    links = driver.find_elements(By.CLASS_NAME, 'match-link')
+    
+   
+    for i in range(3):
+        links = driver.find_elements(By.CLASS_NAME, 'match-link')
+        game = links[i]
+        game.click()
+        current_url = driver.current_url
+        single_game_first_deaths = getFirstDeathsForOneGame(current_url)
+        total_deaths += single_game_first_deaths
+        driver.back()
+        print(total_deaths)
+        
+
+
+
+    
+    
+    
+    
+
+    
+    
+    
+
+    driver.quit()
+
+
+    
+
 
