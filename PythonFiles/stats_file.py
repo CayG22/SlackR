@@ -52,3 +52,29 @@ def getStats(url):
 
     driver.quit() #Once all data is taken and stored into data_list, quit the driver
     return data_list
+
+def getKnifeKills(url):
+
+    """Selenium"""
+    options = Options() #intialize option variable to class Options
+    options.add_argument('--headless') #Take away window from being open on program run
+
+    driver = webdriver.Chrome(service = Service(ChromeDriverManager().install()), options = options) #Initializes driver var to chrome driver
+    driver.get(url) #URL for what html page I want
+    driver.implicitly_wait(10) #Makes driver wait 10 ms before doing anything: Allows for everything to load before accessing HTML elements
+    weapon_list = []
+
+    weapon_finder = driver.find_elements(By.CLASS_NAME, 'weapon-entry') #Find list of weapons
+
+    for weapon in weapon_finder:
+        weapon_list.append(weapon.text) #Aadd returned values to list
+
+    #searches through weapon_list for the first item where the text before the newline character (\n) is 'Knife'.
+    find_knife = next((item for item in weapon_list if item.split('\n')[0] == 'Knife'),None) 
+
+
+    knife_kills = find_knife.split('\n')[1] #splits the find_knife string by newline characters, 1 being the position kills is
+
+    driver.quit() #Once all data is taken and stored into data_list, quit the driver
+
+    return knife_kills

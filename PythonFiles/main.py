@@ -4,16 +4,17 @@
     Fall 2024 - Advanced Software Engineering
     Will call all main functions of SlackR
 """
-from stats_file import getStats
+from stats_file import getStats,getKnifeKills
 
 
 print("Hello, and welcome to SlackR\n\n")
 url = "https://valorantstats.xyz/stats/profile/SEN%20curry-lisa?actId=all&gameMode=all"
+url2 = "https://valorantstats.xyz/stats/profile/OC%20Jrmzie-410/weapons?actId=all&gameMode=all"
 
 stats = getStats(url)
-
+knife_kills = getKnifeKills(url2)
 print(stats)
-
+print(f"Knife kills: {knife_kills}")
 
 header_list = ["Name","KD", "Win %","Top Agent","HS %"] # List to store all headers I want, 
                                                         #just make sure the data being pulled is in the same position as the list position
