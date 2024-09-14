@@ -4,6 +4,19 @@ from selenium.webdriver.chrome.service import Service #Selenium -> Service
 from selenium.webdriver.chrome.options import Options #Selenium -> Options: Allows for custom options to be called
 from selenium.webdriver.common.by import By #Selenium -> By: Allows for calls by specific variables from html code
 from webdriver_manager.chrome import ChromeDriverManager #Webdriver_manager -> ChromeDriverManager: Allows for chrome driver to be ran
+import time
+
+
+def loadDriver(url):
+    """Selenium"""
+    options = Options() #intialize option variable to class Options
+    options.add_argument('--headless') #Take away window from being open on program run
+
+    driver = webdriver.Chrome(service = Service(ChromeDriverManager().install()), options = options) #Initializes driver var to chrome driver
+    driver.get(url) #URL for what html page I want
+    driver.implicitly_wait(10) #Makes driver wait 10 ms before doing anything: Allows for everything to load before accessing HTML elements
+
+    return driver
 
 
 def getStats(url):
@@ -54,17 +67,11 @@ def getStats(url):
     return data_list
 
 def getKnifeKills(url):
+    link = loadDriver(url)
 
-    """Selenium"""
-    options = Options() #intialize option variable to class Options
-    options.add_argument('--headless') #Take away window from being open on program run
-
-    driver = webdriver.Chrome(service = Service(ChromeDriverManager().install()), options = options) #Initializes driver var to chrome driver
-    driver.get(url) #URL for what html page I want
-    driver.implicitly_wait(10) #Makes driver wait 10 ms before doing anything: Allows for everything to load before accessing HTML elements
     weapon_list = []
 
-    weapon_finder = driver.find_elements(By.CLASS_NAME, 'weapon-entry') #Find list of weapons
+    weapon_finder = link.find_elements(By.CLASS_NAME, 'weapon-entry') #Find list of weapons
 
     for weapon in weapon_finder:
         weapon_list.append(weapon.text) #Aadd returned values to list
@@ -75,90 +82,91 @@ def getKnifeKills(url):
 
     knife_kills = find_knife.split('\n')[1] #splits the find_knife string by newline characters, 1 being the position kills is
 
-    driver.quit() #Once all data is taken and stored into data_list, quit the driver
-
+    link.quit()
     return knife_kills
 
+
+
 #Gets first deaths for a single game
-def getFirstDeathsForOneGame(x):
-    """Selenium"""
-    options = Options() #intialize option variable to class Options
-    options.add_argument('--headless') #Take away window from being open on program run
+def getStatsForOneGame(link):
+    game = loadDriver(link) #Load driver with current link(XYZ player page)
 
-    driver = webdriver.Chrome(service = Service(ChromeDriverManager().install()), options = options) #Initializes driver var to chrome driver
-    driver.get(x) #URL for what html page I want
-    driver.implicitly_wait(10) #Makes driver wait 10 ms before doing anything: Allows for everything to load before accessing HTML elements
+    game_stats = [] #Create empty list for player game stats
 
-    element_list = [] #Stores elements pulled
+    stats = game.find_elements(By.CLASS_NAME, 'value-title') #limit it container with stat values
 
-    limit_elements = driver.find_elements(By.CLASS_NAME, 'type-body2.left')
+    #Loop that gets the text from value-title, replaces the new line character and adds stat to stat list
+    for stat in stats:
+       stat = stat.text #Get the text
+       stat = stat.replace("\n", " ") #Replace the new line character within the text with a space
+       game_stats.append(stat) #Add stat game_stats
 
-    #Adds all elements pulled into list
-    for element in limit_elements:
-        element_list.append(element.text)
+    game.quit()
     
+    return game_stats #Return stats list to main
+
+
+def getGameLinksForXYZ(url):
+    driver = loadDriver(url)
+    game_links = []
+    get_match_links = driver.find_elements(By.CLASS_NAME, 'match-entry-link')
+
+    for match in get_match_links:
+        game_links.append(match.get_attribute('href'))
     
-    # Ensure we have at least 3 elements
-    if len(element_list) > 2:
-        # Handle conversion of None to 0
-        first_death_text = element_list[2]
-        first_death = int(first_death_text) if first_death_text is not None else 0
-    else:
-        first_death = 0
+    game_links = game_links[:5]
+
 
     driver.quit()
-    
-    
-    
-    
-    
-    
-    return first_death
-   
-
-    
- 
-    
-    
-
-#Opens last ten games to access elements
-def openLastTenGames(url):
-    """Selenium"""
-    #options = Options() #intialize option variable to class Options
-    #options.add_argument('--headless') #Take away window from being open on program run
-    driver = webdriver.Chrome(service = Service(ChromeDriverManager().install()))
-    #driver = webdriver.Chrome(service = Service(ChromeDriverManager().install()), options = options) #Initializes driver var to chrome driver
-    driver.get(url) #URL for what html page I want
-    driver.implicitly_wait(10) #Makes driver wait 10 ms before doing anything: Allows for everything to load before accessing HTML elements
-    
-    total_deaths = 0
-
-    links = driver.find_elements(By.CLASS_NAME, 'match-link')
-    
-   
-    for i in range(3):
-        links = driver.find_elements(By.CLASS_NAME, 'match-link')
-        game = links[i]
-        game.click()
-        current_url = driver.current_url
-        single_game_first_deaths = getFirstDeathsForOneGame(current_url)
-        total_deaths += single_game_first_deaths
-        driver.back()
-        print(total_deaths)
-        
+    return game_links
 
 
 
-    
-    
-    
-    
+"""GROSS FUNCTIONS THAT DONT WORK PROPERLY"""
+"""Algo needs work, no way to know which one is first deaths..."""
+def getFirstDeathsForOneGame(link):
+    game = loadDriver(link)
+    first_deaths = []
+    stats = []
+    stat_number = game.find_elements(By.CLASS_NAME, 'type-body2.left')
+    stat_name = game.find_elements(By.CLASS_NAME, 'type-caption.row-name')
 
+    for name,number in zip(stat_name,stat_number):
+        stats.append((name.text,number.text))
     
-    
-    
+    game.quit()
+    return stats
+
+
+
+
+
+
+def getGameLinksForBlitz(url):
+    driver  = loadDriver(url)
+    game_links = []
+    get_match_links = driver.find_elements(By.CLASS_NAME, 'match-link')
+
+    for match in get_match_links:
+        game_links.append(match.get_attribute('href'))
+    game_links = game_links[:5]
 
     driver.quit()
+    return game_links
+   
+
+
+
+    
+    
+    
+    
+
+    
+    
+    
+
+
 
 
     

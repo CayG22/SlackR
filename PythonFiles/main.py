@@ -4,7 +4,7 @@
     Fall 2024 - Advanced Software Engineering
     Will call all main functions of SlackR
 """
-from stats_file import getStats,getKnifeKills, openLastTenGames
+from stats_file import getStats,getKnifeKills, getStatsForOneGame,getGameLinksForBlitz, getGameLinksForXYZ,getFirstDeathsForOneGame
 
 
 print("Hello, and welcome to SlackR\n\n")
@@ -16,13 +16,10 @@ url4 = "https://blitz.gg/valorant/profile/sen%20curry-lisa?queue=competitive"
 
 #stats = getStats(url)
 #knife_kills = getKnifeKills(url2)
-#first_deaths = getFirstDeathsForOneGame(url3)
-placeholder = openLastTenGames(url4)
-#print(stats)
-#print(f"Knife kills: {knife_kills}")
-#print(first_deaths)
-
-
+#game_links = getGameLinksForXYZ(url)
+#game_stats = getStatsForOneGame(game_links[0])
+#game_links = getGameLinksForBlitz(url4) NOOOOOOO, works fine but don't need rn
+#first_deaths = getFirstDeathsForOneGame(game_links[0]) Grabs stats but can't tell which one is right, gonna try diff website
 #header_list = ["Name","KD", "Win %","Top Agent","HS %"] # List to store all headers I want, 
                                                         #just make sure the data being pulled is in the same position as the list position
 #row_ = 1 #integer for accesing specific row
