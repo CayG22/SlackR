@@ -167,18 +167,15 @@ def getStats(url):
 
 """GROSS FUNCTIONS THAT DONT WORK PROPERLY"""
 """Algo needs work, no way to know which one is first deaths..."""
-def getFirstDeathsForOneGame(link):
+def getStatsForOneGame(link):
     game = loadDriver(link)
-    first_deaths = []
-    stats = []
-    stat_number = game.find_elements(By.CLASS_NAME, 'type-body2.left')
-    stat_name = game.find_elements(By.CLASS_NAME, 'type-caption.row-name')
-
-    for name,number in zip(stat_name,stat_number):
-        stats.append((name.text,number.text))
+    stat_list = []
+    stats = game.find_elements(By.CLASS_NAME, 'compare-table__row')
+    for stat in stats:
+        stat_list.append(stat.text)
     
     game.quit()
-    return stats
+    return stat_list
 
 
 
