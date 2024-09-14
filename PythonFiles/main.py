@@ -4,15 +4,26 @@
     Fall 2024 - Advanced Software Engineering
     Will call all main functions of SlackR
 """
-from stats_file import getStats,getKnifeKills, getStatsForOneGame,getGameLinksForBlitz, getGameLinksForXYZ,getFirstDeathsForOneGame
+from stats_file import getStats,getKnifeKills, getStatsForOneGame,getGameLinksForBlitz, getGameLinksForXYZ,getFirstDeathsForOneGame, getName,getKD,getWinPercantage,getTopAgent,getHeadShotPercentage
 
 
 print("Hello, and welcome to SlackR\n\n")
-url = "https://valorantstats.xyz/stats/profile/SEN%20curry-lisa?actId=all&gameMode=all"
-url2 = "https://valorantstats.xyz/stats/profile/OC%20Jrmzie-410/weapons?actId=all&gameMode=all"
+url = "https://valorantstats.xyz/stats/profile/SEN%20curry-lisa?actId=all&gameMode=competitive" #Will need for url outline
+url2 = "https://valorantstats.xyz/stats/profile/OC%20Jrmzie-410/weapons?actId=all&gameMode=all" #will need for url outline
 url3 = "https://blitz.gg/valorant/match/sen%20curry-lisa/292f58db-4c17-89a7-b1c0-ba988f0e9d98/2e7155e0-e7ed-42c2-a78c-b076d9c00090"
 url4 = "https://blitz.gg/valorant/profile/sen%20curry-lisa?queue=competitive"
 
+
+#name = getName(url)
+#print(name)
+#kd = getKD(url)
+#print(kd)
+#winp = getWinPercantage(url)
+#print(winp)
+#top_agent = getTopAgent(url)
+#print(top_agent)
+#headshot_percentage = getHeadShotPercentage(url)
+#print(headshot_percentage)
 
 #stats = getStats(url)
 #knife_kills = getKnifeKills(url2)

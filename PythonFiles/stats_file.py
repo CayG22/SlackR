@@ -7,6 +7,7 @@ from webdriver_manager.chrome import ChromeDriverManager #Webdriver_manager -> C
 import time
 
 
+#Loads driver
 def loadDriver(url):
     """Selenium"""
     options = Options() #intialize option variable to class Options
@@ -19,52 +20,50 @@ def loadDriver(url):
     return driver
 
 
-def getStats(url):
+"""Functions to get overall stats"""
+def getName(url):
+    driver = loadDriver(url)
+    name_finder = driver.find_element(By.CLASS_NAME, 'user-name')
+    name = name_finder.text
+    
+    driver.quit()
+    return name
 
-    """Variables"""
-    data_list = [] # Initialize empty list to store data
+def getKD(url):
+    driver = loadDriver(url)
 
+    find_KD = driver.find_elements(By.CLASS_NAME,'ov-stat-value')
+    kd = find_KD[0].text
+    
+    driver.quit()
+    return kd
 
-    """Selenium"""
-    options = Options() #intialize option variable to class Options
-    options.add_argument('--headless') #Take away window from being open on program run
+def getWinPercantage(url):
+    driver = loadDriver(url)
 
-    driver = webdriver.Chrome(service = Service(ChromeDriverManager().install()), options = options) #Initializes driver var to chrome driver
-    driver.get(url) #URL for what html page I want
-    driver.implicitly_wait(10) #Makes driver wait 10 ms before doing anything: Allows for everything to load before accessing HTML elements
+    find_winp = driver.find_elements(By.CLASS_NAME, 'ov-stat-value')
+    winp = find_winp[1].text
 
+    driver.quit()
+    return winp
 
+def getTopAgent(url):
+    driver = loadDriver(url)
 
-    name_finder = driver.find_element(By.CLASS_NAME, 'user-name') #Finds username ***for now***
-    name = name_finder.text #Stores name
+    find_top_agent = driver.find_elements(By.CLASS_NAME, 'info-name')
+    top_agent = find_top_agent[0].text
 
-    kd_finder = driver.find_elements(By.CLASS_NAME,'ov-stat-value') #Finds where KD is
-    kd = kd_finder[0] #Limits element to KD
-    kd_number = kd.text #Stores KD
+    driver.quit()
+    return top_agent
 
-    winp_finder = driver.find_elements(By.CLASS_NAME,'ov-stat-value') #Finds where win% is stored
-    winp = winp_finder[1] #Limits element to win%
-    winp_number = winp.text #stores win%
+def getHeadShotPercentage(url):
+    driver = loadDriver(url)
 
-    agent_finder = driver.find_elements(By.CLASS_NAME, 'info-name') #Finds Top 3 agents
-    top_agent = agent_finder[0] #Limits it to top agent
-    top_agent_name = top_agent.text #stores top agent
+    find_hs_perc = driver.find_elements(By.CLASS_NAME, 'ov-stat-value')
+    hs_perc = find_hs_perc[2].text
 
-    hs_percentage_finder = driver.find_elements(By.CLASS_NAME,'ov-stat-value') #Finds where HS% is stored
-    hs_percentage = hs_percentage_finder[2] #Limits element to HS%
-    hs_percentage_number = hs_percentage.text #stores HS%
-
-    #Adding all calculated stats to data_list
-    data_list.append(name) #Add name to list
-    data_list.append(kd_number) #Add kd to list
-    data_list.append(winp_number) #Add win% to list
-    data_list.append(top_agent_name) #Add top agent to list
-    data_list.append(hs_percentage_number) #Add HS% to list
-
-
-
-    driver.quit() #Once all data is taken and stored into data_list, quit the driver
-    return data_list
+    driver.quit()
+    return hs_perc
 
 def getKnifeKills(url):
     link = loadDriver(url)
@@ -86,8 +85,21 @@ def getKnifeKills(url):
     return knife_kills
 
 
+"""Functions to get game specific stats, limits to last five games"""
+def getGameLinksForXYZ(url):
+    driver = loadDriver(url)
+    game_links = []
+    get_match_links = driver.find_elements(By.CLASS_NAME, 'match-entry-link')
 
-#Gets first deaths for a single game
+    for match in get_match_links:
+        game_links.append(match.get_attribute('href'))
+    
+    game_links = game_links[:5]
+
+
+    driver.quit()
+    return game_links
+
 def getStatsForOneGame(link):
     game = loadDriver(link) #Load driver with current link(XYZ player page)
 
@@ -106,19 +118,50 @@ def getStatsForOneGame(link):
     return game_stats #Return stats list to main
 
 
-def getGameLinksForXYZ(url):
+
+
+
+
+
+"""Unused functions for now"""
+#Keep for now, will not be used but is faster than reloading driver everytime for these stats
+def getStats(url):
     driver = loadDriver(url)
-    game_links = []
-    get_match_links = driver.find_elements(By.CLASS_NAME, 'match-entry-link')
-
-    for match in get_match_links:
-        game_links.append(match.get_attribute('href'))
-    
-    game_links = game_links[:5]
+    """Variables"""
+    data_list = [] # Initialize empty list to store data
 
 
-    driver.quit()
-    return game_links
+
+    name_finder = driver.find_element(By.CLASS_NAME, 'user-name') #Finds username ***for now***
+    name = name_finder.text #Stores name
+
+    kd_finder = driver.find_elements(By.CLASS_NAME,'ov-stat-value') #Finds where KD is
+    kd = kd_finder[0] #Limits element to KD
+    kd_number = kd.text #Stores KD
+
+    winp_finder = driver.find_elements(By.CLASS_NAME,'ov-stat-value') #Finds where win% is stored
+    winp = winp_finder[1] #Limits element to win%
+    winp_number = winp.text #stores win%'/////////
+
+    agent_finder = driver.find_elements(By.CLASS_NAME, 'info-name') #Finds Top 3 agents
+    top_agent = agent_finder[0] #Limits it to top agent
+    top_agent_name = top_agent.text #stores top agent
+
+    hs_percentage_finder = driver.find_elements(By.CLASS_NAME,'ov-stat-value') #Finds where HS% is stored
+    hs_percentage = hs_percentage_finder[2] #Limits element to HS%
+    hs_percentage_number = hs_percentage.text #stores HS%
+
+    #Adding all calculated stats to data_list
+    data_list.append(name) #Add name to list
+    data_list.append(kd_number) #Add kd to list
+    data_list.append(winp_number) #Add win% to list
+    data_list.append(top_agent_name) #Add top agent to list
+    data_list.append(hs_percentage_number) #Add HS% to list
+
+
+
+    driver.quit() #Once all data is taken and stored into data_list, quit the driver
+    return data_list
 
 
 
