@@ -27,10 +27,14 @@ url6 = "https://www.strats.gg/valorant/stats/SEN%20curry%23lisa/overview" #Overv
 
 #stats = getStatsForOneGame(url5)
 #print(stats)
-
-#games = getGameLinksForStratsGG(url6)
-
-
+getStatsForOneGame(url5)
+"""
+game_stats = []
+games = getGameLinksForStratsGG(url6)
+for game in games:
+    game_stats.append(getStatsForOneGame(game))
+print(game_stats)
+"""
 #stats = getStats(url)
 #knife_kills = getKnifeKills(url2)
 #game_links = getGameLinksForXYZ(url)

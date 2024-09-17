@@ -94,9 +94,10 @@ def getStatsForOneGame(link): #Uses strats.gg
     
     for stat in stats:
         stat = stat.text #Get text
+        stat = '\n'.join(stat.split('\n')[:2]) #Split at \n, only take first two positions, add them back together
         stat = stat.replace("\n"," ") #Replace new line character with space
         stat_list.append(stat) #Add stat to list
-    
+   
     game.quit() #close driver
     return stat_list #Return game stats
 
@@ -112,7 +113,7 @@ def getGameLinksForStratsGG(link):
         game_list.append(href) #Add links to list
     
     strats.quit()
-    return game_list[:5] #Return last give games played
+    return game_list[:4] #Return last give games played
 
 
 """Unused functions for now"""
