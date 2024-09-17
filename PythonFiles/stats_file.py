@@ -5,7 +5,7 @@ from selenium.webdriver.chrome.options import Options #Selenium -> Options: Allo
 from selenium.webdriver.common.by import By #Selenium -> By: Allows for calls by specific variables from html code
 from webdriver_manager.chrome import ChromeDriverManager #Webdriver_manager -> ChromeDriverManager: Allows for chrome driver to be ran
 import time
-
+"""Trying to decide if I want to strucutre by website list, or by function types"""
 
 #Loads driver
 def loadDriver(url):
@@ -85,42 +85,34 @@ def getKnifeKills(url):
     return knife_kills
 
 
-"""Functions to get game specific stats, limits to last five games"""
-def getGameLinksForXYZ(url):
-    driver = loadDriver(url)
-    game_links = []
-    get_match_links = driver.find_elements(By.CLASS_NAME, 'match-entry-link')
-
-    for match in get_match_links:
-        game_links.append(match.get_attribute('href'))
+#Gets stats for one SINGLE GAME, uses strats.gg game page
+def getStatsForOneGame(link): #Uses strats.gg
+    game = loadDriver(link) #Load driver with strats.gg link
+    stat_list = [] 
     
-    game_links = game_links[:5]
-
-
-    driver.quit()
-    return game_links
-
-def getStatsForOneGame(link):
-    game = loadDriver(link) #Load driver with current link(XYZ player page)
-
-    game_stats = [] #Create empty list for player game stats
-
-    stats = game.find_elements(By.CLASS_NAME, 'value-title') #limit it container with stat values
-
-    #Loop that gets the text from value-title, replaces the new line character and adds stat to stat list
+    stats = game.find_elements(By.CLASS_NAME, 'compare-table__row') #Find stats
+    
     for stat in stats:
-       stat = stat.text #Get the text
-       stat = stat.replace("\n", " ") #Replace the new line character within the text with a space
-       game_stats.append(stat) #Add stat game_stats
-
-    game.quit()
+        stat = stat.text #Get text
+        stat = stat.replace("\n"," ") #Replace new line character with space
+        stat_list.append(stat) #Add stat to list
     
-    return game_stats #Return stats list to main
+    game.quit() #close driver
+    return stat_list #Return game stats
 
+#Gets LAST FIVE GAMES PLAYED links, uses strats.gg overview page
+def getGameLinksForStratsGG(link):
+    strats = loadDriver(link) #Load driver
+    game_list = [] 
 
+    game_links = strats.find_elements(By.CSS_SELECTOR, "a.match") #a.match: match is the CSS selector, a is the anchor tag
+    all_links = [link.get_attribute('href') for link in game_links] #Just get the links
 
-
-
+    for href in all_links:
+        game_list.append(href) #Add links to list
+    
+    strats.quit()
+    return game_list[:5] #Return last give games played
 
 
 """Unused functions for now"""
@@ -163,25 +155,39 @@ def getStats(url):
     driver.quit() #Once all data is taken and stored into data_list, quit the driver
     return data_list
 
+def getGameLinksForXYZ(url):
+    driver = loadDriver(url)
+    game_links = []
+    get_match_links = driver.find_elements(By.CLASS_NAME, 'match-entry-link')
 
+    for match in get_match_links:
+        game_links.append(match.get_attribute('href'))
+    
+    game_links = game_links[:5]
+
+
+    driver.quit()
+    return game_links
+"""
+def getStatsForOneGame(link):
+    game = loadDriver(link) #Load driver with current link(XYZ player page)
+
+    game_stats = [] #Create empty list for player game stats
+
+    stats = game.find_elements(By.CLASS_NAME, 'value-title') #limit it container with stat values
+
+    #Loop that gets the text from value-title, replaces the new line character and adds stat to stat list
+    for stat in stats:
+       stat = stat.text #Get the text
+       stat = stat.replace("\n", " ") #Replace the new line character within the text with a space
+       game_stats.append(stat) #Add stat game_stats
+
+    game.quit()
+    
+    return game_stats #Return stats list to main
+"""
 
 """GROSS FUNCTIONS THAT DONT WORK PROPERLY"""
-"""Algo needs work, no way to know which one is first deaths..."""
-def getStatsForOneGame(link):
-    game = loadDriver(link)
-    stat_list = []
-    stats = game.find_elements(By.CLASS_NAME, 'compare-table__row')
-    for stat in stats:
-        stat_list.append(stat.text)
-    
-    game.quit()
-    return stat_list
-
-
-
-
-
-
 def getGameLinksForBlitz(url):
     driver  = loadDriver(url)
     game_links = []
