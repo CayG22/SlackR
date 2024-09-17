@@ -4,50 +4,12 @@
     Fall 2024 - Advanced Software Engineering
     Will call all main functions of SlackR
 """
-from stats_file import getStats,getKnifeKills, getStatsForOneGame,getGameLinksForBlitz, getGameLinksForXYZ,getStatsForOneGame, getName,getKD,getWinPercantage,getTopAgent,getHeadShotPercentage, getGameLinksForStratsGG
+from stats_file import getKnifeKills, getStatsForOneGame,getStatsForOneGame,getKD,getWinPercantage,getTopAgent,getHeadShotPercentage, getGameLinksForStratsGG, getOverallStats
 
 
 print("Hello, and welcome to SlackR\n\n")
-url = "https://valorantstats.xyz/stats/profile/SEN%20curry-lisa?actId=all&gameMode=competitive" #Will need for url outline
-url2 = "https://valorantstats.xyz/stats/profile/OC%20Jrmzie-410/weapons?actId=all&gameMode=all" #will need for url outline
-url3 = "https://blitz.gg/valorant/match/sen%20curry-lisa/292f58db-4c17-89a7-b1c0-ba988f0e9d98/2e7155e0-e7ed-42c2-a78c-b076d9c00090"
-url4 = "https://blitz.gg/valorant/profile/sen%20curry-lisa?queue=competitive"
-url5 = "https://www.strats.gg/valorant/stats/SEN%20curry%23lisa/match/2e7155e0-e7ed-42c2-a78c-b076d9c00090" #Best site to get game by game breakdown
-url6 = "https://www.strats.gg/valorant/stats/SEN%20curry%23lisa/overview" #Overview page for game links for Strats.gg
-#name = getName(url)
-#print(name)
-#kd = getKD(url)
-#print(kd)
-#winp = getWinPercantage(url)
-#print(winp)
-#top_agent = getTopAgent(url)
-#print(top_agent)
-#headshot_percentage = getHeadShotPercentage(url)
-#print(headshot_percentage)
-
-#stats = getStatsForOneGame(url5)
-#print(stats)
-getStatsForOneGame(url5)
-"""
-game_stats = []
-games = getGameLinksForStratsGG(url6)
-for game in games:
-    game_stats.append(getStatsForOneGame(game))
-print(game_stats)
-"""
-#stats = getStats(url)
-#knife_kills = getKnifeKills(url2)
-#game_links = getGameLinksForXYZ(url)
-#game_stats = getStatsForOneGame(game_links[0])
-#game_links = getGameLinksForBlitz(url4) NOOOOOOO, works fine but don't need rn
-#first_deaths = getFirstDeathsForOneGame(game_links[0]) Grabs stats but can't tell which one is right, gonna try diff website
-#header_list = ["Name","KD", "Win %","Top Agent","HS %"] # List to store all headers I want, 
-                                                        #just make sure the data being pulled is in the same position as the list position
-#row_ = 1 #integer for accesing specific row
-#column_ = 1 #integer for accessing specific column
-
-
-
+url = "https://valorantstats.xyz/stats/profile/OC%20Jrmzie-410/weapons?actId=all&gameMode=all" #will need for url outline
+url2 = "https://www.strats.gg/valorant/stats/SEN%20curry%23lisa/overview" #Overview page for game links for Strats.gg, will need for url outline
 
 
 

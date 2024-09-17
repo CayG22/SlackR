@@ -5,10 +5,11 @@ from selenium.webdriver.chrome.options import Options #Selenium -> Options: Allo
 from selenium.webdriver.common.by import By #Selenium -> By: Allows for calls by specific variables from html code
 from webdriver_manager.chrome import ChromeDriverManager #Webdriver_manager -> ChromeDriverManager: Allows for chrome driver to be ran
 import time
-"""Trying to decide if I want to strucutre by website list, or by function types"""
 
-#Loads driver
-def loadDriver(url):
+
+
+"""Functionality functions"""
+def loadDriver(url): #Loads driver
     """Selenium"""
     options = Options() #intialize option variable to class Options
     options.add_argument('--headless') #Take away window from being open on program run
@@ -19,53 +20,53 @@ def loadDriver(url):
 
     return driver
 
+def getGameLinksForStratsGG(link): #Gets LAST FIVE GAMES PLAYED links, uses strats.gg overview page
+    strats = loadDriver(link) #Load driver
+    game_list = [] 
 
-"""Functions to get overall stats"""
-def getName(url):
-    driver = loadDriver(url)
-    name_finder = driver.find_element(By.CLASS_NAME, 'user-name')
-    name = name_finder.text
+    game_links = strats.find_elements(By.CSS_SELECTOR, "a.match") #a.match: match is the CSS selector, a is the anchor tag
+    all_links = [link.get_attribute('href') for link in game_links] #Just get the links
+
+    for href in all_links:
+        game_list.append(href) #Add links to list
     
-    driver.quit()
-    return name
+    strats.quit()
+    return game_list[:4] #Return last give games played
 
-def getKD(url):
-    driver = loadDriver(url)
 
-    find_KD = driver.find_elements(By.CLASS_NAME,'ov-stat-value')
-    kd = find_KD[0].text
-    
+
+"""Overview stats functions"""
+def getOverallStats(link): #Gets overall stats and adds them to one tuple(Tuple for now)
+    driver = loadDriver(link)
+    kd = getKD(driver)
+    winp = getWinPercantage(driver)
+    top_agent = getTopAgent(driver)
+    headshot_percentage = getHeadShotPercentage(driver)
     driver.quit()
+    return kd,winp,top_agent,headshot_percentage
+
+def getKD(driver): #Gets KD
+    kd = driver.find_element(By.CLASS_NAME, 'info-kd')
+    kd = kd.text
     return kd
 
-def getWinPercantage(url):
-    driver = loadDriver(url)
-
-    find_winp = driver.find_elements(By.CLASS_NAME, 'ov-stat-value')
-    winp = find_winp[1].text
-
-    driver.quit()
+def getWinPercantage(driver): #Gets Win%
+    winp = driver.find_element(By.CLASS_NAME, 'info-win-rate')
+    winp = winp.text
     return winp
 
-def getTopAgent(url):
-    driver = loadDriver(url)
-
-    find_top_agent = driver.find_elements(By.CLASS_NAME, 'info-name')
+def getTopAgent(driver): #Gets top agent
+    find_top_agent = driver.find_elements(By.CLASS_NAME, 'agent-info')
     top_agent = find_top_agent[0].text
-
-    driver.quit()
+    top_agent = top_agent.split('\n')[0]
     return top_agent
 
-def getHeadShotPercentage(url):
-    driver = loadDriver(url)
-
-    find_hs_perc = driver.find_elements(By.CLASS_NAME, 'ov-stat-value')
-    hs_perc = find_hs_perc[2].text
-
-    driver.quit()
+def getHeadShotPercentage(driver): #Gets headshot percentage
+    find_hs_perc = driver.find_elements(By.CLASS_NAME, 'accuracy__path')
+    hs_perc = find_hs_perc[1].text
     return hs_perc
 
-def getKnifeKills(url):
+def getKnifeKills(url): #Gets Knife kills
     link = loadDriver(url)
 
     weapon_list = []
@@ -85,8 +86,9 @@ def getKnifeKills(url):
     return knife_kills
 
 
-#Gets stats for one SINGLE GAME, uses strats.gg game page
-def getStatsForOneGame(link): #Uses strats.gg
+
+"""Single game stats"""
+def getStatsForOneGame(link): #Gets stats for one SINGLE GAME, uses strats.gg game page
     game = loadDriver(link) #Load driver with strats.gg link
     stat_list = [] 
     
@@ -101,26 +103,30 @@ def getStatsForOneGame(link): #Uses strats.gg
     game.quit() #close driver
     return stat_list #Return game stats
 
-#Gets LAST FIVE GAMES PLAYED links, uses strats.gg overview page
-def getGameLinksForStratsGG(link):
-    strats = loadDriver(link) #Load driver
-    game_list = [] 
 
-    game_links = strats.find_elements(By.CSS_SELECTOR, "a.match") #a.match: match is the CSS selector, a is the anchor tag
-    all_links = [link.get_attribute('href') for link in game_links] #Just get the links
 
-    for href in all_links:
-        game_list.append(href) #Add links to list
-    
-    strats.quit()
-    return game_list[:4] #Return last give games played
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 """Unused functions for now"""
+
+"""
 #Keep for now, will not be used but is faster than reloading driver everytime for these stats
 def getStats(url):
     driver = loadDriver(url)
-    """Variables"""
+    Variables
     data_list = [] # Initialize empty list to store data
 
 
@@ -169,7 +175,7 @@ def getGameLinksForXYZ(url):
 
     driver.quit()
     return game_links
-"""
+
 def getStatsForOneGame(link):
     game = loadDriver(link) #Load driver with current link(XYZ player page)
 
@@ -186,9 +192,9 @@ def getStatsForOneGame(link):
     game.quit()
     
     return game_stats #Return stats list to main
-"""
 
-"""GROSS FUNCTIONS THAT DONT WORK PROPERLY"""
+
+GROSS FUNCTIONS THAT DONT WORK PROPERLY
 def getGameLinksForBlitz(url):
     driver  = loadDriver(url)
     game_links = []
@@ -200,22 +206,4 @@ def getGameLinksForBlitz(url):
 
     driver.quit()
     return game_links
-   
-
-
-
-    
-    
-    
-    
-
-    
-    
-    
-
-
-
-
-    
-
-
+"""
