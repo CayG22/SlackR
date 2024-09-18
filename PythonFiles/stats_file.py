@@ -38,6 +38,7 @@ def getGameLinksForStratsGG(link): #Gets LAST FIVE GAMES PLAYED links, uses stra
 """Overview stats functions"""
 def getOverallStats(link): #Gets overall stats and adds them to one tuple(Tuple for now)
     driver = loadDriver(link)
+    driver.implicitly_wait(10)
     kd = getKD(driver)
     winp = getWinPercantage(driver)
     top_agent = getTopAgent(driver)
