@@ -86,7 +86,24 @@ def getKnifeKills(url): #Gets Knife kills
     link.quit()
     return knife_kills
 
+def get149DamageDone(url):
+    driver = loadDriver(url)
+ 
+    word = "Phantom"
+    get_table = driver.find_elements(By.CSS_SELECTOR,'tr')
+    for row in get_table:
+        row = row.text
+        
+        if word in row:
+            phantom_stats = row.split('\n')
+            
+    hits_with_a_kill = str(phantom_stats[3])
+    head_shot_percentage = phantom_stats[6]
 
+
+    print(hits_with_a_kill)
+    print(head_shot_percentage)
+    driver.quit()
 
 """Single game stats"""
 def getStatsForOneGame(link): #Gets stats for one SINGLE GAME, uses strats.gg game page

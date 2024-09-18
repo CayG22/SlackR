@@ -4,14 +4,16 @@
     Fall 2024 - Advanced Software Engineering
     Will call all main functions of SlackR
 """
-from stats_file import getKnifeKills, getStatsForOneGame,getStatsForOneGame,getKD,getWinPercantage,getTopAgent,getHeadShotPercentage, getGameLinksForStratsGG, getOverallStats
+from stats_file import getKnifeKills, getStatsForOneGame,getStatsForOneGame,getKD,getWinPercantage,getTopAgent,getHeadShotPercentage, getGameLinksForStratsGG, getOverallStats, get149DamageDone
 
 
 print("Hello, and welcome to SlackR\n\n")
 url = "https://valorantstats.xyz/stats/profile/OC%20Jrmzie-410/weapons?actId=all&gameMode=all" #will need for url outline
 url2 = "https://www.strats.gg/valorant/stats/SEN%20curry%23lisa/overview" #Overview page for game links for Strats.gg, will need for url outline
 url3 = "https://www.strats.gg/valorant/stats/canezerra%23LVgod/overview"
+weapons_url = "https://www.strats.gg/valorant/stats/twitch%20nightz1x%23aim/weapons"
 
+"""
 test_url = ""
 
 user_input = input("Please enter your username, then a space, then your ID (No pound symbol):")
@@ -27,10 +29,10 @@ elif user_input.count(" ") == 2:
     test_url = f"https://www.strats.gg/valorant/stats/{first_part}%20{second_part}%23{id}/overview"
 
 print("Now getting your stats...")
+"""
 
 
-
-
+get149DamageDone(weapons_url)
 
 
 
