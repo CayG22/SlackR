@@ -86,24 +86,35 @@ def getKnifeKills(url): #Gets Knife kills
     link.quit()
     return knife_kills
 
-def get149DamageDone(url):
-    driver = loadDriver(url)
+def get149DamageDone(url): #Calculate the amount of times 149 damage is done
+    driver = loadDriver(url) #load driver
  
-    word = "Phantom"
-    get_table = driver.find_elements(By.CSS_SELECTOR,'tr')
-    for row in get_table:
+    word = "Phantom" #Looks for phantom
+    get_table = driver.find_elements(By.CSS_SELECTOR,'tr') #Gets table
+    for row in get_table: #Get individual rows
         row = row.text
         
-        if word in row:
-            phantom_stats = row.split('\n')
+        if word in row: #Only store row with phantom in it
+            phantom_stats = row.split('\n') #Get rid of new line characters
             
-    hits_with_a_kill = str(phantom_stats[3])
-    head_shot_percentage = phantom_stats[6]
+    hits_with_a_kill = float(phantom_stats[3]) #Get kill conversion, change it float
+    head_shot_percentage = float(phantom_stats[6].replace('%', '')) #Get rid of % sign in hs%, change it to float
+    head_shot_percentage = head_shot_percentage/100 #Change hs% into decimal value
+    
+    #Will need to simplify and correct these naming conventions later
+    total_hits = phantom_stats[7:] #Limit to just hits stats
+    total_hits = [item.split('(')[1].split(')')[0] for item in total_hits] #Splits at both parentheses and grabs just the number of hits
+    float_hits = [float(item) for item in total_hits] #Floatifiies number of hits
+    sum_of_hits = sum(float_hits) #Sums all hit values
+    
+    #Calculating 149 Damage Done
+    hits_without_a_kill = 1.0 - hits_with_a_kill #Get hits without a kill
+    
+    head_shots_without_a_kill = head_shot_percentage * hits_without_a_kill #Compute head shots withotu a kill
+    one_four_nine_damage_done = int(sum_of_hits * head_shots_without_a_kill) #Get amount of times 149 damage is done
 
-
-    print(hits_with_a_kill)
-    print(head_shot_percentage)
-    driver.quit()
+    
+    driver.quit() #Quit driver
 
 """Single game stats"""
 def getStatsForOneGame(link): #Gets stats for one SINGLE GAME, uses strats.gg game page
