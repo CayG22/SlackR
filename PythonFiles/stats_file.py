@@ -4,7 +4,7 @@ from selenium.webdriver.chrome.service import Service #Selenium -> Service
 from selenium.webdriver.chrome.options import Options #Selenium -> Options: Allows for custom options to be called
 from selenium.webdriver.common.by import By #Selenium -> By: Allows for calls by specific variables from html code
 from webdriver_manager.chrome import ChromeDriverManager #Webdriver_manager -> ChromeDriverManager: Allows for chrome driver to be ran
-import time
+from selenium.common.exceptions import StaleElementReferenceException
 
 
 
@@ -115,6 +115,7 @@ def get149DamageDone(url): #Calculate the amount of times 149 damage is done
 
     
     driver.quit() #Quit driver
+    return one_four_nine_damage_done
 
 """Single game stats"""
 def getStatsForOneGame(link): #Gets stats for one SINGLE GAME, uses strats.gg game page
@@ -133,17 +134,86 @@ def getStatsForOneGame(link): #Gets stats for one SINGLE GAME, uses strats.gg ga
     return stat_list #Return game stats
 
 
+def findEconomyAverage(driver):
+    all_players_economy = []
+
+    while True:
+        try:
+            economy_column = driver.find_elements(By.CLASS_NAME, 'col-economy')
+            for econ in economy_column:
+                if econ.text == "Econ":
+                    continue
+                all_players_economy.append(econ.text)
+            break  # Break if everything is fine
+        except StaleElementReferenceException:
+            continue  # Retry fetching elements if stale
+
+    player_team_econ = all_players_economy[0:5]
+    enemy_team_econ = all_players_economy[5:]
+
+    int_player_econ = [int(item) for item in player_team_econ]
+    avg_player_econ = sum(int_player_econ) / len(player_team_econ)
+    int_enemy_econ = [int(item) for item in enemy_team_econ]
+    avg_enemy_econ = sum(int_enemy_econ) / len(enemy_team_econ)
+    
+    return avg_player_econ, avg_enemy_econ
 
 
+def findWinOrLoss(driver):
+    #driver = loadDriver(url)
+    win_or_loss = []
+    find_win_or_loss = driver.find_elements(By.CSS_SELECTOR,'span.title.type-subtitle--bold')
+    for game in find_win_or_loss:
+        win_or_loss.append(game.text)
+    
+    last_5_games = win_or_loss[:5]
+    
+    
+    return last_5_games
 
 
+def getGameLinksForBlitzGG(driver):
+    #driver = loadDriver(url)
+    game_list = []
+    game_links = driver.find_elements(By.CSS_SELECTOR,'a.match-link')
+    all_links = [link.get_attribute('href') for link in game_links]
 
+    for href in all_links:
+        game_list.append(href)
+    last_five_game_links = game_list[:5]
+    
+    return last_five_game_links
 
+def calculateAntiThrifties(url):
+    driver = loadDriver(url)
+    game_links = getGameLinksForBlitzGG(driver)
+    game_outcomes = findWinOrLoss(driver)
+    
+    results = {}
+    anti_thrifted = 0
+    thrifties = 0
+    for index, link in enumerate(game_links):
+        game = loadDriver(link)
+        econ_averages = findEconomyAverage(game)
 
+        #Add results to dictionary with index as key
+        results[f"Game {index + 1}"] = {
+            "Outcome": game_outcomes[index],
+            "Average Player Econ": econ_averages[0],
+            "Average Enemy Econ": econ_averages[1]
+        }
+    
+    for game,data in results.items():
+        if data["Outcome"] == 'Defeat' and data["Average Player Econ"] > data["Average Enemy Econ"]:
+            anti_thrifted += 1
+        elif data["Outcome"] == 'Victory' and data["Average Player Econ"] < data["Average Enemy Econ"]:
+            thrifties += 1
+        else:
+            print("No links between econ and outcome of game")
+    print(anti_thrifted)
+    print(thrifties)
 
-
-
-
+    driver.quit()
 
 
 
