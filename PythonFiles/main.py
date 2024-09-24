@@ -37,7 +37,7 @@ print("Now getting your stats...")
 #getAntiThrifties(url4)
 #findWinOrLoss(blitz_overview)
 #getGameLinksForBlitzGG(blitz_overview)
-calculateAntiThrifties(blitz_overview)
+#calculateAntiThrifties(blitz_overview)
 
 """pyxl
 workbook = openpyxl.Workbook() #opens workbook 
