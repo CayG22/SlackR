@@ -12,7 +12,7 @@ from selenium.common.exceptions import StaleElementReferenceException
 def loadDriver(url): #Loads driver
     """Selenium"""
     options = Options() #intialize option variable to class Options
-    options.add_argument('--headless') #Take away window from being open on program run
+    #options.add_argument('--headless') #Take away window from being open on program run
 
     driver = webdriver.Chrome(service = Service(ChromeDriverManager().install()), options = options) #Initializes driver var to chrome driver
     driver.get(url) #URL for what html page I want
@@ -215,6 +215,69 @@ def calculateAntiThrifties(url):
 
     driver.quit()
 
+
+"""Following functions work all together to create round by roud Win% Algo"""
+def getAvgTeamWinPercentage(url):
+    driver = loadDriver(url)
+    win_percentage_list = []
+    player_list = []
+    get_team_row = driver.find_elements(By.CLASS_NAME,'team__row-data-nick')
+    for player in get_team_row:
+        player = player.text
+        player = player.replace('\n',' ')
+        player = player.replace('#','')
+        player_list.append(player)
+        
+    
+    #print(player_list)
+
+    team_1 = player_list[1:5]
+    team_2 = player_list[5:]
+    print(team_1)
+    print(team_2)
+    #GOING TO HAVE TO CHECK EACH PLAYER INDIVIDUALLY TO SEE WHY THEY ARE NOT LOADING PROPERLY
+    for p in team_1:
+        num_of_spaces = p.count(" ")
+        if num_of_spaces == 1:
+            split = p.split(" ")
+            p_name = split[0]
+            p_id = split[1]
+            link = f"https://www.strats.gg/valorant/stats/{p_name}%23{p_id}/overview"
+            
+            current_driver = loadDriver(link)
+            
+            win_percentage = current_driver.find_element(By.CLASS_NAME,'info-win-rate')
+            win_percentage_list.append(win_percentage.text)
+            
+        else:
+            split = p.split(" ")
+            p_name1 = split[0]
+            p_name2 = split[1]
+            p_id = split[2]
+
+   
+    print(win_percentage_list)   
+    """
+    for player in get_team_row:
+        player_link = player.get_attribute("href")
+        player_link_overview_list.append(player_link)
+
+    team_1 = player_link_overview_list[:5]
+    team_2 = player_link_overview_list[5:]
+    team_1_win_percentage_list = []
+    
+    for link in team_1:
+        current_driver = loadDriver(link)
+        print(current_driver)
+        
+        if current_driver is not None:
+            win_rate = current_driver.find_element(By.CLASS_NAME,'info-win-rate')
+            print(win_rate.text)
+        else:
+            continue  
+    """
+    driver.quit()
+    
 
 
 

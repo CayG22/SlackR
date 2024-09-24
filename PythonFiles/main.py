@@ -4,7 +4,7 @@
     Fall 2024 - Advanced Software Engineering
     Will call all main functions of SlackR
 """
-from stats_file import calculateAntiThrifties,getGameLinksForBlitzGG,findWinOrLoss,findEconomyAverage,loadDriver,getKnifeKills, getStatsForOneGame,getStatsForOneGame,getKD,getWinPercantage,getTopAgent,getHeadShotPercentage, getGameLinksForStratsGG, getOverallStats, get149DamageDone
+from stats_file import getAvgTeamWinPercentage,calculateAntiThrifties,getGameLinksForBlitzGG,findWinOrLoss,findEconomyAverage,loadDriver,getKnifeKills, getStatsForOneGame,getStatsForOneGame,getKD,getWinPercantage,getTopAgent,getHeadShotPercentage, getGameLinksForStratsGG, getOverallStats, get149DamageDone
 
 
 print("Hello, and welcome to SlackR\n\n")
@@ -14,9 +14,9 @@ url3 = "https://www.strats.gg/valorant/stats/canezerra%23LVgod/overview"
 weapons_url = "https://www.strats.gg/valorant/stats/twitch%20nightz1x%23aim/weapons" #Weapons page for Strats.gg, 149DamageDone. Will need for url outline
 url4 = "https://blitz.gg/valorant/match/sen%20curry-lisa/292f58db-4c17-89a7-b1c0-ba988f0e9d98/7963a8e3-926e-4fe6-a9bb-12405e7d96d7"
 blitz_overview = "https://blitz.gg/valorant/profile/sen%20curry-lisa"
-"""
-test_url = ""
+win_perc_algo_url = "https://www.strats.gg/valorant/stats/SEN%20curry%23lisa/match/d76ad609-12dc-4a26-aa8c-ef3e92dde1b9"
 
+"""
 user_input = input("Please enter your username, then a space, then your ID (No pound symbol):")
 #Condition to see if username is either one part or two, could change to for loop to account for how many spaces in the first place but whatever for now
 if user_input.count(" ") == 1:
@@ -31,6 +31,8 @@ elif user_input.count(" ") == 2:
 
 print("Now getting your stats...")
 """
+getAvgTeamWinPercentage(win_perc_algo_url)
+
 
 
 #get149DamageDone(weapons_url)
@@ -39,20 +41,4 @@ print("Now getting your stats...")
 #getGameLinksForBlitzGG(blitz_overview)
 #calculateAntiThrifties(blitz_overview)
 
-"""pyxl
-workbook = openpyxl.Workbook() #opens workbook 
-sheet = workbook.active #sets workbook to active
-#for loop to store data into a new column on a single row, must enumerate header_list since 'i' refers to each element not the index
-for i, header in enumerate(header_list):
-    sheet.cell(row = row_, column = column_, value = header_list[i])
-    column_ += 1
-#storing data into spots(CREATE FOR LOOP)  
-sheet.cell(row=2,column=1,value = data_list[0]) #Store name into (2,1)
-sheet.cell(row=2,column=2,value = data_list[1]) #Store KD into (2,2)
-sheet.cell(row=2,column=3,value = data_list[2]) #Store Win% into (2,3)
-sheet.cell(row=2,column=4,value = data_list[3]) #Store Top agent into (2,4)
-sheet.cell(row=2,column=5,value = data_list[4]) #Store Top agent into (2,4)
 
-workbook.save("SlackR_stats.xlsx") #Saves file to workbook
-print("Data has been saved to SlackR_stats.xlsx") #Ouput to show program is done running
-"""
