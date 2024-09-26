@@ -253,7 +253,7 @@ def getAvgTeamWinPercentage(url): #Gets average win% per team based on the game 
     print(f"Team2: {team_2}")
     #Loop through team 1 and 2, create link using link outline,get overall stats for player, only get winp, convert to float, add to list
     for i in team_1:
-        player = get_player_link(i)
+        player = createPlayerLink(i)
         stats = getOverallStats(player)
         winp = stats[1]
         winp = winp.split(" ")[0]
@@ -265,7 +265,7 @@ def getAvgTeamWinPercentage(url): #Gets average win% per team based on the game 
             team_1_win_percentage_list.append(winp)
     
     for i in team_2:
-        player = get_player_link(i)
+        player = createPlayerLink(i)
         stats = getOverallStats(player)
         winp = stats[1]
         winp = winp.split(" ")[0]
@@ -281,14 +281,27 @@ def getAvgTeamWinPercentage(url): #Gets average win% per team based on the game 
     team_2_win_percentage_average = round(sum(team_2_win_percentage_list)/len(team_2_win_percentage_list))
     
     driver.quit()
-    return team_1_win_percentage_average,team_2_win_percentage_average
+    return team_1_win_percentage_average,team_2_win_percentage_average,team_1,team_2
+
+def findRoundOutcome(url):
+    round_outcomes_dict = {}
+    driver = loadDriver(url)
+    round_info = driver.find_elements(By.CLASS_NAME,'round')
+    for round in round_info:
+        round_num = round.text
+        find_round_outcome = round.find_element(By.TAG_NAME,'img')
+        round_outcome = find_round_outcome.get_attribute('src')
+        if "blue" in round_outcome:
+            round_outcomes_dict[round_num] = "Team 1"
+        elif "red" in round_outcome:
+            round_outcomes_dict[round_num] = "Team 2"
 
 
-
+    return round_outcomes_dict
     
     
 """Python Functionality Functions""" #USED WITH GETAVGTEAMWINPERC
-def get_player_link(x): #Gives a strats.gg outline based on the player name that was inserted
+def createPlayerLink(x): #Gives a strats.gg outline based on the player name that was inserted
     num_of_spaces = x.count(" ")
     if num_of_spaces == 1:
         split = x.split(" ")
