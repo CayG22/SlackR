@@ -32,6 +32,7 @@ elif user_input.count(" ") == 2:
 print("Now getting your stats...")
 """
 getAvgTeamWinPercentage(win_perc_algo_url)
+#print(getOverallStats(url2))
 
 
 

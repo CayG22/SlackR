@@ -5,8 +5,9 @@ from selenium.webdriver.chrome.options import Options #Selenium -> Options: Allo
 from selenium.webdriver.common.by import By #Selenium -> By: Allows for calls by specific variables from html code
 from webdriver_manager.chrome import ChromeDriverManager #Webdriver_manager -> ChromeDriverManager: Allows for chrome driver to be ran
 from selenium.common.exceptions import StaleElementReferenceException
-
-
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException
 
 """Functionality functions"""
 def loadDriver(url): #Loads driver
@@ -17,7 +18,7 @@ def loadDriver(url): #Loads driver
     driver = webdriver.Chrome(service = Service(ChromeDriverManager().install()), options = options) #Initializes driver var to chrome driver
     driver.get(url) #URL for what html page I want
     driver.implicitly_wait(10) #Makes driver wait 10 ms before doing anything: Allows for everything to load before accessing HTML elements
-
+    print(f"Driver loaded: {driver} with link: {url}")
     return driver
 
 def getGameLinksForStratsGG(link): #Gets LAST FIVE GAMES PLAYED links, uses strats.gg overview page
@@ -36,34 +37,48 @@ def getGameLinksForStratsGG(link): #Gets LAST FIVE GAMES PLAYED links, uses stra
 
 
 """Overview stats functions"""
-def getOverallStats(link): #Gets overall stats and adds them to one tuple(Tuple for now)
+def getOverallStats(link):  # Gets overall stats and adds them to one tuple
     driver = loadDriver(link)
-    driver.implicitly_wait(10)
-    kd = getKD(driver)
-    winp = getWinPercantage(driver)
-    top_agent = getTopAgent(driver)
-    headshot_percentage = getHeadShotPercentage(driver)
-    driver.quit()
-    return kd,winp,top_agent,headshot_percentage
+    
+    try:
+        # Wait up to 9 seconds for each element to load; move on if not found
+        kd = getKD(driver) or "N/A"  # Return "N/A" if KD is not found
+        winp = getWinPercantage(driver) or "N/A"
+        top_agent = getTopAgent(driver) or "N/A"
+        headshot_percentage = getHeadShotPercentage(driver) or "N/A"
+        
+    except TimeoutException:
+        print("Some elements took too long to load, moving on with available data.")
+        # Handle the case where some of the elements take too long to load or aren't found.
+        kd, winp, top_agent, headshot_percentage = "N/A", "N/A", "N/A", "N/A"
+    
+    finally:
+        driver.quit()
+    
+    return kd, winp, top_agent, headshot_percentage
 
 def getKD(driver): #Gets KD
-    kd = driver.find_element(By.CLASS_NAME, 'info-kd')
+    wait = WebDriverWait(driver,9)
+    kd = wait.until(EC.presence_of_element_located((By.CLASS_NAME,'info-kd')))
     kd = kd.text
     return kd
 
 def getWinPercantage(driver): #Gets Win%
-    winp = driver.find_element(By.CLASS_NAME, 'info-win-rate')
-    winp = winp.text
-    return winp
+    wait = WebDriverWait(driver,9)
+    winp = wait.until(EC.presence_of_element_located((By.CLASS_NAME,'info-win-rate')))
+    winp_text = winp.text
+    return winp_text
 
 def getTopAgent(driver): #Gets top agent
-    find_top_agent = driver.find_elements(By.CLASS_NAME, 'agent-info')
+    wait = WebDriverWait(driver,9)
+    find_top_agent = wait.until(EC.presence_of_all_elements_located((By.CLASS_NAME,'agent-info')))
     top_agent = find_top_agent[0].text
     top_agent = top_agent.split('\n')[0]
     return top_agent
 
 def getHeadShotPercentage(driver): #Gets headshot percentage
-    find_hs_perc = driver.find_elements(By.CLASS_NAME, 'accuracy__path')
+    wait = WebDriverWait(driver,9)
+    find_hs_perc = wait.until(EC.presence_of_all_elements_located((By.CLASS_NAME,'accuracy__path')))
     hs_perc = find_hs_perc[1].text
     return hs_perc
 
@@ -216,10 +231,12 @@ def calculateAntiThrifties(url):
     driver.quit()
 
 
+
 """Following functions work all together to create round by roud Win% Algo"""
 def getAvgTeamWinPercentage(url):
     driver = loadDriver(url)
-    win_percentage_list = []
+    team_1_win_percentage_list = []
+    team_2_win_percentage_list = []
     player_list = []
     get_team_row = driver.find_elements(By.CLASS_NAME,'team__row-data-nick')
     for player in get_team_row:
@@ -228,59 +245,69 @@ def getAvgTeamWinPercentage(url):
         player = player.replace('#','')
         player_list.append(player)
         
-    
-    #print(player_list)
-
-    team_1 = player_list[1:5]
+    print("Teams Created")
+    team_1 = player_list[:5]
+    print(f"Team 1: {team_1}")
     team_2 = player_list[5:]
-    print(team_1)
-    print(team_2)
-    #GOING TO HAVE TO CHECK EACH PLAYER INDIVIDUALLY TO SEE WHY THEY ARE NOT LOADING PROPERLY
-    for p in team_1:
-        num_of_spaces = p.count(" ")
-        if num_of_spaces == 1:
-            split = p.split(" ")
-            p_name = split[0]
-            p_id = split[1]
-            link = f"https://www.strats.gg/valorant/stats/{p_name}%23{p_id}/overview"
-            
-            current_driver = loadDriver(link)
-            
-            win_percentage = current_driver.find_element(By.CLASS_NAME,'info-win-rate')
-            win_percentage_list.append(win_percentage.text)
-            
-        else:
-            split = p.split(" ")
-            p_name1 = split[0]
-            p_name2 = split[1]
-            p_id = split[2]
-
-   
-    print(win_percentage_list)   
-    """
-    for player in get_team_row:
-        player_link = player.get_attribute("href")
-        player_link_overview_list.append(player_link)
-
-    team_1 = player_link_overview_list[:5]
-    team_2 = player_link_overview_list[5:]
-    team_1_win_percentage_list = []
+    print(f"Team2: {team_2}")
     
-    for link in team_1:
-        current_driver = loadDriver(link)
-        print(current_driver)
-        
-        if current_driver is not None:
-            win_rate = current_driver.find_element(By.CLASS_NAME,'info-win-rate')
-            print(win_rate.text)
+    for i in team_1:
+        player = get_player_link(i)
+        stats = getOverallStats(player)
+        winp = stats[1]
+        winp = winp.split(" ")[0]
+        winp = winp.replace("%","")
+        if winp == "N/A":
+            pass
         else:
-            continue  
-    """
+            winp = float(winp)
+            team_1_win_percentage_list.append(winp)
+    
+    for i in team_2:
+        player = get_player_link(i)
+        stats = getOverallStats(player)
+        winp = stats[1]
+        winp = winp.split(" ")[0]
+        winp = winp.replace("%","")
+        if winp == "N/A":
+            pass
+        else:
+            winp = float(winp)
+            team_2_win_percentage_list.append(winp)
+    
+    #print(win_percentage_list)
+    #team_1_win_percentage_average = round(sum(team_1_win_percentage_list)/len(team_1_win_percentage_list))
+    #print(team_1_win_percentage_average)
+    team_2_win_percentage_average = round(sum(team_2_win_percentage_list)/len(team_2_win_percentage_list))
+    print(team_2_win_percentage_average)
+
+    
+    
+    
     driver.quit()
+
+
+
     
-
-
-
+    
+"""Python Functionality Functions"""
+def get_player_link(x):
+    num_of_spaces = x.count(" ")
+    if num_of_spaces == 1:
+        split = x.split(" ")
+        p_name = split[0]
+        p_id = split[1]
+        link = f"https://www.strats.gg/valorant/stats/{p_name}%23{p_id}/overview"
+        print(f"Link created {link}")
+        return link
+    else:
+        split = x.split(" ")
+        p_name1 = split[0]
+        p_name2 = split[1]
+        p_id = split[2]
+        link = f"https://www.strats.gg/valorant/stats/{p_name1}%20{p_name2}%23{p_id}/overview"
+        print(f"Link created {link}")
+        return link
 
 """Unused functions for now"""
 
