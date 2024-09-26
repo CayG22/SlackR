@@ -233,24 +233,25 @@ def calculateAntiThrifties(url):
 
 
 """Following functions work all together to create round by roud Win% Algo"""
-def getAvgTeamWinPercentage(url):
+def getAvgTeamWinPercentage(url): #Gets average win% per team based on the game link that was inserted
     driver = loadDriver(url)
-    team_1_win_percentage_list = []
-    team_2_win_percentage_list = []
-    player_list = []
-    get_team_row = driver.find_elements(By.CLASS_NAME,'team__row-data-nick')
-    for player in get_team_row:
+    team_1_win_percentage_list = [] #team 1 win percentage list
+    team_2_win_percentage_list = [] #Team 2 win percentage list
+    player_list = [] #List to store all players in current match
+    get_team_row = driver.find_elements(By.CLASS_NAME,'team__row-data-nick') #finds individual player names
+    
+    for player in get_team_row: #Loop to just have the player names and the Riot ID'S
         player = player.text
         player = player.replace('\n',' ')
         player = player.replace('#','')
-        player_list.append(player)
+        player_list.append(player) 
         
     print("Teams Created")
-    team_1 = player_list[:5]
+    team_1 = player_list[:5] #Creates team 1
     print(f"Team 1: {team_1}")
-    team_2 = player_list[5:]
+    team_2 = player_list[5:] #Creates team 2
     print(f"Team2: {team_2}")
-    
+    #Loop through team 1 and 2, create link using link outline,get overall stats for player, only get winp, convert to float, add to list
     for i in team_1:
         player = get_player_link(i)
         stats = getOverallStats(player)
@@ -275,23 +276,19 @@ def getAvgTeamWinPercentage(url):
             winp = float(winp)
             team_2_win_percentage_list.append(winp)
     
-    #print(win_percentage_list)
-    #team_1_win_percentage_average = round(sum(team_1_win_percentage_list)/len(team_1_win_percentage_list))
-    #print(team_1_win_percentage_average)
+    #Finds the average win% for each team
+    team_1_win_percentage_average = round(sum(team_1_win_percentage_list)/len(team_1_win_percentage_list))
     team_2_win_percentage_average = round(sum(team_2_win_percentage_list)/len(team_2_win_percentage_list))
-    print(team_2_win_percentage_average)
-
-    
-    
     
     driver.quit()
+    return team_1_win_percentage_average,team_2_win_percentage_average
 
 
 
     
     
-"""Python Functionality Functions"""
-def get_player_link(x):
+"""Python Functionality Functions""" #USED WITH GETAVGTEAMWINPERC
+def get_player_link(x): #Gives a strats.gg outline based on the player name that was inserted
     num_of_spaces = x.count(" ")
     if num_of_spaces == 1:
         split = x.split(" ")
