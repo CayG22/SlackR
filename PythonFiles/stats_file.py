@@ -283,23 +283,27 @@ def getAvgTeamWinPercentage(url): #Gets average win% per team based on the game 
     driver.quit()
     return team_1_win_percentage_average,team_2_win_percentage_average,team_1,team_2
 
-def findRoundOutcome(url):
-    round_outcomes_dict = {}
+def findRoundOutcome(url): #Finds the outcome of every round played, for a single game
+    round_outcomes_dict = {} #Create empty dictionary
     driver = loadDriver(url)
-    round_info = driver.find_elements(By.CLASS_NAME,'round')
+    round_info = driver.find_elements(By.CLASS_NAME,'round') #Finds all rounds played
     for round in round_info:
-        round_num = round.text
-        find_round_outcome = round.find_element(By.TAG_NAME,'img')
-        round_outcome = find_round_outcome.get_attribute('src')
-        if "blue" in round_outcome:
+        round_num = round.text #Get round numbers
+        find_round_outcome = round.find_element(By.TAG_NAME,'img') #Get img attached to round
+        round_outcome = find_round_outcome.get_attribute('src') #Only get the src of the image
+        if "blue" in round_outcome: #If the source has blue, that means team 1 won that round
             round_outcomes_dict[round_num] = "Team 1"
-        elif "red" in round_outcome:
+        elif "red" in round_outcome: #If the source is red, that means team 2 won that round
             round_outcomes_dict[round_num] = "Team 2"
 
 
     return round_outcomes_dict
     
-    
+def calculatePlayerEconomyPerRound(url):
+    pass
+
+
+
 """Python Functionality Functions""" #USED WITH GETAVGTEAMWINPERC
 def createPlayerLink(x): #Gives a strats.gg outline based on the player name that was inserted
     num_of_spaces = x.count(" ")
