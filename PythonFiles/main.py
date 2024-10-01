@@ -4,7 +4,7 @@
     Fall 2024 - Advanced Software Engineering
     Will call all main functions of SlackR
 """
-from stats_file import findRoundOutcome,getAvgTeamWinPercentage,calculateAntiThrifties,getGameLinksForBlitzGG,findWinOrLoss,findEconomyAverage,loadDriver,getKnifeKills, getStatsForOneGame,getStatsForOneGame,getKD,getWinPercantage,getTopAgent,getHeadShotPercentage, getGameLinksForStratsGG, getOverallStats, get149DamageDone
+from stats_file import calculatePlayerEconomyPerRound,findRoundOutcome,getAvgTeamWinPercentage,calculateAntiThrifties,getGameLinksForBlitzGG,findWinOrLoss,findEconomyAverage,loadDriver,getKnifeKills, getStatsForOneGame,getStatsForOneGame,getKD,getWinPercantage,getTopAgent,getHeadShotPercentage, getGameLinksForStratsGG, getOverallStats, get149DamageDone
 
 
 print("Hello, and welcome to SlackR\n\n")
@@ -31,7 +31,8 @@ elif user_input.count(" ") == 2:
 
 print("Now getting your stats...")
 """
-findRoundOutcome(win_perc_algo_url)
+calculatePlayerEconomyPerRound(win_perc_algo_url)
+#findRoundOutcome(win_perc_algo_url)
 #getAvgTeamWinPercentage(win_perc_algo_url)
 #print(getOverallStats(url2))
 #get149DamageDone(weapons_url)

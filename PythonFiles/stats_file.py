@@ -13,8 +13,9 @@ from selenium.common.exceptions import TimeoutException
 def loadDriver(url): #Loads driver
     """Selenium"""
     options = Options() #intialize option variable to class Options
-    #options.add_argument('--headless') #Take away window from being open on program run
-
+    options.add_argument('--headless') #Take away window from being open on program run
+    options.add_argument('--ignore-certificate-errors')
+    options.add_argument('--allow-insecure-localhost')
     driver = webdriver.Chrome(service = Service(ChromeDriverManager().install()), options = options) #Initializes driver var to chrome driver
     driver.get(url) #URL for what html page I want
     driver.implicitly_wait(10) #Makes driver wait 10 ms before doing anything: Allows for everything to load before accessing HTML elements
@@ -298,9 +299,46 @@ def findRoundOutcome(url): #Finds the outcome of every round played, for a singl
 
 
     return round_outcomes_dict
-    
+
 def calculatePlayerEconomyPerRound(url):
-    pass
+    driver = loadDriver(url)
+    round_list = []
+    
+    tabs = driver.find_elements(By.CLASS_NAME,'tab')
+    for tab in tabs:
+        if tab.text == 'Player Stats':
+            tab.click()
+    
+    
+    player_row = driver.find_elements(By.CLASS_NAME,'team__row.team__row--body')
+    for player in player_row:
+        player.click()
+        round_won_div = driver.find_elements(By.CLASS_NAME,'round__won')
+        for round_won in round_won_div:
+            num_of_kills = round_won.find_elements(By.TAG_NAME,'img')
+            for kill in num_of_kills:
+                round_list.append(kill)
+        round_kills = len(round_list)
+        print(round_kills)
+    
+                        
+
+
+
+
+
+
+
+
+
+                        
+        
+                        
+
+
+                
+
+    
 
 
 
