@@ -300,26 +300,6 @@ def findRoundOutcome(url): #Finds the outcome of every round played, for a singl
 
     return round_outcomes_dict
 
-def calculatePlayerEconomyPerRound(url):
-    driver = loadDriver(url)
-    round_list = []
-    
-    tabs = driver.find_elements(By.CLASS_NAME,'tab')
-    for tab in tabs:
-        if tab.text == 'Player Stats':
-            tab.click()
-    
-    
-    player_row = driver.find_elements(By.CLASS_NAME,'team__row.team__row--body')
-    for player in player_row:
-        player.click()
-        round_won_div = driver.find_elements(By.CLASS_NAME,'round__won')
-        for round_won in round_won_div:
-            num_of_kills = round_won.find_elements(By.TAG_NAME,'img')
-            for kill in num_of_kills:
-                round_list.append(kill)
-        round_kills = len(round_list)
-        print(round_kills)
     
                         
 
