@@ -27,8 +27,10 @@ def loadDriver(url): #Loads driver
 def loadGame(url): #Loads specific game to get JSON file from game
     payload = ""
     headers = {"User-Agent": "insomnia/10.0.0"}
+    
     response = requests.get(url,headers=headers)
     game_data = response.json()
+    
     game_file = 'game.json'
 
     with open(game_file,'w') as json_file:
@@ -43,11 +45,23 @@ def loadPlayerProfile(url):
     payload = ""
     headers = {"User-Agent": "insomnia/10.0.0"}
 
-    response = requests.request("GET", url, data=payload, headers=headers, params=querystring)
+    response = requests.get(url, data=payload, headers=headers, params=querystring)
+    player_data = response.json()
 
+    player_file = 'player.json'
 
+    with open(player_file,'w') as json_file:
+        json.dump(player_data,json_file,indent=4)
+    
+    print(f"Player data has been saved to {player_file}")
+    
+    return player_file
 
+def openJsonFile(file):
+    with open(file,'r') as json_file:
+        data_file = json.load(json_file)
 
+    return data_file
 
 def getGameLinksForStratsGG(link): #Gets LAST FIVE GAMES PLAYED links, uses strats.gg overview page
     strats = loadDriver(link) #Load driver
@@ -71,7 +85,7 @@ def getOverallStats(link):  # Gets overall stats and adds them to one tuple
     try:
         # Wait up to 9 seconds for each element to load; move on if not found
         kd = getKD(driver) or "N/A"  # Return "N/A" if KD is not found
-        winp = getWinPercantage(driver) or "N/A"
+        winp = getWinPercentage(driver) or "N/A"
         top_agent = getTopAgent(driver) or "N/A"
         headshot_percentage = getHeadShotPercentage(driver) or "N/A"
         
@@ -91,11 +105,15 @@ def getKD(driver): #Gets KD
     kd = kd.text
     return kd
 
-def getWinPercantage(driver): #Gets Win%
-    wait = WebDriverWait(driver,9)
-    winp = wait.until(EC.presence_of_element_located((By.CLASS_NAME,'info-win-rate')))
-    winp_text = winp.text
-    return winp_text
+def getWinPercentage(player): #Gets win percentage for a player, uses API call to get json file for player
+    data = openJsonFile(player)
+    stats = data['stats']
+    wins = stats['matches_won']
+    played = stats['matches_played']
+    winp = round((wins/played) * 100)
+
+    #print(winp)
+    return winp
 
 def getTopAgent(driver): #Gets top agent
     wait = WebDriverWait(driver,9)
@@ -214,7 +232,6 @@ def findWinOrLoss(driver):
     
     return last_5_games
 
-
 def getGameLinksForBlitzGG(driver):
     #driver = loadDriver(url)
     game_list = []
@@ -261,6 +278,46 @@ def calculateAntiThrifties(url):
 
 
 """Following functions work all together to create round by roud Win% Algo"""
+def getPlayersInGame(game): #Gets the names of players in a game, intakes a JSON game file
+    game = openJsonFile(game)
+    player_list = []
+    
+    players = game['match']['players']
+    
+    for player in players:
+        platform_info = player['platform_info']
+        name = platform_info['platform_user_nick']
+        player_list.append(name)
+    
+    return player_list
+
+def getAvgTeamWinPercentage(players): #Takes in a list of players from a game, gets average winp for each team
+    #Lists for teams
+    all_players = [] 
+    team_1 = [] 
+    team_2 = [] 
+
+    for player in players: #goes through players, creates link, loads that link to get JSON file, uses JSON file to get win percentage, adds winp to list
+        link = createAPIPlayerLink(player)
+        player_data = loadPlayerProfile(link)
+        winp = getWinPercentage(player_data)
+        winp = float(winp)
+        all_players.append(winp)
+
+    #Specify which team is which
+    team_1 = all_players[:5]
+    team_2 = all_players[5:]
+    
+    #Creates the average winp for each team
+    team_1_winp = round(sum(team_1)/len(team_1))
+    team_2_winp = round(sum(team_2)/len(team_2))
+    
+    #print(team_1_winp)
+    #print(team_2_winp)
+
+    return team_1_winp,team_2_winp
+
+"""
 def getAvgTeamWinPercentage(url): #Gets average win% per team based on the game link that was inserted
     driver = loadDriver(url)
     team_1_win_percentage_list = [] #team 1 win percentage list
@@ -310,7 +367,7 @@ def getAvgTeamWinPercentage(url): #Gets average win% per team based on the game 
     
     driver.quit()
     return team_1_win_percentage_average,team_2_win_percentage_average,team_1,team_2
-
+"""
 def findRoundOutcome(game): #Finds what team won each round for a game
     with open(game,'r') as json_file:
         data = json.load(json_file)
@@ -377,22 +434,6 @@ def getKillsPerRound(game): #Gets kills for each player for each round, using st
 
 
 
-
-
-
-
-
-                        
-        
-                        
-
-
-                
-
-    
-
-
-
 """Python Functionality Functions""" #USED WITH GETAVGTEAMWINPERC
 def createPlayerLink(x): #Gives a strats.gg outline based on the player name that was inserted
     num_of_spaces = x.count(" ")
@@ -411,6 +452,27 @@ def createPlayerLink(x): #Gives a strats.gg outline based on the player name tha
         link = f"https://www.strats.gg/valorant/stats/{p_name1}%20{p_name2}%23{p_id}/overview"
         print(f"Link created {link}")
         return link
+
+def createAPIPlayerLink(player):
+    num_of_spaces = player.count(" ")
+    if num_of_spaces == 1:
+        split = player.split("#")
+        name = split[0]
+        id = split[1]
+        split_name = name.split(" ")
+        name1 = split_name[0]
+        name2 = split_name[1]
+        url = f"https://api.strats.gg/internal/api/v1/games/valorant/accounts/riot/{name1}%20{name2}%23{id}/sections/season"
+        return url
+    else:
+        split = player.split('#')
+        name = split[0]
+        id = split[1]
+        url = f"https://api.strats.gg/internal/api/v1/games/valorant/accounts/riot/{name}%23{id}/sections/season"
+        return url
+
+
+
 
 """Unused functions for now"""
 

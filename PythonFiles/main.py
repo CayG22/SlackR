@@ -4,7 +4,7 @@
     Fall 2024 - Advanced Software Engineering
     Will call all main functions of SlackR
 """
-from stats_file import loadPlayerProfile,assignTeam,loadGame,getKillsPerRound,findRoundOutcome,getAvgTeamWinPercentage,calculateAntiThrifties,getGameLinksForBlitzGG,findWinOrLoss,findEconomyAverage,loadDriver,getKnifeKills, getStatsForOneGame,getStatsForOneGame,getKD,getWinPercantage,getTopAgent,getHeadShotPercentage, getGameLinksForStratsGG, getOverallStats, get149DamageDone
+from stats_file import createAPIPlayerLink,getPlayersInGame,loadPlayerProfile,assignTeam,loadGame,getKillsPerRound,findRoundOutcome,getAvgTeamWinPercentage,calculateAntiThrifties,getGameLinksForBlitzGG,findWinOrLoss,findEconomyAverage,loadDriver,getKnifeKills, getStatsForOneGame,getStatsForOneGame,getKD,getWinPercentage,getTopAgent,getHeadShotPercentage, getGameLinksForStratsGG, getOverallStats, get149DamageDone
 
 
 print("Hello, and welcome to SlackR\n\n")
@@ -33,8 +33,14 @@ elif user_input.count(" ") == 2:
 print("Now getting your stats...")
 """
 
-game = loadGame(game_url)
-kills_per_round = findRoundOutcome(game)
+
+game = loadGame(game_url) #Load game I am looking at
+players = getPlayersInGame(game) #Get all the names in that game
+winp_list = getAvgTeamWinPercentage(players)
+
+
+#game = loadGame(game_url)
+#kills_per_round = findRoundOutcome(game)
 #findRoundOutcome(win_perc_algo_url)
 #getAvgTeamWinPercentage(win_perc_algo_url)
 #print(getOverallStats(url2))
