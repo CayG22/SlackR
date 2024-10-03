@@ -57,6 +57,40 @@ def loadPlayerProfile(url):
     
     return player_file
 
+def loadCharacterStats(url):
+    querystring = {"playlist":"competitive","season_id":"292f58db-4c17-89a7-b1c0-ba988f0e9d98"}
+    payload = ""
+    headers = {"User-Agent": "insomnia/10.0.0"}
+
+    response = requests.get(url, data=payload, headers=headers, params=querystring)
+    character_data = response.json()
+
+    character_file = 'characters.json'
+
+    with open(character_file,'w') as json_file:
+        json.dump(character_data,json_file,indent=4)
+    
+    print(f"Character data has been saved to {character_file}")
+    
+    return character_file
+
+def loadWeaponStats(url):
+    querystring = {"playlist":"competitive","season_id":"292f58db-4c17-89a7-b1c0-ba988f0e9d98"}
+    payload = ""
+    headers = {"User-Agent": "insomnia/10.0.0"}
+
+    response = requests.get(url, data=payload, headers=headers, params=querystring)
+    character_data = response.json()
+
+    weapons_file = 'weapons.json'
+
+    with open(weapons_file,'w') as json_file:
+        json.dump(character_data,json_file,indent=4)
+    
+    print(f"Weapon data has been saved to {weapons_file}")
+    
+    return weapons_file
+
 def openJsonFile(file):
     with open(file,'r') as json_file:
         data_file = json.load(json_file)
@@ -99,14 +133,18 @@ def getOverallStats(link):  # Gets overall stats and adds them to one tuple
     
     return kd, winp, top_agent, headshot_percentage
 
-def getKD(driver): #Gets KD
-    wait = WebDriverWait(driver,9)
-    kd = wait.until(EC.presence_of_element_located((By.CLASS_NAME,'info-kd')))
-    kd = kd.text
+def getKD(player): #Gets kd for a player, uses API call to get json player file for player
+    data = openJsonFile(player)
+    
+    stats = data['stats']
+    kd = stats['kd_ratio']
+    
+    #print(kd)
     return kd
 
-def getWinPercentage(player): #Gets win percentage for a player, uses API call to get json file for player
+def getWinPercentage(player): #Gets win percentage for a player, uses API call to get json player file for player
     data = openJsonFile(player)
+    
     stats = data['stats']
     wins = stats['matches_won']
     played = stats['matches_played']
@@ -115,36 +153,38 @@ def getWinPercentage(player): #Gets win percentage for a player, uses API call t
     #print(winp)
     return winp
 
-def getTopAgent(driver): #Gets top agent
-    wait = WebDriverWait(driver,9)
-    find_top_agent = wait.until(EC.presence_of_all_elements_located((By.CLASS_NAME,'agent-info')))
-    top_agent = find_top_agent[0].text
-    top_agent = top_agent.split('\n')[0]
-    return top_agent
+def getTopAgent(player): #Gets top agent for a player, uses API call to get json character file for player
+    data = openJsonFile(player)
+    
+    agent_list = data['characters']
+    top_agent = agent_list[0]
+    top_agent_info = top_agent['character']
+    top_agent_name = top_agent_info['name']
+    
+    print(top_agent_name)
+    return top_agent_name
 
-def getHeadShotPercentage(driver): #Gets headshot percentage
-    wait = WebDriverWait(driver,9)
-    find_hs_perc = wait.until(EC.presence_of_all_elements_located((By.CLASS_NAME,'accuracy__path')))
-    hs_perc = find_hs_perc[1].text
+def getHeadShotPercentage(player): #Gets headshot percentage for a player, uses API call to get json player file for player
+    data = openJsonFile(player)
+    
+    stats = data['stats']
+    hs_perc = stats['headshots_percent']
+    
+    print(hs_perc)
     return hs_perc
 
-def getKnifeKills(url): #Gets Knife kills
-    link = loadDriver(url)
-
-    weapon_list = []
-
-    weapon_finder = link.find_elements(By.CLASS_NAME, 'weapon-entry') #Find list of weapons
-
-    for weapon in weapon_finder:
-        weapon_list.append(weapon.text) #Aadd returned values to list
-
-    #searches through weapon_list for the first item where the text before the newline character (\n) is 'Knife'.
-    find_knife = next((item for item in weapon_list if item.split('\n')[0] == 'Knife'),None) 
-
-
-    knife_kills = find_knife.split('\n')[1] #splits the find_knife string by newline characters, 1 being the position kills is
-
-    link.quit()
+def getKnifeKills(player): #Gets knife kills for a player, uses API call to get json weapon file for player
+    data = openJsonFile(player)
+    
+    weapons_list = data['weapons']
+    
+    for weapon in weapons_list: #Iterates through each weapon
+        name = weapon['metadata']['name']
+        kills = weapon['stats']['kills']
+        if "Melee" in name: #Limits to only knife kills
+            knife_kills = kills
+    
+    #print(knife_kills)
     return knife_kills
 
 def get149DamageDone(url): #Calculate the amount of times 149 damage is done
@@ -194,7 +234,6 @@ def getStatsForOneGame(link): #Gets stats for one SINGLE GAME, uses strats.gg ga
     game.quit() #close driver
     return stat_list #Return game stats
 
-
 def findEconomyAverage(driver):
     all_players_economy = []
 
@@ -218,7 +257,6 @@ def findEconomyAverage(driver):
     avg_enemy_econ = sum(int_enemy_econ) / len(enemy_team_econ)
     
     return avg_player_econ, avg_enemy_econ
-
 
 def findWinOrLoss(driver):
     #driver = loadDriver(url)
@@ -317,58 +355,7 @@ def getAvgTeamWinPercentage(players): #Takes in a list of players from a game, g
 
     return team_1_winp,team_2_winp
 
-"""
-def getAvgTeamWinPercentage(url): #Gets average win% per team based on the game link that was inserted
-    driver = loadDriver(url)
-    team_1_win_percentage_list = [] #team 1 win percentage list
-    team_2_win_percentage_list = [] #Team 2 win percentage list
-    player_list = [] #List to store all players in current match
-    get_team_row = driver.find_elements(By.CLASS_NAME,'team__row-data-nick') #finds individual player names
-    
-    for player in get_team_row: #Loop to just have the player names and the Riot ID'S
-        player = player.text
-        player = player.replace('\n',' ')
-        player = player.replace('#','')
-        player_list.append(player) 
-        
-    print("Teams Created")
-    team_1 = player_list[:5] #Creates team 1
-    print(f"Team 1: {team_1}")
-    team_2 = player_list[5:] #Creates team 2
-    print(f"Team2: {team_2}")
-    #Loop through team 1 and 2, create link using link outline,get overall stats for player, only get winp, convert to float, add to list
-    for i in team_1:
-        player = createPlayerLink(i)
-        stats = getOverallStats(player)
-        winp = stats[1]
-        winp = winp.split(" ")[0]
-        winp = winp.replace("%","")
-        if winp == "N/A":
-            pass
-        else:
-            winp = float(winp)
-            team_1_win_percentage_list.append(winp)
-    
-    for i in team_2:
-        player = createPlayerLink(i)
-        stats = getOverallStats(player)
-        winp = stats[1]
-        winp = winp.split(" ")[0]
-        winp = winp.replace("%","")
-        if winp == "N/A":
-            pass
-        else:
-            winp = float(winp)
-            team_2_win_percentage_list.append(winp)
-    
-    #Finds the average win% for each team
-    team_1_win_percentage_average = round(sum(team_1_win_percentage_list)/len(team_1_win_percentage_list))
-    team_2_win_percentage_average = round(sum(team_2_win_percentage_list)/len(team_2_win_percentage_list))
-    
-    driver.quit()
-    return team_1_win_percentage_average,team_2_win_percentage_average,team_1,team_2
-"""
-def findRoundOutcome(game): #Finds what team won each round for a game
+def findRoundOutcome(game): #Finds what team won each round for a game, returns dict
     with open(game,'r') as json_file:
         data = json.load(json_file)
 
@@ -383,32 +370,28 @@ def findRoundOutcome(game): #Finds what team won each round for a game
     #print(round_outcome)
     return round_outcome
 
-def assignTeam(game): #Loads json game file, assigns team to each player
-    with open(game,'r') as json_file: #Load game file
+def assignTeam(game): 
+    with open(game, 'r') as json_file:  # Load game file
         data = json.load(json_file)
 
-    red_team = [] #Red team list
-    blue_team = [] #Blue team list
+    teams_dict = {"Red": [], "Blue": []}  # Initialize dictionary with two keys: Red and Blue
 
-    players = data['match']['players'] #limit to match -> players
+    players = data['match']['players']  # Limit to match -> players
 
-    for player in players: #For each player get name, and get team_id. Assign player to red team or blue team
+    for player in players:  # For each player, get name and team_id
         platform_info = player['platform_info']
         name = platform_info['platform_user_nick']
 
-        teams = player['metadata'] #match -> players -> metadata
-        team_name = teams['team_id'] #match -> players -> metadata: team
+        team_name = player['metadata']['team_id']  # match -> players -> metadata: team
         
         if "Red" in team_name:
-            red_team.append(name)
+            teams_dict["Red"].append(name)
         elif "Blue" in team_name:
-            blue_team.append(name)
-    
-    #print(red_team)
-    #print(blue_team)
-    return red_team,blue_team
+            teams_dict["Blue"].append(name)
+
+    return teams_dict  # Return the dictionary with the teams
                         
-def getKillsPerRound(game): #Gets kills for each player for each round, using strats gg API and json file
+def getKillsPerRound(game): #Gets kills for each player for each round, using strats gg API and json file, returns dict
     with open(game,'r') as json_file:
         data = json.load(json_file) #Load json_file for game
     round_dict = {} #Create dictionary
@@ -432,8 +415,6 @@ def getKillsPerRound(game): #Gets kills for each player for each round, using st
     #print(round_dict)
     return round_dict
 
-
-
 """Python Functionality Functions""" #USED WITH GETAVGTEAMWINPERC
 def createPlayerLink(x): #Gives a strats.gg outline based on the player name that was inserted
     num_of_spaces = x.count(" ")
@@ -453,7 +434,7 @@ def createPlayerLink(x): #Gives a strats.gg outline based on the player name tha
         print(f"Link created {link}")
         return link
 
-def createAPIPlayerLink(player):
+def createAPIPlayerLink(player): #Takes in player name,Creates outline for API link, returns link created
     num_of_spaces = player.count(" ")
     if num_of_spaces == 1:
         split = player.split("#")
@@ -475,6 +456,28 @@ def createAPIPlayerLink(player):
 
 
 """Unused functions for now"""
+
+"""
+def getKnifeKills(url): #Gets Knife kills
+    link = loadDriver(url)
+
+    weapon_list = []
+
+    weapon_finder = link.find_elements(By.CLASS_NAME, 'weapon-entry') #Find list of weapons
+
+    for weapon in weapon_finder:
+        weapon_list.append(weapon.text) #Aadd returned values to list
+
+    #searches through weapon_list for the first item where the text before the newline character (\n) is 'Knife'.
+    find_knife = next((item for item in weapon_list if item.split('\n')[0] == 'Knife'),None) 
+
+
+    knife_kills = find_knife.split('\n')[1] #splits the find_knife string by newline characters, 1 being the position kills is
+
+    link.quit()
+    return knife_kills
+"""
+
 
 """
 #Keep for now, will not be used but is faster than reloading driver everytime for these stats
@@ -560,4 +563,56 @@ def getGameLinksForBlitz(url):
 
     driver.quit()
     return game_links
+"""
+
+"""
+def getAvgTeamWinPercentage(url): #Gets average win% per team based on the game link that was inserted
+    driver = loadDriver(url)
+    team_1_win_percentage_list = [] #team 1 win percentage list
+    team_2_win_percentage_list = [] #Team 2 win percentage list
+    player_list = [] #List to store all players in current match
+    get_team_row = driver.find_elements(By.CLASS_NAME,'team__row-data-nick') #finds individual player names
+    
+    for player in get_team_row: #Loop to just have the player names and the Riot ID'S
+        player = player.text
+        player = player.replace('\n',' ')
+        player = player.replace('#','')
+        player_list.append(player) 
+        
+    print("Teams Created")
+    team_1 = player_list[:5] #Creates team 1
+    print(f"Team 1: {team_1}")
+    team_2 = player_list[5:] #Creates team 2
+    print(f"Team2: {team_2}")
+    #Loop through team 1 and 2, create link using link outline,get overall stats for player, only get winp, convert to float, add to list
+    for i in team_1:
+        player = createPlayerLink(i)
+        stats = getOverallStats(player)
+        winp = stats[1]
+        winp = winp.split(" ")[0]
+        winp = winp.replace("%","")
+        if winp == "N/A":
+            pass
+        else:
+            winp = float(winp)
+            team_1_win_percentage_list.append(winp)
+    
+    for i in team_2:
+        player = createPlayerLink(i)
+        stats = getOverallStats(player)
+        winp = stats[1]
+        winp = winp.split(" ")[0]
+        winp = winp.replace("%","")
+        if winp == "N/A":
+            pass
+        else:
+            winp = float(winp)
+            team_2_win_percentage_list.append(winp)
+    
+    #Finds the average win% for each team
+    team_1_win_percentage_average = round(sum(team_1_win_percentage_list)/len(team_1_win_percentage_list))
+    team_2_win_percentage_average = round(sum(team_2_win_percentage_list)/len(team_2_win_percentage_list))
+    
+    driver.quit()
+    return team_1_win_percentage_average,team_2_win_percentage_average,team_1,team_2
 """
