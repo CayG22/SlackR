@@ -8,6 +8,8 @@ from selenium.common.exceptions import StaleElementReferenceException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
+import requests
+import json
 
 """Functionality functions"""
 def loadDriver(url): #Loads driver
@@ -21,6 +23,31 @@ def loadDriver(url): #Loads driver
     driver.implicitly_wait(10) #Makes driver wait 10 ms before doing anything: Allows for everything to load before accessing HTML elements
     print(f"Driver loaded: {driver} with link: {url}")
     return driver
+
+def loadGame(url): #Loads specific game to get JSON file from game
+    payload = ""
+    headers = {"User-Agent": "insomnia/10.0.0"}
+    response = requests.get(url,headers=headers)
+    game_data = response.json()
+    game_file = 'game.json'
+
+    with open(game_file,'w') as json_file:
+        json.dump(game_data,json_file, indent=4)
+
+    print(f"Data has been saved to {game_file}")
+
+    return game_file
+
+def loadPlayerProfile(url):
+    querystring = {"playlist":"competitive","season_id":"292f58db-4c17-89a7-b1c0-ba988f0e9d98"}
+    payload = ""
+    headers = {"User-Agent": "insomnia/10.0.0"}
+
+    response = requests.request("GET", url, data=payload, headers=headers, params=querystring)
+
+
+
+
 
 def getGameLinksForStratsGG(link): #Gets LAST FIVE GAMES PLAYED links, uses strats.gg overview page
     strats = loadDriver(link) #Load driver
@@ -284,25 +311,69 @@ def getAvgTeamWinPercentage(url): #Gets average win% per team based on the game 
     driver.quit()
     return team_1_win_percentage_average,team_2_win_percentage_average,team_1,team_2
 
-def findRoundOutcome(url): #Finds the outcome of every round played, for a single game
-    round_outcomes_dict = {} #Create empty dictionary
-    driver = loadDriver(url)
-    round_info = driver.find_elements(By.CLASS_NAME,'round') #Finds all rounds played
-    for round in round_info:
-        round_num = round.text #Get round numbers
-        find_round_outcome = round.find_element(By.TAG_NAME,'img') #Get img attached to round
-        round_outcome = find_round_outcome.get_attribute('src') #Only get the src of the image
-        if "blue" in round_outcome: #If the source has blue, that means team 1 won that round
-            round_outcomes_dict[round_num] = "Team 1"
-        elif "red" in round_outcome: #If the source is red, that means team 2 won that round
-            round_outcomes_dict[round_num] = "Team 2"
+def findRoundOutcome(game): #Finds what team won each round for a game
+    with open(game,'r') as json_file:
+        data = json.load(json_file)
 
+    round_outcome = {}
+    rounds = data['match']['rounds'] #limit to rounds sub-cat for match
 
-    return round_outcomes_dict
+    for round_data in rounds: #gets round num and the team that won for each round, adds to dictionary
+        round_num = round_data['round_num']
+        winning_team = round_data['winning_team']
+        round_outcome[round_num] = winning_team
 
+    #print(round_outcome)
+    return round_outcome
+
+def assignTeam(game): #Loads json game file, assigns team to each player
+    with open(game,'r') as json_file: #Load game file
+        data = json.load(json_file)
+
+    red_team = [] #Red team list
+    blue_team = [] #Blue team list
+
+    players = data['match']['players'] #limit to match -> players
+
+    for player in players: #For each player get name, and get team_id. Assign player to red team or blue team
+        platform_info = player['platform_info']
+        name = platform_info['platform_user_nick']
+
+        teams = player['metadata'] #match -> players -> metadata
+        team_name = teams['team_id'] #match -> players -> metadata: team
+        
+        if "Red" in team_name:
+            red_team.append(name)
+        elif "Blue" in team_name:
+            blue_team.append(name)
     
+    #print(red_team)
+    #print(blue_team)
+    return red_team,blue_team
                         
+def getKillsPerRound(game): #Gets kills for each player for each round, using strats gg API and json file
+    with open(game,'r') as json_file:
+        data = json.load(json_file) #Load json_file for game
+    round_dict = {} #Create dictionary
+    players = data['match']['players'] #Limit to match -> Players
+    
+    for player in players: #For each player
+        platform_info = player['platform_info'] #limit to match -> Players -> platform_info
+        name = platform_info['platform_user_nick'] #gets name of player match -> Players -> platform_info: name
+        
+        if name not in round_dict:
+            round_dict[name] = {} #if the name is not in the dicitonary, put it ther
 
+        rounds = player['round_results'] #Limit to round results, match -> players -> round_results
+
+        for round_data in rounds: #iterate through each round to get kills and round number
+            round_num = round_data['round_num'] #match -> players -> round_results: round_num
+            kills = round_data['kills'] #match -> players -> round_results: kills
+            
+            round_dict[name][round_num] = kills #Store into dictionary with name as the key
+    
+    #print(round_dict)
+    return round_dict
 
 
 
