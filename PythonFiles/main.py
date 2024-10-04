@@ -4,8 +4,8 @@
     Fall 2024 - Advanced Software Engineering
     Will call all main functions of SlackR
 """
-from stats_file import loadWeaponStats,loadCharacterStats,createAPIPlayerLink,getPlayersInGame,loadPlayerProfile,assignTeam,loadGame,getKillsPerRound,findRoundOutcome,getAvgTeamWinPercentage,calculateAntiThrifties,getGameLinksForBlitzGG,findWinOrLoss,findEconomyAverage,loadDriver,getKnifeKills, getStatsForOneGame,getStatsForOneGame,getKD,getWinPercentage,getTopAgent,getHeadShotPercentage, getGameLinksForStratsGG, getOverallStats, get149DamageDone
-
+from stats_file import create_players,loadWeaponStats,loadCharacterStats,createAPIPlayerLink,getPlayersInGame,loadPlayerProfile,assignTeam,loadGame,getKillsPerRound,findRoundOutcome,getAvgTeamWinPercentage,calculateAntiThrifties,getGameLinksForBlitzGG,findWinOrLoss,findEconomyAverage,loadDriver,getKnifeKills, getStatsForOneGame,getStatsForOneGame,getKD,getWinPercentage,getTopAgent,getHeadShotPercentage, getGameLinksForStratsGG, getOverallStats, get149DamageDone
+from class_file import *
 
 print("Hello, and welcome to SlackR\n\n")
 #url = "https://valorantstats.xyz/stats/profile/OC%20Jrmzie-410/weapons?actId=all&gameMode=all" #will need for url outline
@@ -36,7 +36,17 @@ print("Now getting your stats...")
 """
 
 
+game = loadGame(game_url)
+players = create_players(game)
 
+for player in players:
+    round_money,total_money = player.calculate_money(game)
+
+    player.display_info()
+
+    for i, money in enumerate(round_money, start = 1):
+        print(f"Round {i}: Earned ${money}")
+        
 
 
 

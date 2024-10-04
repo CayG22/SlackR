@@ -10,6 +10,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 import requests
 import json
+from class_file import Player
+from utils import openJsonFile
 
 """Functionality functions"""
 def loadDriver(url): #Loads driver
@@ -91,11 +93,15 @@ def loadWeaponStats(url):
     
     return weapons_file
 
-def openJsonFile(file):
-    with open(file,'r') as json_file:
-        data_file = json.load(json_file)
+def create_players(game): #Creates Player class and adds the player name and team to the class
+    teams = assignTeam(game)
 
-    return data_file
+    players = []
+    for team,names in teams.items():
+        for name in names:
+            player = Player(name,team)
+            players.append(player)
+    return players        
 
 def getGameLinksForStratsGG(link): #Gets LAST FIVE GAMES PLAYED links, uses strats.gg overview page
     strats = loadDriver(link) #Load driver
