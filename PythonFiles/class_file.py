@@ -44,7 +44,7 @@ class Player:
 
         return round_kills  # Return a dictionary of kills per round
     
-    def calculate_money(self, game):
+    def calculate_money(self, game): #Calculates total money for game, and a round by round breakdown
         round_outcomes = self.check_team_round_outcome(game)
         kills_per_round = self.check_kills_per_round(game)  # Returns a dictionary
         total_money = 0

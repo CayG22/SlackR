@@ -322,6 +322,9 @@ def calculateAntiThrifties(url):
 
 
 """Following functions work all together to create round by roud Win% Algo"""
+def calculateRoundWinPercentage(game):
+    pass
+
 def getPlayersInGame(game): #Gets the names of players in a game, intakes a JSON game file
     game = openJsonFile(game)
     player_list = []
@@ -361,6 +364,7 @@ def getAvgTeamWinPercentage(players): #Takes in a list of players from a game, g
 
     return team_1_winp,team_2_winp
 
+"""The following three functions have been moved to the player class"""
 def findRoundOutcome(game): #Finds what team won each round for a game, returns dict
     with open(game,'r') as json_file:
         data = json.load(json_file)
@@ -420,6 +424,8 @@ def getKillsPerRound(game): #Gets kills for each player for each round, using st
     
     #print(round_dict)
     return round_dict
+
+
 
 """Python Functionality Functions""" #USED WITH GETAVGTEAMWINPERC
 def createPlayerLink(x): #Gives a strats.gg outline based on the player name that was inserted
