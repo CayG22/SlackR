@@ -35,7 +35,7 @@ elif user_input.count(" ") == 2:
 print("Now getting your stats...")
 """
 
-"""
+
 game = loadGame(game_url)
 players = create_players(game)
 
@@ -48,7 +48,7 @@ for player in players:
         print(f"Round {i}: Earned ${money}")
         
 
-"""
+
 
 
 
