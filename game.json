@@ -6,12 +6,12 @@
             },
             "stats": {
                 "matches_count": 20,
-                "legshots": 47,
-                "headshots": 342,
-                "bodyshots": 608,
-                "legshots_percent": 4.7,
-                "headshots_percent": 34.3,
-                "bodyshots_percent": 61.0
+                "legshots": 50,
+                "headshots": 345,
+                "bodyshots": 630,
+                "legshots_percent": 4.9,
+                "headshots_percent": 33.7,
+                "bodyshots_percent": 61.5
             }
         },
         "recent_stats": {
@@ -19,30 +19,30 @@
                 "matches_count": 20
             },
             "stats": {
-                "time_played_ms": 40357917,
+                "time_played_ms": 39876302,
                 "matches_played": 20,
-                "matches_won": 10,
+                "matches_won": 9,
                 "matches_lost": 10,
-                "damage": 76804,
-                "rounds_played": 451,
-                "kills": 409,
-                "deaths": 339,
-                "assists": 138,
-                "headshots": 342,
-                "headshots_percent": 34.3,
-                "score": 116604,
+                "damage": 78265,
+                "rounds_played": 449,
+                "kills": 410,
+                "deaths": 343,
+                "assists": 136,
+                "headshots": 345,
+                "headshots_percent": 33.7,
+                "score": 118831,
                 "aces": 4,
-                "clutches": 10,
-                "first_bloods": 43,
+                "clutches": 7,
+                "first_bloods": 52,
                 "flawless": 15,
-                "first_deaths": 40,
-                "score_per_round": 258.5,
+                "first_deaths": 53,
+                "score_per_round": 264.7,
                 "kills_per_round": 0.9,
-                "damage_per_round": 170.3,
-                "kd_ratio": 1.21,
-                "kad_ratio": 1.61,
-                "kast_percent": 75.4,
-                "matches_won_percent": 50.0,
+                "damage_per_round": 174.3,
+                "kd_ratio": 1.2,
+                "kad_ratio": 1.59,
+                "kast_percent": 75.3,
+                "matches_won_percent": 45.0,
                 "max_kills_per_match": 31
             }
         }
@@ -279,9 +279,9 @@
                     "current_rank": {
                         "name": "Radiant",
                         "image_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/49a784e4-882b-4230-a331-a9930596053a.png",
-                        "ranked_rating": 833,
+                        "ranked_rating": 791,
                         "normalized_rating": null,
-                        "leaderboard_rank": 22,
+                        "leaderboard_rank": 34,
                         "competitive_tier": 27,
                         "tier_level": "RADIANT",
                         "primary_color": "#f6f6f6"
@@ -667,9 +667,9 @@
                     "current_rank": {
                         "name": "Radiant",
                         "image_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/49a784e4-882b-4230-a331-a9930596053a.png",
-                        "ranked_rating": 833,
+                        "ranked_rating": 791,
                         "normalized_rating": null,
-                        "leaderboard_rank": 22,
+                        "leaderboard_rank": 34,
                         "competitive_tier": 27,
                         "tier_level": "RADIANT",
                         "primary_color": "#f6f6f6"
@@ -975,9 +975,9 @@
                     "current_rank": {
                         "name": "Radiant",
                         "image_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/49a784e4-882b-4230-a331-a9930596053a.png",
-                        "ranked_rating": 833,
+                        "ranked_rating": 791,
                         "normalized_rating": null,
-                        "leaderboard_rank": 22,
+                        "leaderboard_rank": 34,
                         "competitive_tier": 27,
                         "tier_level": "RADIANT",
                         "primary_color": "#f6f6f6"
@@ -1363,9 +1363,9 @@
                     "current_rank": {
                         "name": "Radiant",
                         "image_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/49a784e4-882b-4230-a331-a9930596053a.png",
-                        "ranked_rating": 833,
+                        "ranked_rating": 791,
                         "normalized_rating": null,
-                        "leaderboard_rank": 22,
+                        "leaderboard_rank": 34,
                         "competitive_tier": 27,
                         "tier_level": "RADIANT",
                         "primary_color": "#f6f6f6"
@@ -1731,9 +1731,9 @@
                     "current_rank": {
                         "name": "Radiant",
                         "image_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/49a784e4-882b-4230-a331-a9930596053a.png",
-                        "ranked_rating": 833,
+                        "ranked_rating": 791,
                         "normalized_rating": null,
-                        "leaderboard_rank": 22,
+                        "leaderboard_rank": 34,
                         "competitive_tier": 27,
                         "tier_level": "RADIANT",
                         "primary_color": "#f6f6f6"
@@ -2059,9 +2059,9 @@
                     "current_rank": {
                         "name": "Radiant",
                         "image_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/49a784e4-882b-4230-a331-a9930596053a.png",
-                        "ranked_rating": 833,
+                        "ranked_rating": 791,
                         "normalized_rating": null,
-                        "leaderboard_rank": 22,
+                        "leaderboard_rank": 34,
                         "competitive_tier": 27,
                         "tier_level": "RADIANT",
                         "primary_color": "#f6f6f6"
@@ -2427,9 +2427,9 @@
                     "current_rank": {
                         "name": "Radiant",
                         "image_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/49a784e4-882b-4230-a331-a9930596053a.png",
-                        "ranked_rating": 833,
+                        "ranked_rating": 791,
                         "normalized_rating": null,
-                        "leaderboard_rank": 22,
+                        "leaderboard_rank": 34,
                         "competitive_tier": 27,
                         "tier_level": "RADIANT",
                         "primary_color": "#f6f6f6"
@@ -2795,9 +2795,9 @@
                     "current_rank": {
                         "name": "Radiant",
                         "image_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/49a784e4-882b-4230-a331-a9930596053a.png",
-                        "ranked_rating": 833,
+                        "ranked_rating": 791,
                         "normalized_rating": null,
-                        "leaderboard_rank": 22,
+                        "leaderboard_rank": 34,
                         "competitive_tier": 27,
                         "tier_level": "RADIANT",
                         "primary_color": "#f6f6f6"
@@ -3163,9 +3163,9 @@
                     "current_rank": {
                         "name": "Radiant",
                         "image_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/49a784e4-882b-4230-a331-a9930596053a.png",
-                        "ranked_rating": 833,
+                        "ranked_rating": 791,
                         "normalized_rating": null,
-                        "leaderboard_rank": 22,
+                        "leaderboard_rank": 34,
                         "competitive_tier": 27,
                         "tier_level": "RADIANT",
                         "primary_color": "#f6f6f6"
@@ -3491,9 +3491,9 @@
                     "current_rank": {
                         "name": "Radiant",
                         "image_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/49a784e4-882b-4230-a331-a9930596053a.png",
-                        "ranked_rating": 833,
+                        "ranked_rating": 791,
                         "normalized_rating": null,
-                        "leaderboard_rank": 22,
+                        "leaderboard_rank": 34,
                         "competitive_tier": 27,
                         "tier_level": "RADIANT",
                         "primary_color": "#f6f6f6"
