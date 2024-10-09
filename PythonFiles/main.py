@@ -4,7 +4,7 @@
     Fall 2024 - Advanced Software Engineering
     Will call all main functions of SlackR
 """
-from stats_file import create_players,loadWeaponStats,loadCharacterStats,createAPIPlayerLink,getPlayersInGame,loadPlayerProfile,assignTeam,loadGame,getKillsPerRound,findRoundOutcome,getAvgTeamWinPercentage,calculateAntiThrifties,getGameLinksForBlitzGG,findWinOrLoss,findEconomyAverage,loadDriver,getKnifeKills, getStatsForOneGame,getStatsForOneGame,getKD,getWinPercentage,getTopAgent,getHeadShotPercentage, getGameLinksForStratsGG, getOverallStats, get149DamageDone
+from stats_file import calculateRoundWinPercentage,create_players,loadWeaponStats,loadCharacterStats,createAPIPlayerLink,getPlayersInGame,loadPlayerProfile,assignTeam,loadGame,getKillsPerRound,findRoundOutcome,getAvgTeamWinPercentage,calculateAntiThrifties,getGameLinksForBlitzGG,findWinOrLoss,findEconomyAverage,loadDriver,getKnifeKills, getStatsForOneGame,getStatsForOneGame,getKD,getWinPercentage,getTopAgent,getHeadShotPercentage, getGameLinksForStratsGG, getOverallStats, get149DamageDone
 from class_file import *
 
 print("Hello, and welcome to SlackR\n\n")
@@ -15,7 +15,7 @@ print("Hello, and welcome to SlackR\n\n")
 #url4 = "https://blitz.gg/valorant/match/sen%20curry-lisa/292f58db-4c17-89a7-b1c0-ba988f0e9d98/7963a8e3-926e-4fe6-a9bb-12405e7d96d7"
 #blitz_overview = "https://blitz.gg/valorant/profile/sen%20curry-lisa"
 #win_perc_algo_url = "https://www.strats.gg/valorant/stats/SEN%20curry%23lisa/match/d76ad609-12dc-4a26-aa8c-ef3e92dde1b9"
-game_url = "https://api.strats.gg/internal/api/v1/games/valorant/accounts/riot/SEN%20curry%23lisa/matches/d76ad609-12dc-4a26-aa8c-ef3e92dde1b9" #Direct API call
+game_url = "https://api.strats.gg/internal/api/v1/games/valorant/accounts/riot/100T%20Asuna%231111/matches/1cca6e91-ce8d-498d-96cf-5ace1f250ab7" #Direct API call
 #player_url = "https://api.strats.gg/internal/api/v1/games/valorant/accounts/riot/PA1NT%23Peak/sections/season"
 #player_character_url = "https://api.strats.gg/internal/api/v1/games/valorant/accounts/riot/PA1NT%23Peak/sections/characters"
 #weapons_file_url = "https://api.strats.gg/internal/api/v1/games/valorant/accounts/riot/PA1NT%23Peak/sections/weapons"
@@ -38,17 +38,19 @@ print("Now getting your stats...")
 
 game = loadGame(game_url)
 players = create_players(game)
+game_money_list = [] #List we are passing in to calculate the win%
+round_outcomes = findRoundOutcome(game)
+
 
 for player in players:
-    round_money,total_money = player.calculate_money(game)
-
-    player.display_info()
-
-    for i, money in enumerate(round_money, start = 1):
-        print(f"Round {i}: Earned ${money}")
-        
+    round_money = player.calculate_money(game)
+    #player.display_info()
+    game_money_list.append(round_money)
 
 
+
+players[0] = calculateRoundWinPercentage(player,game_money_list,round_money,round_outcomes)
+    
 
 
 

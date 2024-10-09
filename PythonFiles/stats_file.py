@@ -10,8 +10,13 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 import requests
 import json
+import itertools
+import numpy as np
+from sklearn.preprocessing import MinMaxScaler
+from collections import Counter
 from class_file import Player
 from utils import openJsonFile
+#from class_file import Player
 
 """Functionality functions"""
 def loadDriver(url): #Loads driver
@@ -322,8 +327,52 @@ def calculateAntiThrifties(url):
 
 
 """Following functions work all together to create round by roud Win% Algo"""
-def calculateRoundWinPercentage(game):
-    pass
+
+def calculateMoneyPercentage(money_list):
+    value_count = {}  # List to store the occurrences of each value
+    flat_money_list = list(itertools.chain(*money_list))  # Combine the list of lists into one big list
+    flat_money_list.sort()  # Sort in ascending order
+    value_count = Counter(flat_money_list)  # Get the count for each value
+    total_values = len(flat_money_list)  # Get the length of the list
+
+    value_percentage_list = []  # List to store both the value and the percentage as a tuple
+
+    for value, count in value_count.items():  # For each value calculate the percentage and add it to the new list
+        percentage = (count / total_values) * 100
+        value_percentage_list.append((value, percentage))  # Each tuple will contain the value in [0] and percentage [1]
+
+    # Extract percentages for normalization
+    percentages = np.array([perc for _, perc in value_percentage_list]).reshape(-1, 1)  # Reshape for scaler
+
+    # Initialize the MinMaxScaler
+    scaler = MinMaxScaler()
+
+    # Fit and transform the percentages
+    normalized_percentages = scaler.fit_transform(percentages)
+
+    # Combine the normalized percentages with the original values
+    normalized_value_percentage_list = [(value, norm_perc[0]) for (value, _), norm_perc in zip(value_percentage_list, normalized_percentages)]
+
+    return normalized_value_percentage_list  # Returns list of tuples with normalized percentages
+
+def calculateRoundWinPercentage(player,money_list,round_money,round_outcomes):
+    name = player.name
+    team = player.team
+    
+    money_percs = calculateMoneyPercentage(money_list)
+    
+    """Bring in the normalized percentages, any number above the middle is a +, whereas any number below is a -"""
+    for value in round_money:
+        for num, perc in money_percs:
+            if value == num:
+                print(f"{value}, {perc}")
+
+
+
+
+
+    
+
 
 def getPlayersInGame(game): #Gets the names of players in a game, intakes a JSON game file
     game = openJsonFile(game)

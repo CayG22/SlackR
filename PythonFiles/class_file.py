@@ -88,6 +88,6 @@ class Player:
             round_money[-1] += kills * kill_reward  # Update the round money list
 
         self.money = total_money  # Update player's total money
-
-        return round_money, total_money
+    
+        return round_money
     
