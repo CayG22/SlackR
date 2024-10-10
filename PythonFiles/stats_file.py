@@ -358,17 +358,27 @@ def calculateMoneyPercentage(money_list):
 def calculateRoundWinPercentage(player,money_list,round_money,round_outcomes):
     name = player.name
     team = player.team
-    
+    percentage_list = []
     money_percs = calculateMoneyPercentage(money_list)
+
+    for money,perc in money_percs:
+        if perc == 1.0:
+            median_value = money
     
+
     """Bring in the normalized percentages, any number above the middle is a +, whereas any number below is a -"""
     for value in round_money:
         for num, perc in money_percs:
             if value == num:
-                print(f"{value}, {perc}")
+                if value < median_value:
+                    perc = perc * -.5
+                elif value > median_value:
+                    perc = perc * 1.5
 
-
-
+                percentage_list.append(float(perc))
+  
+    print(len(percentage_list))
+    print(percentage_list)
 
 
     
