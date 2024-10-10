@@ -4,7 +4,7 @@
     Fall 2024 - Advanced Software Engineering
     Will call all main functions of SlackR
 """
-from stats_file import calculateRoundWinPercentage,create_players,loadWeaponStats,loadCharacterStats,createAPIPlayerLink,getPlayersInGame,loadPlayerProfile,assignTeam,loadGame,getKillsPerRound,findRoundOutcome,getAvgTeamWinPercentage,calculateAntiThrifties,getGameLinksForBlitzGG,findWinOrLoss,findEconomyAverage,loadDriver,getKnifeKills, getStatsForOneGame,getStatsForOneGame,getKD,getWinPercentage,getTopAgent,getHeadShotPercentage, getGameLinksForStratsGG, getOverallStats, get149DamageDone
+from stats_file import calculatePlayerRoundWinPercentage,create_players,loadWeaponStats,loadCharacterStats,createAPIPlayerLink,getPlayersInGame,loadPlayerProfile,assignTeam,loadGame,getKillsPerRound,findRoundOutcome,getAvgTeamWinPercentage,calculateAntiThrifties,getGameLinksForBlitzGG,findWinOrLoss,findEconomyAverage,loadDriver,getKnifeKills, getStatsForOneGame,getStatsForOneGame,getKD,getWinPercentage,getTopAgent,getHeadShotPercentage, getGameLinksForStratsGG, getOverallStats, get149DamageDone
 from class_file import *
 
 print("Hello, and welcome to SlackR\n\n")
@@ -40,8 +40,8 @@ game = loadGame(game_url)
 players = create_players(game)
 game_money_list = [] #List we are passing in to calculate the win%
 round_outcomes = findRoundOutcome(game)
-
-
+teams = assignTeam(game)
+#print(teams)
 for player in players:
     round_money = player.calculate_money(game)
     #player.display_info()
@@ -49,8 +49,11 @@ for player in players:
 
 
 
-players[0] = calculateRoundWinPercentage(player,game_money_list,round_money,round_outcomes)
-    
+#player_1 = calculatePlayerRoundWinPercentage(players[0],game_money_list,round_money,round_outcomes)
+#players_test = calculateTeamRoundWinPercentage(players[0],player_1)
+for player in players:
+    x = calculatePlayerRoundWinPercentage(player,game_money_list,round_money,round_outcomes)
+
 
 
 

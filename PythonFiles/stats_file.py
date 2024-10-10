@@ -328,6 +328,7 @@ def calculateAntiThrifties(url):
 
 """Following functions work all together to create round by roud Win% Algo"""
 
+
 def calculateMoneyPercentage(money_list):
     value_count = {}  # List to store the occurrences of each value
     flat_money_list = list(itertools.chain(*money_list))  # Combine the list of lists into one big list
@@ -355,10 +356,12 @@ def calculateMoneyPercentage(money_list):
 
     return normalized_value_percentage_list  # Returns list of tuples with normalized percentages
 
-def calculateRoundWinPercentage(player,money_list,round_money,round_outcomes):
+def calculatePlayerRoundWinPercentage(player,money_list,round_money,round_outcomes):
     name = player.name
     team = player.team
-    percentage_list = []
+    money_percentage_list = []
+    round_percentage_list = []
+    total_percentage_list = []
     money_percs = calculateMoneyPercentage(money_list)
 
     for money,perc in money_percs:
@@ -374,15 +377,24 @@ def calculateRoundWinPercentage(player,money_list,round_money,round_outcomes):
                     perc = perc * -.5
                 elif value > median_value:
                     perc = perc * 1.5
+                else:
+                    perc = 0
 
-                percentage_list.append(float(perc))
-  
-    print(len(percentage_list))
-    print(percentage_list)
-
-
+                money_percentage_list.append(float(perc)/10)
+    #print(money_percentage_list)
     
 
+    for round_num, winning_team in round_outcomes.items():
+        if team == winning_team:
+            round_perc = .01
+        else:
+            round_perc = -.01
+        round_percentage_list.append(round_perc)
+    
+    total_percentage_list = [a + b for a,b in zip(money_percentage_list,round_percentage_list)]
+
+    #print(total_percentage_list)
+    return total_percentage_list
 
 def getPlayersInGame(game): #Gets the names of players in a game, intakes a JSON game file
     game = openJsonFile(game)
