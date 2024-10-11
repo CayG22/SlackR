@@ -38,43 +38,46 @@ elif user_input.count(" ") == 2:
 print("Now getting your stats...")
 """
 
+"""MAIN START"""
+game = loadGame(game_url_2) #Loads JSON file
+players = create_players(game) #Creates player class with all 10 players in game
+round_outcomes = findRoundOutcome(game) #Finds the round outcome for each round in game
+teams = assignTeam(game) #Assign each player in game to a team
 
-game = loadGame(game_url_2)
-players = create_players(game)
+"""MAIN END"""
+
+
+"""START: The following block of code is all used for graphing the round by round win percentage"""
+#For each player in the game, creates a list tha calcs. money round by round, then appends it to game money list
 game_money_list = [] #List we are passing in to calculate the win%
-round_outcomes = findRoundOutcome(game)
-teams = assignTeam(game)
-red_team_win_percentage_list = []
-blue_team_win_percentage_list = []
-#print(teams)
-
-
-
 for player in players:
     round_money = player.calculate_money(game)
     #player.display_info()
     game_money_list.append(round_money) #game_money_list holds money that player has every round, it is list of list
                                         #[[3000,4500,2000],[2500,2200,2100],...]
 
-
-
-
-
-
-for i, player in enumerate(players): #gets the player, and thier respective money list, and calculates percentages for each round
+#gets the player, and thier respective money list, and calculates percentages for each round
+red_team_win_percentage_list = []
+blue_team_win_percentage_list = []
+for i, player in enumerate(players): 
     x = calculatePlayerRoundWinPercentage(player,game_money_list,game_money_list[i],round_outcomes) #Game_money_list to calc. weights, [i] for specific player percentage
     if player.team == "Blue":
         blue_team_win_percentage_list.append(x)
     elif player.team == "Red":
         red_team_win_percentage_list.append(x)
 
-player_names = getPlayersInGame(game)
-blue_team_starting,red_team_starting = getAvgTeamWinPercentage(player_names)
-blue_team_starting = blue_team_starting/100
+player_names = getPlayersInGame(game) #Gets the players in the game
+blue_team_starting,red_team_starting = getAvgTeamWinPercentage(player_names) #Gets both the red and blue average win percentages
+
+#Divide by 100 to turn into percent
+blue_team_starting = blue_team_starting/100 
 red_team_starting = red_team_starting/100
-combined_red_team_percentage_list = [sum(values) for values in zip(*red_team_win_percentage_list)]
+
+#Combines the percentage list into one, to get round by round win percentage
+combined_red_team_percentage_list = [sum(values) for values in zip(*red_team_win_percentage_list)] 
 combined_blue_team_percentage_list = [sum(values) for values in zip(*blue_team_win_percentage_list)]
 
+#Gets the cumulative values, using the avg win percent as the starting point
 blue_team_cumulative = np.cumsum([blue_team_starting] + combined_blue_team_percentage_list)
 red_team_cumulative = np.cumsum([red_team_starting] + combined_red_team_percentage_list)
 
@@ -100,6 +103,7 @@ plt.legend()
 #Show graph
 plt.show()
 
+"""END"""
 
 
 
