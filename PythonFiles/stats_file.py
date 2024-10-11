@@ -12,6 +12,7 @@ import requests
 import json
 import itertools
 import numpy as np
+import statistics
 from sklearn.preprocessing import MinMaxScaler
 from collections import Counter
 from class_file import Player
@@ -155,12 +156,13 @@ def getKD(player): #Gets kd for a player, uses API call to get json player file 
 
 def getWinPercentage(player): #Gets win percentage for a player, uses API call to get json player file for player
     data = openJsonFile(player)
-    
-    stats = data['stats']
-    wins = stats['matches_won']
-    played = stats['matches_played']
-    winp = round((wins/played) * 100)
-
+    try:
+        stats = data['stats']
+        wins = stats['matches_won']
+        played = stats['matches_played']
+        winp = round((wins/played) * 100)
+    except:
+        winp = 50
     #print(winp)
     return winp
 
@@ -356,64 +358,70 @@ def calculateMoneyPercentage(money_list):
 
     return normalized_value_percentage_list  # Returns list of tuples with normalized percentages
 
-def calculatePlayerRoundWinPercentage(player,money_list,round_money,round_outcomes):
+def calculatePlayerRoundWinPercentage(player, money_list, round_money, round_outcomes):
     name = player.name
     team = player.team
     money_percentage_list = []
     round_percentage_list = []
     total_percentage_list = []
+    
+    # Assuming money_list contains tuples of (money, percentage)
     money_percs = calculateMoneyPercentage(money_list)
 
-    for money,perc in money_percs:
-        if perc == 1.0:
-            median_value = money
+    # Calculate the median from the money values
+    money_values = [money for money, perc in money_percs]
+    median_value = statistics.median(money_values)  # Properly calculate median
     
-
-    """Bring in the normalized percentages, any number above the middle is a +, whereas any number below is a -"""
+    """ Now, bring in the normalized percentages and adjust based on median_value """
     for value in round_money:
         for num, perc in money_percs:
             if value == num:
+                # Adjust percentage based on comparison with the median
                 if value < median_value:
                     perc = perc * -.5
                 elif value > median_value:
                     perc = perc * 1.5
                 else:
-                    perc = 0
+                    perc = 0  # If equal to the median, make it neutral
 
-                money_percentage_list.append(float(perc)/10)
-    #print(money_percentage_list)
-    
+                money_percentage_list.append(float(perc) / 10)
 
+    # Round percentage based on whether player's team won or lost the round
     for round_num, winning_team in round_outcomes.items():
         if team == winning_team:
             round_perc = .01
         else:
             round_perc = -.01
         round_percentage_list.append(round_perc)
-    
-    total_percentage_list = [a + b for a,b in zip(money_percentage_list,round_percentage_list)]
 
-    #print(total_percentage_list)
+    # Combine both percentage lists
+    total_percentage_list = [a + b for a, b in zip(money_percentage_list, round_percentage_list)]
+
     return total_percentage_list
 
 def getPlayersInGame(game): #Gets the names of players in a game, intakes a JSON game file
     game = openJsonFile(game)
     player_list = []
-    
+    blue_team = []
+    red_team = []
     players = game['match']['players']
     
+    
     for player in players:
+        team = player['metadata']['team_id']
         platform_info = player['platform_info']
         name = platform_info['platform_user_nick']
-        player_list.append(name)
+        if team == "Blue":
+            blue_team.append(name)
+        else:
+            red_team.append(name)
     
+    player_list = blue_team + red_team
     return player_list
 
 def getAvgTeamWinPercentage(players): #Takes in a list of players from a game, gets average winp for each team
     #Lists for teams
     all_players = [] 
-    team_1 = [] 
-    team_2 = [] 
 
     for player in players: #goes through players, creates link, loads that link to get JSON file, uses JSON file to get win percentage, adds winp to list
         link = createAPIPlayerLink(player)
@@ -423,17 +431,17 @@ def getAvgTeamWinPercentage(players): #Takes in a list of players from a game, g
         all_players.append(winp)
 
     #Specify which team is which
-    team_1 = all_players[:5]
-    team_2 = all_players[5:]
-    
+    blue_team = all_players[:5]
+    red_team = all_players[5:]
+
     #Creates the average winp for each team
-    team_1_winp = round(sum(team_1)/len(team_1))
-    team_2_winp = round(sum(team_2)/len(team_2))
+    red_team_winp = round(sum(red_team)/len(red_team))
+    blue_team_winp = round(sum(blue_team)/len(blue_team))
     
     #print(team_1_winp)
     #print(team_2_winp)
 
-    return team_1_winp,team_2_winp
+    return blue_team_winp,red_team_winp
 
 """The following three functions have been moved to the player class"""
 def findRoundOutcome(game): #Finds what team won each round for a game, returns dict

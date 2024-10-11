@@ -5,6 +5,8 @@
     Will call all main functions of SlackR
 """
 from stats_file import calculatePlayerRoundWinPercentage,create_players,loadWeaponStats,loadCharacterStats,createAPIPlayerLink,getPlayersInGame,loadPlayerProfile,assignTeam,loadGame,getKillsPerRound,findRoundOutcome,getAvgTeamWinPercentage,calculateAntiThrifties,getGameLinksForBlitzGG,findWinOrLoss,findEconomyAverage,loadDriver,getKnifeKills, getStatsForOneGame,getStatsForOneGame,getKD,getWinPercentage,getTopAgent,getHeadShotPercentage, getGameLinksForStratsGG, getOverallStats, get149DamageDone
+import matplotlib.pyplot as plt
+import numpy as np
 from class_file import *
 
 print("Hello, and welcome to SlackR\n\n")
@@ -16,6 +18,7 @@ print("Hello, and welcome to SlackR\n\n")
 #blitz_overview = "https://blitz.gg/valorant/profile/sen%20curry-lisa"
 #win_perc_algo_url = "https://www.strats.gg/valorant/stats/SEN%20curry%23lisa/match/d76ad609-12dc-4a26-aa8c-ef3e92dde1b9"
 game_url = "https://api.strats.gg/internal/api/v1/games/valorant/accounts/riot/100T%20Asuna%231111/matches/1cca6e91-ce8d-498d-96cf-5ace1f250ab7" #Direct API call
+game_url_2 = "https://api.strats.gg/internal/api/v1/games/valorant/accounts/riot/469%20ion2x%231love/matches/e8d6a0ed-69ef-40d7-bca8-7701a627f5e5"
 #player_url = "https://api.strats.gg/internal/api/v1/games/valorant/accounts/riot/PA1NT%23Peak/sections/season"
 #player_character_url = "https://api.strats.gg/internal/api/v1/games/valorant/accounts/riot/PA1NT%23Peak/sections/characters"
 #weapons_file_url = "https://api.strats.gg/internal/api/v1/games/valorant/accounts/riot/PA1NT%23Peak/sections/weapons"
@@ -36,23 +39,68 @@ print("Now getting your stats...")
 """
 
 
-game = loadGame(game_url)
+game = loadGame(game_url_2)
 players = create_players(game)
 game_money_list = [] #List we are passing in to calculate the win%
 round_outcomes = findRoundOutcome(game)
 teams = assignTeam(game)
+red_team_win_percentage_list = []
+blue_team_win_percentage_list = []
 #print(teams)
+
+
+
 for player in players:
     round_money = player.calculate_money(game)
     #player.display_info()
-    game_money_list.append(round_money)
+    game_money_list.append(round_money) #game_money_list holds money that player has every round, it is list of list
+                                        #[[3000,4500,2000],[2500,2200,2100],...]
 
 
 
-#player_1 = calculatePlayerRoundWinPercentage(players[0],game_money_list,round_money,round_outcomes)
-#players_test = calculateTeamRoundWinPercentage(players[0],player_1)
-for player in players:
-    x = calculatePlayerRoundWinPercentage(player,game_money_list,round_money,round_outcomes)
+
+
+
+for i, player in enumerate(players): #gets the player, and thier respective money list, and calculates percentages for each round
+    x = calculatePlayerRoundWinPercentage(player,game_money_list,game_money_list[i],round_outcomes) #Game_money_list to calc. weights, [i] for specific player percentage
+    if player.team == "Blue":
+        blue_team_win_percentage_list.append(x)
+    elif player.team == "Red":
+        red_team_win_percentage_list.append(x)
+
+player_names = getPlayersInGame(game)
+blue_team_starting,red_team_starting = getAvgTeamWinPercentage(player_names)
+blue_team_starting = blue_team_starting/100
+red_team_starting = red_team_starting/100
+combined_red_team_percentage_list = [sum(values) for values in zip(*red_team_win_percentage_list)]
+combined_blue_team_percentage_list = [sum(values) for values in zip(*blue_team_win_percentage_list)]
+
+blue_team_cumulative = np.cumsum([blue_team_starting] + combined_blue_team_percentage_list)
+red_team_cumulative = np.cumsum([red_team_starting] + combined_red_team_percentage_list)
+
+"""Graph for win% round by round"""
+#Create Range for the x-axis
+rounds = list(range(0,len(combined_red_team_percentage_list) + 1))
+
+#Plot blue team values,red team values
+plt.plot(rounds,blue_team_cumulative,label = "Blue Team Performance", marker="o",color="b")
+plt.plot(rounds,red_team_cumulative,label="Red Team Performance",marker="x",color="r")
+
+#Set y-axis limits from 0 to 1.0
+plt.ylim(0,1.0)
+
+#Add labels and title
+plt.xlabel("Rounds")
+plt.ylabel("Win%")
+plt.title("Team Performance Over Rounds")
+
+#Add a legend
+plt.legend()
+
+#Show graph
+plt.show()
+
+
 
 
 

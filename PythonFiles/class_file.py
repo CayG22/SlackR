@@ -6,6 +6,11 @@ class Player:
         self.team = team
         self.kills = 0
         self.money = 0
+        self.kd = 0
+        self.win_perc = 0
+        self.head_shot_perc = 0
+        self.knife_kills = 0
+
     
     
     def display_info(self): #Displays player info
@@ -48,7 +53,7 @@ class Player:
         round_outcomes = self.check_team_round_outcome(game)
         kills_per_round = self.check_kills_per_round(game)  # Returns a dictionary
         total_money = 0
-        round_money = []
+        round_money_list = []
         win_reward = 3000
         loss_reward_default = 1900  # Default loss reward
         kill_reward = 200  # Reward for each kill
@@ -59,7 +64,7 @@ class Player:
         for i, outcome in enumerate(round_outcomes):
             # Calculate money based on round outcome
             if "Won" in outcome:
-                round_money.append(win_reward)
+                round_money_list.append(win_reward)
                 total_money += win_reward
                 # Reset the recent losses on a win
                 recent_losses = []
@@ -78,16 +83,16 @@ class Player:
                 else:
                     loss_reward = loss_reward_default
 
-                round_money.append(loss_reward)
+                round_money_list.append(loss_reward)
                 total_money += loss_reward
             
             # Add money for kills in the current round
             round_num = i + 1  # Round numbers start from 1
             kills = kills_per_round.get(round_num, 0)  # Get the number of kills
             total_money += kills * kill_reward  # Add money for kills
-            round_money[-1] += kills * kill_reward  # Update the round money list
+            round_money_list[-1] += kills * kill_reward  # Update the round money list
 
         self.money = total_money  # Update player's total money
-    
-        return round_money
+        
+        return round_money_list
     
