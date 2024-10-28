@@ -5,6 +5,8 @@ class Player:
         self.name = name
         self.team = team
         self.kills = 0
+        self.deaths = 0
+        self.assists = 0
         self.money = 0
         self.kd = 0
         self.win_perc = 0
@@ -96,3 +98,23 @@ class Player:
         
         return round_money_list
     
+    def get_stats(self,game):
+        data = openJsonFile(game)
+        players = data['match']['players']
+        for player in players:
+            if player['platform_info']['platform_user_nick'] == self.name:
+                stats = player['stats']
+                self.kills = stats['kills']
+                self.deaths = stats['deaths']
+                self.assists = stats['assists']
+                accuracy = stats['accuracy']
+                self.head_shot_perc = accuracy['headshots_percent']
+class Match:
+    def __init__(self,game):
+        self.name = ""
+
+
+    def get_map_name(self,game):
+        data = openJsonFile(game)
+        _map = data['match']['map']
+        self.name = _map['name']

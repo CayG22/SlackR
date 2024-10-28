@@ -6,6 +6,7 @@
 """
 import tkinter as tk
 from tkinter import ttk
+from PIL import ImageTk, Image
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
 import numpy as np
@@ -196,13 +197,17 @@ class GamePage(tk.Frame):
     def load_game_stats(self):
         # Call functions to retrieve game stats
         game = loadGame(game_url_2)
+        match_info = create_match(game)
         players = create_players(game)
         round_outcomes = findRoundOutcome(game)
         teams = assignTeam(game)
 
+        match_info.get_map_name(game)
+        #self.display_map_image(match_info)
         # Game money list calculation
         game_money_list = []
         for player in players:
+            player.get_stats(game)
             round_money = player.calculate_money(game)
             game_money_list.append(round_money)
 
@@ -261,6 +266,8 @@ class GamePage(tk.Frame):
         # Display player stats
         self.display_player_stats(players)
 
+
+
     def on_press(self, event):
         if event.button == 1:  # Left mouse button
             self.is_dragging = True
@@ -289,16 +296,30 @@ class GamePage(tk.Frame):
         # Clear previous player stats
         for widget in self.player_stats_frame.winfo_children():
             widget.destroy()
-
         for player in players:
-            player_name = player.name  # Adjust according to your Player class
-            kills = player.kills  # Placeholder; replace with actual attribute
-            deaths = 10  # Placeholder; replace with actual attribute
-            assists = 4  # Placeholder; replace with actual attribute
-            headshot_percentage = 23  # Placeholder; replace with actual attribute
-
-            player_label = tk.Label(self.player_stats_frame, text=f"Name: {player_name}, Kills: {kills}, Deaths: {deaths}, Assists: {assists}, HS%: {headshot_percentage}%")
+            name  = player.name
+            kills = player.kills
+            deaths = player.deaths
+            assists = player.assists
+            headshot_percentage = player.head_shot_perc
+            #print(name,kills,deaths,assists)
+            player_label = tk.Label(self.player_stats_frame, text=f"Name: {name}, Kills: {kills}, Deaths: {deaths}, Assists: {assists}, HS%: {headshot_percentage}%")
             player_label.pack(anchor='w')  # Align to the left
+    
+    def display_map_image(self, match):
+        # Load image
+        name = match.name
+        image_path = f"map_images\{name}.jpg"
+
+        # Create label to display image
+        img = Image.open(image_path)
+        img = img.resize((800, 200), Image.LANCZOS)  # Optional, for high-quality resizing
+        self.map_image = ImageTk.PhotoImage(img)  # Keep a reference of the image
+
+        image_label = tk.Label(self.master, image=self.map_image)
+        image_label.grid(row=0, column=0, padx=10, pady=10)  # Use grid instead of pack
+
+
 
 # Run Application
 if __name__ == "__main__":
