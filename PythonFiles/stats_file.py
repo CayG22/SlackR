@@ -188,7 +188,7 @@ def getHeadShotPercentage(player): #Gets headshot percentage for a player, uses 
 
 def getKnifeKills(player): #Gets knife kills for a player, uses API call to get json weapon file for player
     data = openJsonFile(player)
-    
+    knife_kills = None
     weapons_list = data['weapons']
     
     for weapon in weapons_list: #Iterates through each weapon
@@ -196,7 +196,8 @@ def getKnifeKills(player): #Gets knife kills for a player, uses API call to get 
         kills = weapon['stats']['kills']
         if "Melee" in name: #Limits to only knife kills
             knife_kills = kills
-    
+    if knife_kills == None:
+        knife_kills = 0
     #print(knife_kills)
     return knife_kills
 
@@ -506,7 +507,7 @@ def getKillsPerRound(game): #Gets kills for each player for each round, using st
 
 
 
-"""Python Functionality Functions""" #USED WITH GETAVGTEAMWINPERC
+"""Python Functionality Functions"""
 def createPlayerLink(x): #Gives a strats.gg outline based on the player name that was inserted
     num_of_spaces = x.count(" ")
     if num_of_spaces == 1:
@@ -527,7 +528,7 @@ def createPlayerLink(x): #Gives a strats.gg outline based on the player name tha
 
 def createAPIPlayerLink(player): #Takes in player name,Creates outline for API link, returns link created
     num_of_spaces = player.count(" ")
-    if num_of_spaces == 1:
+    if num_of_spaces == 2:
         split = player.split("#")
         name = split[0]
         id = split[1]
@@ -543,7 +544,41 @@ def createAPIPlayerLink(player): #Takes in player name,Creates outline for API l
         url = f"https://api.strats.gg/internal/api/v1/games/valorant/accounts/riot/{name}%23{id}/sections/season"
         return url
 
+def createAPIWeaponLink(player): #Takes in player name,Creates outline for API link, returns link created
+    num_of_spaces = player.count(" ")
+    if num_of_spaces == 2:
+        split = player.split("#")
+        name = split[0]
+        id = split[1]
+        split_name = name.split(" ")
+        name1 = split_name[0]
+        name2 = split_name[1]
+        url = f"https://api.strats.gg/internal/api/v1/games/valorant/accounts/riot/{name1}%20{name2}%23{id}/sections/weapons"
+        return url
+    else:
+        split = player.split('#')
+        name = split[0]
+        id = split[1]
+        url = f"https://api.strats.gg/internal/api/v1/games/valorant/accounts/riot/{name}%23{id}/sections/weapons"
+        return url
 
+def createAPICharacterLink(player): #Takes in player name,Creates outline for API link, returns link created
+    num_of_spaces = player.count(" ")
+    if num_of_spaces == 2:
+        split = player.split("#")
+        name = split[0]
+        id = split[1]
+        split_name = name.split(" ")
+        name1 = split_name[0]
+        name2 = split_name[1]
+        url = f"https://api.strats.gg/internal/api/v1/games/valorant/accounts/riot/{name1}%20{name2}%23{id}/sections/characters"
+        return url
+    else:
+        split = player.split('#')
+        name = split[0]
+        id = split[1]
+        url = f"https://api.strats.gg/internal/api/v1/games/valorant/accounts/riot/{name}%23{id}/sections/characters"
+        return url
 
 
 """Unused functions for now"""

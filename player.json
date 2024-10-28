@@ -4,37 +4,37 @@
         "playlist": "competitive"
     },
     "stats": {
-        "time_played_ms": 84140125,
-        "matches_played": 42,
-        "matches_won": 22,
-        "matches_lost": 20,
-        "damage": 125511,
-        "rounds_played": 892,
-        "kills": 651,
-        "deaths": 629,
-        "assists": 277,
-        "headshots": 515,
-        "headshots_percent": 26.5,
-        "score": 183890,
-        "aces": 1,
-        "clutches": 14,
-        "first_bloods": 55,
-        "flawless": 20,
-        "first_deaths": 67,
-        "score_per_round": 206.2,
+        "time_played_ms": 190409325,
+        "matches_played": 95,
+        "matches_won": 46,
+        "matches_lost": 48,
+        "damage": 288387,
+        "rounds_played": 2039,
+        "kills": 1510,
+        "deaths": 1433,
+        "assists": 608,
+        "headshots": 1196,
+        "headshots_percent": 26.6,
+        "score": 426303,
+        "aces": 2,
+        "clutches": 42,
+        "first_bloods": 156,
+        "flawless": 57,
+        "first_deaths": 153,
+        "score_per_round": 209.1,
         "kills_per_round": 0.7,
-        "damage_per_round": 140.7,
-        "kd_ratio": 1.03,
+        "damage_per_round": 141.4,
+        "kd_ratio": 1.05,
         "kad_ratio": 1.48,
-        "kast_percent": 72.5,
-        "matches_won_percent": 52.4,
-        "max_kills_per_match": 28,
+        "kast_percent": 73.3,
+        "matches_won_percent": 48.4,
+        "max_kills_per_match": 30,
         "rank": {
             "name": "Immortal 3",
             "image_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/94074fd8-db94-459e-a3db-b8006225a0a1.png",
-            "ranked_rating": 209,
+            "ranked_rating": 245,
             "normalized_rating": null,
-            "leaderboard_rank": 1539,
+            "leaderboard_rank": 1321,
             "competitive_tier": 26,
             "tier_level": "IMMORTAL_3",
             "primary_color": "#f34c61"
@@ -52,20 +52,20 @@
             "act_name": "EPISODE 6: ACT 2"
         },
         "damage_per_round_increase_percent": 8,
-        "kd_ratio_increase_percent": 12,
+        "kd_ratio_increase_percent": 14,
         "kills_per_round_increase_percent": 0,
-        "matches_won_percent_increase_percent": 7,
-        "matches_won_increase_percent": -4,
-        "kills_increase_percent": -4,
-        "headshots_increase_percent": -5,
-        "deaths_increase_percent": -15,
-        "assists_increase_percent": 3,
-        "score_per_round_increase_percent": 7,
-        "first_bloods_increase_percent": -14,
+        "matches_won_percent_increase_percent": -1,
+        "matches_won_increase_percent": 100,
+        "kills_increase_percent": 122,
+        "headshots_increase_percent": 120,
+        "deaths_increase_percent": 94,
+        "assists_increase_percent": 125,
+        "score_per_round_increase_percent": 9,
+        "first_bloods_increase_percent": 144,
         "aces_increase_percent": 0,
-        "clutches_increase_percent": -26,
-        "flawless_increase_percent": -38,
-        "max_kills_per_match_increase_percent": 0
+        "clutches_increase_percent": 121,
+        "flawless_increase_percent": 78,
+        "max_kills_per_match_increase_percent": 7
     },
     "teammates": [
         {
@@ -74,12 +74,12 @@
                 "platform_id": "riot",
                 "platform_user_id": null,
                 "platform_user_nick": "RASCAL#LBL",
-                "avatar_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/717d9d92-3902-464f-a68d-5b1bb8b11df1.png"
+                "avatar_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/676c3a0e-d500-4abb-b20f-0db42c0ec9e4.png"
             },
             "stats": {
-                "matches_played": 22,
-                "kd_ratio": 0.86,
-                "matches_won_percent": 45.5,
+                "matches_played": 45,
+                "kd_ratio": 0.87,
+                "matches_won_percent": 44.4,
                 "avg_placement": 6.09
             }
         },
@@ -92,40 +92,40 @@
                 "avatar_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/a326894f-dc5f-4b86-8ed3-eec50bdcda0b.png"
             },
             "stats": {
+                "matches_played": 13,
+                "kd_ratio": 0.8,
+                "matches_won_percent": 61.5,
+                "avg_placement": 7.85
+            }
+        },
+        {
+            "teammate": "coop#cold",
+            "platform_info": {
+                "platform_id": "riot",
+                "platform_user_id": null,
+                "platform_user_nick": "coop#cold",
+                "avatar_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/13fe97ef-50d3-408f-b023-4263fe453bc1.png"
+            },
+            "stats": {
                 "matches_played": 9,
-                "kd_ratio": 0.82,
-                "matches_won_percent": 66.7,
-                "avg_placement": 8.0
+                "kd_ratio": 1.13,
+                "matches_won_percent": 33.3,
+                "avg_placement": 4.11
             }
         },
         {
-            "teammate": "edy is on speed#095",
+            "teammate": "aiyuu#NA1",
             "platform_info": {
                 "platform_id": "riot",
                 "platform_user_id": null,
-                "platform_user_nick": "edy is on speed#095",
-                "avatar_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/a9c2c910-86ac-4164-ac4a-d1e7b66fe368.png"
+                "platform_user_nick": "aiyuu#NA1",
+                "avatar_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/239054c6-9416-460f-b583-e0257e38d143.png"
             },
             "stats": {
-                "matches_played": 2,
-                "kd_ratio": 0.91,
-                "matches_won_percent": 50.0,
-                "avg_placement": 4.5
-            }
-        },
-        {
-            "teammate": "ArizonaT#4EVR",
-            "platform_info": {
-                "platform_id": "riot",
-                "platform_user_id": null,
-                "platform_user_nick": "ArizonaT#4EVR",
-                "avatar_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/3a129985-cbad-45f8-937b-98daa190203c.png"
-            },
-            "stats": {
-                "matches_played": 2,
-                "kd_ratio": 1.06,
-                "matches_won_percent": 50.0,
-                "avg_placement": 4.5
+                "matches_played": 7,
+                "kd_ratio": 0.94,
+                "matches_won_percent": 42.9,
+                "avg_placement": 6.29
             }
         }
     ]

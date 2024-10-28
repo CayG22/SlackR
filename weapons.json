@@ -12,67 +12,19 @@
                 "image_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/c33a9aa5-978b-4758-b6b8-455d0133f9b9.png"
             },
             "stats": {
-                "kills": 1385,
-                "rounds_played": 1442,
-                "damage": 259189,
-                "damage_per_round": 179.7,
+                "kills": 2951,
+                "rounds_played": 3067,
+                "damage": 580462,
+                "damage_per_round": 189.3,
                 "kills_per_round": 1.0,
-                "kill_conversion": 0.69,
+                "kill_conversion": 0.65,
                 "accuracy": {
-                    "legshots": 110,
-                    "headshots": 1194,
-                    "bodyshots": 1803,
-                    "legshots_percent": 3.5,
-                    "headshots_percent": 38.4,
-                    "bodyshots_percent": 58.0
-                }
-            }
-        },
-        {
-            "metadata": {
-                "custom_id": "E336C6B8-418D-9340-D77F-7A9E4CFE0702",
-                "name": "Sheriff",
-                "category": "Sidearms",
-                "image_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/33e13a32-a816-4568-a5e3-46424fd6784f.png"
-            },
-            "stats": {
-                "kills": 202,
-                "rounds_played": 354,
-                "damage": 40535,
-                "damage_per_round": 114.5,
-                "kills_per_round": 0.6,
-                "kill_conversion": 0.56,
-                "accuracy": {
-                    "legshots": 7,
-                    "headshots": 159,
-                    "bodyshots": 320,
-                    "legshots_percent": 1.4,
-                    "headshots_percent": 32.7,
-                    "bodyshots_percent": 65.8
-                }
-            }
-        },
-        {
-            "metadata": {
-                "custom_id": "A03B24D3-4319-996D-0F8C-94BBFBA1DFC7",
-                "name": "Operator",
-                "category": "Sniper Rifles",
-                "image_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/7cd23580-50cc-4c28-bde8-d8317f70118c.png"
-            },
-            "stats": {
-                "kills": 129,
-                "rounds_played": 135,
-                "damage": 22247,
-                "damage_per_round": 164.8,
-                "kills_per_round": 1.0,
-                "kill_conversion": 0.85,
-                "accuracy": {
-                    "legshots": 5,
-                    "headshots": 21,
-                    "bodyshots": 152,
-                    "legshots_percent": 2.8,
-                    "headshots_percent": 11.8,
-                    "bodyshots_percent": 85.4
+                    "legshots": 482,
+                    "headshots": 2113,
+                    "bodyshots": 5991,
+                    "legshots_percent": 5.6,
+                    "headshots_percent": 24.6,
+                    "bodyshots_percent": 69.8
                 }
             }
         },
@@ -84,43 +36,19 @@
                 "image_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/abae92bc-05b9-4c76-b7b4-5d55b0cef574.png"
             },
             "stats": {
-                "kills": 125,
-                "rounds_played": 144,
-                "damage": 18251,
-                "damage_per_round": 126.7,
+                "kills": 340,
+                "rounds_played": 367,
+                "damage": 52390,
+                "damage_per_round": 142.8,
                 "kills_per_round": 0.9,
-                "kill_conversion": 0.61,
+                "kill_conversion": 0.57,
                 "accuracy": {
-                    "legshots": 13,
-                    "headshots": 116,
-                    "bodyshots": 195,
-                    "legshots_percent": 4.0,
-                    "headshots_percent": 35.8,
-                    "bodyshots_percent": 60.2
-                }
-            }
-        },
-        {
-            "metadata": {
-                "custom_id": "EE8E8D15-496B-07AC-E5F6-8FAE5D4C7B1A",
-                "name": "Phantom",
-                "category": "Assault Rifles",
-                "image_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/908eef3b-200c-48db-9472-39044f4a8aab.png"
-            },
-            "stats": {
-                "kills": 76,
-                "rounds_played": 81,
-                "damage": 14853,
-                "damage_per_round": 183.4,
-                "kills_per_round": 0.9,
-                "kill_conversion": 0.67,
-                "accuracy": {
-                    "legshots": 4,
-                    "headshots": 75,
-                    "bodyshots": 124,
-                    "legshots_percent": 2.0,
-                    "headshots_percent": 36.9,
-                    "bodyshots_percent": 61.1
+                    "legshots": 39,
+                    "headshots": 308,
+                    "bodyshots": 722,
+                    "legshots_percent": 3.6,
+                    "headshots_percent": 28.8,
+                    "bodyshots_percent": 67.5
                 }
             }
         },
@@ -132,19 +60,91 @@
                 "image_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/37cb6896-5437-4e91-8122-3246b2884ffd.png"
             },
             "stats": {
-                "kills": 64,
-                "rounds_played": 84,
-                "damage": 13659,
-                "damage_per_round": 162.6,
-                "kills_per_round": 0.8,
-                "kill_conversion": 0.69,
+                "kills": 278,
+                "rounds_played": 320,
+                "damage": 62393,
+                "damage_per_round": 195.0,
+                "kills_per_round": 0.9,
+                "kill_conversion": 0.65,
                 "accuracy": {
-                    "legshots": 2,
-                    "headshots": 47,
-                    "bodyshots": 81,
-                    "legshots_percent": 1.5,
-                    "headshots_percent": 36.2,
-                    "bodyshots_percent": 62.3
+                    "legshots": 21,
+                    "headshots": 195,
+                    "bodyshots": 399,
+                    "legshots_percent": 3.4,
+                    "headshots_percent": 31.7,
+                    "bodyshots_percent": 64.9
+                }
+            }
+        },
+        {
+            "metadata": {
+                "custom_id": "E336C6B8-418D-9340-D77F-7A9E4CFE0702",
+                "name": "Sheriff",
+                "category": "Sidearms",
+                "image_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/33e13a32-a816-4568-a5e3-46424fd6784f.png"
+            },
+            "stats": {
+                "kills": 230,
+                "rounds_played": 428,
+                "damage": 50167,
+                "damage_per_round": 117.2,
+                "kills_per_round": 0.5,
+                "kill_conversion": 0.51,
+                "accuracy": {
+                    "legshots": 18,
+                    "headshots": 175,
+                    "bodyshots": 441,
+                    "legshots_percent": 2.8,
+                    "headshots_percent": 27.6,
+                    "bodyshots_percent": 69.6
+                }
+            }
+        },
+        {
+            "metadata": {
+                "custom_id": "A03B24D3-4319-996D-0F8C-94BBFBA1DFC7",
+                "name": "Operator",
+                "category": "Sniper Rifles",
+                "image_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/7cd23580-50cc-4c28-bde8-d8317f70118c.png"
+            },
+            "stats": {
+                "kills": 58,
+                "rounds_played": 78,
+                "damage": 11200,
+                "damage_per_round": 143.6,
+                "kills_per_round": 0.7,
+                "kill_conversion": 0.75,
+                "accuracy": {
+                    "legshots": 20,
+                    "headshots": 11,
+                    "bodyshots": 98,
+                    "legshots_percent": 15.5,
+                    "headshots_percent": 8.5,
+                    "bodyshots_percent": 76.0
+                }
+            }
+        },
+        {
+            "metadata": {
+                "custom_id": "EE8E8D15-496B-07AC-E5F6-8FAE5D4C7B1A",
+                "name": "Phantom",
+                "category": "Assault Rifles",
+                "image_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/908eef3b-200c-48db-9472-39044f4a8aab.png"
+            },
+            "stats": {
+                "kills": 27,
+                "rounds_played": 12,
+                "damage": 4301,
+                "damage_per_round": 358.4,
+                "kills_per_round": 2.3,
+                "kill_conversion": 0.84,
+                "accuracy": {
+                    "legshots": 5,
+                    "headshots": 17,
+                    "bodyshots": 51,
+                    "legshots_percent": 6.8,
+                    "headshots_percent": 23.3,
+                    "bodyshots_percent": 69.9
                 }
             }
         },
@@ -156,139 +156,19 @@
                 "image_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/f2b69d03-3bec-4faa-8016-5a28bbe095aa.png"
             },
             "stats": {
-                "kills": 32,
-                "rounds_played": 190,
-                "damage": 8124,
-                "damage_per_round": 42.8,
-                "kills_per_round": 0.2,
-                "kill_conversion": 0.29,
+                "kills": 16,
+                "rounds_played": 29,
+                "damage": 2672,
+                "damage_per_round": 92.1,
+                "kills_per_round": 0.6,
+                "kill_conversion": 0.55,
                 "accuracy": {
-                    "legshots": 19,
-                    "headshots": 53,
-                    "bodyshots": 120,
-                    "legshots_percent": 9.9,
-                    "headshots_percent": 27.6,
-                    "bodyshots_percent": 62.5
-                }
-            }
-        },
-        {
-            "metadata": {
-                "custom_id": "5F0AAF7A-4289-3998-D5FF-EB9A5CF7EF5C",
-                "name": "Outlaw",
-                "category": "Sniper Rifles",
-                "image_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/6f803b0d-da25-485a-8324-587850c84a42.png"
-            },
-            "stats": {
-                "kills": 29,
-                "rounds_played": 31,
-                "damage": 5904,
-                "damage_per_round": 190.5,
-                "kills_per_round": 0.9,
-                "kill_conversion": 0.76,
-                "accuracy": {
-                    "legshots": 1,
-                    "headshots": 6,
-                    "bodyshots": 33,
-                    "legshots_percent": 2.5,
-                    "headshots_percent": 15.0,
-                    "bodyshots_percent": 82.5
-                }
-            }
-        },
-        {
-            "metadata": {
-                "custom_id": "AE3DE142-4D85-2547-DD26-4E90BED35CF7",
-                "name": "Bulldog",
-                "category": "Assault Rifles",
-                "image_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/0b761cdd-47af-4f56-bd23-6560b5f84c81.png"
-            },
-            "stats": {
-                "kills": 11,
-                "rounds_played": 12,
-                "damage": 1966,
-                "damage_per_round": 163.8,
-                "kills_per_round": 0.9,
-                "kill_conversion": 0.65,
-                "accuracy": {
-                    "legshots": 1,
-                    "headshots": 11,
-                    "bodyshots": 26,
-                    "legshots_percent": 2.6,
-                    "headshots_percent": 28.9,
-                    "bodyshots_percent": 68.4
-                }
-            }
-        },
-        {
-            "metadata": {
-                "custom_id": "C4883E50-4494-202C-3EC3-6B8A9284F00B",
-                "name": "Marshal",
-                "category": "Sniper Rifles",
-                "image_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/58c4e854-0147-45b0-a513-fccabaaf5c26.png"
-            },
-            "stats": {
-                "kills": 9,
-                "rounds_played": 7,
-                "damage": 1711,
-                "damage_per_round": 244.4,
-                "kills_per_round": 1.3,
-                "kill_conversion": 0.75,
-                "accuracy": {
-                    "legshots": 0,
-                    "headshots": 4,
-                    "bodyshots": 10,
-                    "legshots_percent": 0.0,
-                    "headshots_percent": 28.6,
-                    "bodyshots_percent": 71.4
-                }
-            }
-        },
-        {
-            "metadata": {
-                "custom_id": "EC845BF4-4F79-DDDA-A3DA-0DB3774B2794",
-                "name": "Judge",
-                "category": "Shotguns",
-                "image_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/3f0e058c-dd99-490f-85c8-90513d7bc994.png"
-            },
-            "stats": {
-                "kills": 9,
-                "rounds_played": 12,
-                "damage": 1610,
-                "damage_per_round": 134.2,
-                "kills_per_round": 0.8,
-                "kill_conversion": 0.6,
-                "accuracy": {
-                    "legshots": 14,
-                    "headshots": 6,
-                    "bodyshots": 77,
-                    "legshots_percent": 14.4,
-                    "headshots_percent": 6.2,
-                    "bodyshots_percent": 79.4
-                }
-            }
-        },
-        {
-            "metadata": {
-                "custom_id": "F7E1B454-4AD4-1063-EC0A-159E56B58941",
-                "name": "Stinger",
-                "category": "SMGs",
-                "image_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/224be032-f48f-46fe-a03e-51e8710a6094.png"
-            },
-            "stats": {
-                "kills": 7,
-                "rounds_played": 21,
-                "damage": 1847,
-                "damage_per_round": 88.0,
-                "kills_per_round": 0.3,
-                "kill_conversion": 0.28,
-                "accuracy": {
-                    "legshots": 8,
-                    "headshots": 5,
-                    "bodyshots": 51,
-                    "legshots_percent": 12.5,
-                    "headshots_percent": 7.8,
-                    "bodyshots_percent": 79.7
+                    "legshots": 4,
+                    "headshots": 17,
+                    "bodyshots": 44,
+                    "legshots_percent": 6.2,
+                    "headshots_percent": 26.2,
+                    "bodyshots_percent": 67.7
                 }
             }
         },
@@ -300,108 +180,60 @@
                 "image_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/0b125f50-27d9-48dc-9538-49135f8875a2.png"
             },
             "stats": {
-                "kills": 7,
-                "rounds_played": 10,
-                "damage": 1109,
-                "damage_per_round": 110.9,
-                "kills_per_round": 0.7,
-                "kill_conversion": 0.58,
+                "kills": 13,
+                "rounds_played": 2,
+                "damage": 1572,
+                "damage_per_round": 786.0,
+                "kills_per_round": 6.5,
+                "kill_conversion": 0.87,
                 "accuracy": {
-                    "legshots": 10,
-                    "headshots": 6,
-                    "bodyshots": 46,
-                    "legshots_percent": 16.1,
-                    "headshots_percent": 9.7,
-                    "bodyshots_percent": 74.2
+                    "legshots": 15,
+                    "headshots": 12,
+                    "bodyshots": 94,
+                    "legshots_percent": 12.4,
+                    "headshots_percent": 9.9,
+                    "bodyshots_percent": 77.7
                 }
             }
         },
         {
             "metadata": {
-                "custom_id": "910BE174-449B-C412-AB22-D0873436B21B",
-                "name": "Bucky",
+                "custom_id": "EC845BF4-4F79-DDDA-A3DA-0DB3774B2794",
+                "name": "Judge",
                 "category": "Shotguns",
-                "image_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/bfcf438e-529e-45f0-9097-5f38e1ceb369.png"
+                "image_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/3f0e058c-dd99-490f-85c8-90513d7bc994.png"
+            },
+            "stats": {
+                "kills": 7,
+                "rounds_played": 8,
+                "damage": 963,
+                "damage_per_round": 120.4,
+                "kills_per_round": 0.9,
+                "kill_conversion": 0.88,
+                "accuracy": {
+                    "legshots": 3,
+                    "headshots": 3,
+                    "bodyshots": 45,
+                    "legshots_percent": 5.9,
+                    "headshots_percent": 5.9,
+                    "bodyshots_percent": 88.2
+                }
+            }
+        },
+        {
+            "metadata": {
+                "custom_id": "5F0AAF7A-4289-3998-D5FF-EB9A5CF7EF5C",
+                "name": "Outlaw",
+                "category": "Sniper Rifles",
+                "image_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/6f803b0d-da25-485a-8324-587850c84a42.png"
             },
             "stats": {
                 "kills": 4,
-                "rounds_played": 14,
-                "damage": 1341,
-                "damage_per_round": 95.8,
-                "kills_per_round": 0.3,
-                "kill_conversion": 0.31,
-                "accuracy": {
-                    "legshots": 2,
-                    "headshots": 8,
-                    "bodyshots": 45,
-                    "legshots_percent": 3.6,
-                    "headshots_percent": 14.5,
-                    "bodyshots_percent": 81.8
-                }
-            }
-        },
-        {
-            "metadata": {
-                "custom_id": "55D8A0F4-4274-CA67-FE2C-06AB45EFDF58",
-                "name": "Ares",
-                "category": "Heavy Weapons",
-                "image_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/84322fbd-1311-4631-ade1-e18607258a8d.png"
-            },
-            "stats": {
-                "kills": 3,
-                "rounds_played": 1,
-                "damage": 390,
-                "damage_per_round": 390.0,
-                "kills_per_round": 3.0,
-                "kill_conversion": 0.75,
-                "accuracy": {
-                    "legshots": 0,
-                    "headshots": 4,
-                    "bodyshots": 3,
-                    "legshots_percent": 0.0,
-                    "headshots_percent": 57.1,
-                    "bodyshots_percent": 42.9
-                }
-            }
-        },
-        {
-            "metadata": {
-                "custom_id": "462080D1-4035-2937-7C09-27AA2A5C27A7",
-                "name": "Spectre",
-                "category": "SMGs",
-                "image_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/2601d3c1-8409-438b-995b-f096e3d03c20.png"
-            },
-            "stats": {
-                "kills": 2,
-                "rounds_played": 5,
-                "damage": 437,
-                "damage_per_round": 87.4,
-                "kills_per_round": 0.4,
-                "kill_conversion": 0.4,
-                "accuracy": {
-                    "legshots": 1,
-                    "headshots": 3,
-                    "bodyshots": 9,
-                    "legshots_percent": 7.7,
-                    "headshots_percent": 23.1,
-                    "bodyshots_percent": 69.2
-                }
-            }
-        },
-        {
-            "metadata": {
-                "custom_id": "63E6C2B6-4A8E-869C-3D4C-E38355226584",
-                "name": "Odin",
-                "category": "Heavy Weapons",
-                "image_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/0e739c16-73c0-4ab5-9ac4-03acf382d97e.png"
-            },
-            "stats": {
-                "kills": 2,
-                "rounds_played": 2,
-                "damage": 252,
-                "damage_per_round": 126.0,
-                "kills_per_round": 1.0,
-                "kill_conversion": 1.0,
+                "rounds_played": 6,
+                "damage": 823,
+                "damage_per_round": 137.2,
+                "kills_per_round": 0.7,
+                "kill_conversion": 0.57,
                 "accuracy": {
                     "legshots": 2,
                     "headshots": 0,
@@ -414,49 +246,145 @@
         },
         {
             "metadata": {
-                "custom_id": "44D4E95C-4157-0037-81B2-17841BF2E8E3",
-                "name": "Frenzy",
-                "category": "Sidearms",
-                "image_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/eca9b0cb-7fb8-446c-9416-88de5758b751.png"
+                "custom_id": "AE3DE142-4D85-2547-DD26-4E90BED35CF7",
+                "name": "Bulldog",
+                "category": "Assault Rifles",
+                "image_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/0b761cdd-47af-4f56-bd23-6560b5f84c81.png"
             },
             "stats": {
-                "kills": 1,
-                "rounds_played": 3,
-                "damage": 244,
-                "damage_per_round": 81.3,
-                "kills_per_round": 0.3,
-                "kill_conversion": 0.33,
+                "kills": 4,
+                "rounds_played": 2,
+                "damage": 660,
+                "damage_per_round": 330.0,
+                "kills_per_round": 2.0,
+                "kill_conversion": 0.8,
                 "accuracy": {
-                    "legshots": 1,
-                    "headshots": 1,
-                    "bodyshots": 5,
-                    "legshots_percent": 14.3,
-                    "headshots_percent": 14.3,
-                    "bodyshots_percent": 71.4
+                    "legshots": 0,
+                    "headshots": 3,
+                    "bodyshots": 9,
+                    "legshots_percent": 0.0,
+                    "headshots_percent": 25.0,
+                    "bodyshots_percent": 75.0
                 }
             }
         },
         {
             "metadata": {
-                "custom_id": "2F59173C-4BED-B6C3-2191-DEA9B58BE9C7",
-                "name": "Melee",
-                "category": "Melee",
-                "image_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/5c2147f7-c1a0-4abe-9386-0035f4719bac.png"
+                "custom_id": "C4883E50-4494-202C-3EC3-6B8A9284F00B",
+                "name": "Marshal",
+                "category": "Sniper Rifles",
+                "image_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/58c4e854-0147-45b0-a513-fccabaaf5c26.png"
             },
             "stats": {
-                "kills": 0,
-                "rounds_played": 0,
-                "damage": 169,
-                "damage_per_round": 0,
-                "kills_per_round": 0,
-                "kill_conversion": 0.0,
+                "kills": 3,
+                "rounds_played": 5,
+                "damage": 590,
+                "damage_per_round": 118.0,
+                "kills_per_round": 0.6,
+                "kill_conversion": 0.75,
+                "accuracy": {
+                    "legshots": 1,
+                    "headshots": 1,
+                    "bodyshots": 3,
+                    "legshots_percent": 20.0,
+                    "headshots_percent": 20.0,
+                    "bodyshots_percent": 60.0
+                }
+            }
+        },
+        {
+            "metadata": {
+                "custom_id": "63E6C2B6-4A8E-869C-3D4C-E38355226584",
+                "name": "Odin",
+                "category": "Heavy Weapons",
+                "image_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/0e739c16-73c0-4ab5-9ac4-03acf382d97e.png"
+            },
+            "stats": {
+                "kills": 3,
+                "rounds_played": 6,
+                "damage": 694,
+                "damage_per_round": 115.7,
+                "kills_per_round": 0.5,
+                "kill_conversion": 0.6,
                 "accuracy": {
                     "legshots": 3,
-                    "headshots": 3,
+                    "headshots": 2,
+                    "bodyshots": 12,
+                    "legshots_percent": 17.6,
+                    "headshots_percent": 11.8,
+                    "bodyshots_percent": 70.6
+                }
+            }
+        },
+        {
+            "metadata": {
+                "custom_id": "F7E1B454-4AD4-1063-EC0A-159E56B58941",
+                "name": "Stinger",
+                "category": "SMGs",
+                "image_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/224be032-f48f-46fe-a03e-51e8710a6094.png"
+            },
+            "stats": {
+                "kills": 1,
+                "rounds_played": 2,
+                "damage": 225,
+                "damage_per_round": 112.5,
+                "kills_per_round": 0.5,
+                "kill_conversion": 0.33,
+                "accuracy": {
+                    "legshots": 0,
+                    "headshots": 1,
                     "bodyshots": 6,
-                    "legshots_percent": 25.0,
+                    "legshots_percent": 0.0,
+                    "headshots_percent": 14.3,
+                    "bodyshots_percent": 85.7
+                }
+            }
+        },
+        {
+            "metadata": {
+                "custom_id": "462080D1-4035-2937-7C09-27AA2A5C27A7",
+                "name": "Spectre",
+                "category": "SMGs",
+                "image_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/2601d3c1-8409-438b-995b-f096e3d03c20.png"
+            },
+            "stats": {
+                "kills": 1,
+                "rounds_played": 2,
+                "damage": 156,
+                "damage_per_round": 78.0,
+                "kills_per_round": 0.5,
+                "kill_conversion": 1.0,
+                "accuracy": {
+                    "legshots": 0,
+                    "headshots": 1,
+                    "bodyshots": 3,
+                    "legshots_percent": 0.0,
                     "headshots_percent": 25.0,
-                    "bodyshots_percent": 50.0
+                    "bodyshots_percent": 75.0
+                }
+            }
+        },
+        {
+            "metadata": {
+                "custom_id": "910BE174-449B-C412-AB22-D0873436B21B",
+                "name": "Bucky",
+                "category": "Shotguns",
+                "image_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/bfcf438e-529e-45f0-9097-5f38e1ceb369.png"
+            },
+            "stats": {
+                "kills": 1,
+                "rounds_played": 2,
+                "damage": 191,
+                "damage_per_round": 95.5,
+                "kills_per_round": 0.5,
+                "kill_conversion": 0.5,
+                "accuracy": {
+                    "legshots": 0,
+                    "headshots": 0,
+                    "bodyshots": 10,
+                    "legshots_percent": 0.0,
+                    "headshots_percent": 0.0,
+                    "bodyshots_percent": 100.0
                 }
             }
         }
