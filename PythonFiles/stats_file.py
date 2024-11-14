@@ -15,7 +15,7 @@ import numpy as np
 import statistics
 from sklearn.preprocessing import MinMaxScaler
 from collections import Counter
-from class_file import Player, Match
+from class_file import Player
 from utils import openJsonFile
 #from class_file import Player
 
@@ -108,9 +108,6 @@ def create_players(game): #Creates Player class and adds the player name and tea
             players.append(player)
     return players        
 
-def create_match(game):
-    _match = Match(game)
-    return _match
 
 def getGameLinksForStratsGG(link): #Gets LAST FIVE GAMES PLAYED links, uses strats.gg overview page
     strats = loadDriver(link) #Load driver

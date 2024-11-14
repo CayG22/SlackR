@@ -27,8 +27,17 @@ game_url_2 = "https://api.strats.gg/internal/api/v1/games/valorant/accounts/riot
 #player_url = "https://api.strats.gg/internal/api/v1/games/valorant/accounts/riot/PA1NT%23Peak/sections/season"
 #player_character_url = "https://api.strats.gg/internal/api/v1/games/valorant/accounts/riot/PA1NT%23Peak/sections/characters"
 #weapons_file_url = "https://api.strats.gg/internal/api/v1/games/valorant/accounts/riot/PA1NT%23Peak/sections/weapons"
+game_file = 'game.json'
+player_file = 'player.json'
+character_file = 'characters.json'
+weapon_file = 'weapons.json'
+test_game = Game(game_file)
+test_player = Player(player_file,character_file,weapon_file)
+print(test_player.clutches, test_player.first_deaths, test_player.first_kills)
 
-"""MAIN START"""
+
+
+"""MAIN START
 # Main Application Window
 class SlackRApp(tk.Tk):
     def __init__(self):
@@ -325,3 +334,5 @@ class GamePage(tk.Frame):
 if __name__ == "__main__":
     app = SlackRApp()
     app.mainloop()
+
+"""
