@@ -11,6 +11,8 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
 import numpy as np
 
+
+
 from stats_file import *  # Import all relevant functions
 from class_file import *  # Import any classes used in stats
 
@@ -33,6 +35,13 @@ character_file = 'characters.json'
 weapon_file = 'weapons.json'
 test_game = Game(game_file)
 test_player = Player(player_file,character_file,weapon_file)
+
+test_player.export_to_excel()
+
+
+
+
+
 
 
 

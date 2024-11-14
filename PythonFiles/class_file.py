@@ -1,8 +1,9 @@
 from stats_file import *
 from utils import openJsonFile
-from rank_config import ARCHETYPES, RANKS
+import pandas as pd
+from rank_config import ARCHETYPES, RANKS #For rank and archetype assignment
 
-class Player:
+class Player: #For current player that is looking at his/her stats
     def __init__(self,player_file,character_file,weapons_file):
         self.kd = self.getKD(player_file)
         self.winp = self.getWinPercentage(player_file)
@@ -140,7 +141,29 @@ class Player:
             archetype_list.append("Basic")
         return archetype_list
     
-class Teamate:
+    def export_to_excel(self,file_name = "player_stats.xlsx"):
+        player_data = {
+            "KD" : self.kd,
+            "Win percentage" : self.winp,
+            "Top Agent" : self.top_agent,
+            "Headshot Percentage" : self.headshot_percentage,
+            "Clutches" : self.clutches,
+            "First Kills" : self.first_kills,
+            "First Deaths" : self.first_deaths,
+            "Knife Kills" : self.knife_kills,
+            "149 Damage Done" : self.one_four_nine_damage_done,
+            "Rank" : self.rank,
+            "Archetype" : self.archetype
+        }
+
+        #Create dataframe with a single row
+        df = pd.DataFrame([player_data])
+
+        #Write dataframe to file
+        df.to_excel(file_name,index=False,engine='openpyxl',header=not pd.io.common.file_exists(file_name))
+
+
+class Teamate:#Game specific stats both for current player and teamates
     def __init__(self,name,team):
         self.name = name
         self.team = team
@@ -152,12 +175,6 @@ class Teamate:
         self.win_perc = 0
         self.head_shot_perc = 0
         self.knife_kills = 0
-
-    
-    
-    def display_info(self): #Displays player info
-        """Displays player's name and team"""
-        print(f"Player: {self.name}, Team: {self.team}")
 
     def check_team_round_outcome(self,game): #Checks whether players team either wins or loses the roudn
         data = openJsonFile(game)
@@ -251,7 +268,7 @@ class Teamate:
                 self.head_shot_perc = accuracy['headshots_percent']
 
 
-class Game:
+class Game: #Game specific information
     def __init__(self,gameID):
         self.JSON_File = gameID
         self.players = []

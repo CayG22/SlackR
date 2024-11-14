@@ -108,7 +108,6 @@ def create_players(game): #Creates Player class and adds the player name and tea
             players.append(player)
     return players        
 
-
 def getGameLinksForStratsGG(link): #Gets LAST FIVE GAMES PLAYED links, uses strats.gg overview page
     strats = loadDriver(link) #Load driver
     game_list = [] 
@@ -121,6 +120,7 @@ def getGameLinksForStratsGG(link): #Gets LAST FIVE GAMES PLAYED links, uses stra
     
     strats.quit()
     return game_list[:4] #Return last give games played
+
 
 
 
