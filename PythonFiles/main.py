@@ -33,7 +33,7 @@ character_file = 'characters.json'
 weapon_file = 'weapons.json'
 test_game = Game(game_file)
 test_player = Player(player_file,character_file,weapon_file)
-print(test_player.clutches, test_player.first_deaths, test_player.first_kills)
+
 
 
 

@@ -1,5 +1,6 @@
 from stats_file import *
 from utils import openJsonFile
+from rank_config import ARCHETYPES, RANKS
 
 class Player:
     def __init__(self,player_file,character_file,weapons_file):
@@ -12,8 +13,8 @@ class Player:
         self.first_kills = self.getFirstBloods(player_file)
         self.knife_kills = self.getKnifeKills(weapons_file)
         self.one_four_nine_damage_done = self.getOneFourNineDamageDone(weapons_file)
-        self.rank = ""
-        self.archetype = ""
+        self.rank = self.calculateRank()
+        self.archetype = self.assignArchetype()
 
     def getKD(self,player_file):
         data = openJsonFile(player_file)
@@ -71,7 +72,8 @@ class Player:
                     return stats['kills']
             except:
                 print("No knife kills :(")
-                return int(0)
+                return 0
+        return 0
 
     def getOneFourNineDamageDone(self,weapon_file):
         data = openJsonFile(weapon_file)
@@ -101,7 +103,43 @@ class Player:
                 print("No Phantom Kills :(")
                 return 0
 
+    def calculateRank(self):
+        #Score Assignments
+        kd_score = .3
+        win_rate_score = .2
+        clutch_score = .2
+        first_blood_score = .1
+        knife_kills = .1
+        one_four_nine_score = .1
 
+        #Score Calculations
+        base_score = (
+            (self.kd * kd_score) + (self.winp * win_rate_score) + (self.clutches * clutch_score) + 
+            (self.first_kills * first_blood_score) + (self.one_four_nine_damage_done * one_four_nine_score)
+        )/100
+        
+        for rank, threshold in RANKS.items():
+            if base_score >= threshold:
+                return rank
+        return "Nickel"
+
+    def assignArchetype(self):
+        stats = {
+            'Clutches' : self.clutches,
+            'first_deaths' : self.first_deaths,
+            'hs_perc' : self.headshot_percentage,
+            'first_kills' : self.first_kills,
+            'knife_kills' : self.knife_kills,
+            'winp' : self.winp
+        }
+        archetype_list = []
+        for archetype, condition in ARCHETYPES.items():
+            if condition(stats):
+                archetype_list.append(archetype)
+        if not archetype_list:
+            archetype_list.append("Basic")
+        return archetype_list
+    
 class Teamate:
     def __init__(self,name,team):
         self.name = name
