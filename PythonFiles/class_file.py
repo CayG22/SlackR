@@ -321,4 +321,50 @@ class Game: #Game specific information
         except Exception as e:
             print(e)
 
-            
+class Matches:
+    def __init__(self,matches_file):
+        self.names = self.getNames(matches_file)
+        self.current_rank = self.getCurrentRank(matches_file)
+        self.agents_played = self.getAgents(matches_file)
+
+    def getNames(self,matches_file):
+        try:
+            match_names = []
+            data = openJsonFile(matches_file)
+            match_list = data['matches']
+            for match in match_list:
+                metadata = match['metadata']
+                _map = metadata['map']
+                name = _map["name"]
+                match_names.append(name)
+            return match_names
+        except Exception as e:
+            print(e)
+    
+    def getAgents(self,matches_file):
+        try:
+            agent_names = []
+            data = openJsonFile(matches_file)
+            match_list = data['matches']
+            for match in match_list:
+                metadata = match['metadata']
+                character = metadata['character']
+                name = character['name']
+                agent_names.append(name)
+            return agent_names
+        except Exception as e:
+            print(e)
+
+    def getCurrentRank(self,matches_file):
+        try:
+            current_rank = []
+            data = openJsonFile(matches_file)
+            match_list = data['matches']
+            for match in match_list:
+                stats = match['stats']
+                rank = stats['rank_name']
+                current_rank.append(rank)
+            return current_rank
+        except Exception as e:
+            print(e)
+

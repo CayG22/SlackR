@@ -32,32 +32,86 @@ game_url_2 = "https://api.strats.gg/internal/api/v1/games/valorant/accounts/riot
 #weapons_file_url = "https://api.strats.gg/internal/api/v1/games/valorant/accounts/riot/PA1NT%23Peak/sections/weapons"
 #test_player = Player(player_file,character_file,weapon_file)
 
-def create_layout():
+def create_input_layout():
     layout = [
-        [sg.Text("Please enter your Riot Username and ID(Name,Space,ID)"),sg.InputText()],
-        [sg.Button("Load Profile"), sg.Button("Close")]
+        [sg.Text(text = "Please enter your Riot Username and ID(Name,Space,ID)",background_color=sg.theme_background_color()),sg.InputText()],
+        [sg.Button(button_text = "Load Profile", button_color=sg.theme_background_color()), sg.Button("Close", button_color=sg.theme_background_color())]
 
     ]
     return layout
 
+def create_home_page_layout(current_player):
+    headers = ["Stat", "Number"]
+    data = [
+        ["KD", current_player.kd],
+        ["Win Percentage", current_player.winp],
+        ["Top Agent", current_player.top_agent],
+        ["Headshot Percentage", current_player.headshot_percentage],
+        ["Clutches", current_player.clutches],
+        ["First Kills", current_player.first_kills],
+        ["First Deaths", current_player.first_deaths],
+        ["Knife Kills", current_player.knife_kills],
+        ["149 Damage Done", current_player.one_four_nine_damage_done],
+        ["Rank", current_player.rank],
+        ["Archetype", current_player.archetype],
+    ]
+    game_headers = ["Rank", "Map Name", "Agent"]
+    game_data = [
+        ["Rank", "Map 1", "Agent 1"],
+        ["Rank", "Map 2", "Agent 2"],
+        ["Rank", "Map 3", "Agent 3"],
+        ["Rank", "Map 4", "Agent 4"],
+        ["Rank", "Map 5", "Agent 5"]
+    ]
+    
+    tab_layout_1 = [
+        [sg.Text(f"Player Profile: {current_player.name}", font=("Helvetica", 16), justification="center")],
+        [sg.Table(values=data, expand_y = True, row_height = 40, headings=headers, auto_size_columns=True, justification="left", key="-TABLE-"), sg.Image(source = f"rankImages\{current_player.rank}.png", size = (500,500))],
+        [sg.Button("Close")]
+    ]
+    tab_layout_2 = [
+        [sg.Text(text = "Choose a game", justification="center")],
+        [sg.Table(values = game_data, row_height= 50, headings=game_headers, auto_size_columns= True,expand_x= True,justification="center",key="-GAME_TABLE-")]
+    ]
+
+    layout = [
+        [sg.TabGroup([[sg.Tab("Overview",tab_layout_1), sg.Tab("Games", tab_layout_2)]])]
+    ]
+
+    return layout
 
 def main():
-    layout = create_layout()
+    layout = create_input_layout()
+    theme = sg.theme("LightPurple")
     window = sg.Window("SlackR", layout)
-
+    
     while True:
         event,values = window.read()
         if event == sg.WIN_CLOSED or event =="Close":
             break
-        player_link = createAPIPlayerLink(values[0])
-        print(player_link)
-        weapon_link = createAPIWeaponLink(values[0])
-        character_link = createAPICharacterLink(values[0])
-        player_file = loadPlayerProfile(player_link)
-        weapon_file = loadWeaponStats(weapon_link)
-        character_file = loadCharacterStats(character_link)
-        current_player = Player(values[0],player_file,character_file,weapon_file)
-        current_player.export_to_excel()
+        if event == "Load Profile":
+            player_link = createAPIPlayerLink(values[0])
+            weapon_link = createAPIWeaponLink(values[0])
+            character_link = createAPICharacterLink(values[0])
+            recent_matches_link = createAPIMatchesLink(values[0])
+            player_file = loadPlayerProfile(player_link)
+            weapon_file = loadWeaponStats(weapon_link)
+            character_file = loadCharacterStats(character_link)
+            recent_matches_file = loadRecentMatches(recent_matches_link)
+            match_test = Matches(recent_matches_file)
+            print(match_test.current_rank)
+            current_player = Player(values[0],player_file,character_file,weapon_file)
+            current_player.export_to_excel()
+            window.close()
+            home_layout = create_home_page_layout(current_player)
+            home_window = sg.Window("SlackR-Home Page", home_layout)
+
+            while True:
+                home_event,_ = home_window.read()
+                if home_event == sg.WINDOW_CLOSED or home_event == "Close":
+                    break
+            home_window.close()
+            break
 
 
 

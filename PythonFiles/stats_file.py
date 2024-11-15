@@ -48,7 +48,7 @@ def loadGame(url): #Loads specific game to get JSON file from game
     return game_file
 
 def loadPlayerProfile(url):
-    querystring = {"playlist":"competitive","season_id":"292f58db-4c17-89a7-b1c0-ba988f0e9d98"}
+    querystring = {"playlist":"competitive","season_id":"dcde7346-4085-de4f-c463-2489ed47983b"}
     payload = ""
     headers = {"User-Agent": "insomnia/10.0.0"}
 
@@ -65,7 +65,7 @@ def loadPlayerProfile(url):
     return player_file
 
 def loadCharacterStats(url):
-    querystring = {"playlist":"competitive","season_id":"292f58db-4c17-89a7-b1c0-ba988f0e9d98"}
+    querystring = {"playlist":"competitive","season_id":"dcde7346-4085-de4f-c463-2489ed47983b"}
     payload = ""
     headers = {"User-Agent": "insomnia/10.0.0"}
 
@@ -82,7 +82,7 @@ def loadCharacterStats(url):
     return character_file
 
 def loadWeaponStats(url):
-    querystring = {"playlist":"competitive","season_id":"292f58db-4c17-89a7-b1c0-ba988f0e9d98"}
+    querystring = {"playlist":"competitive","season_id":"dcde7346-4085-de4f-c463-2489ed47983b"}
     payload = ""
     headers = {"User-Agent": "insomnia/10.0.0"}
 
@@ -97,6 +97,23 @@ def loadWeaponStats(url):
     print(f"Weapon data has been saved to {weapons_file}")
     
     return weapons_file
+
+def loadRecentMatches(url):
+    querystring = {"":["",""],"playlist":"competitive","season_id":"dcde7346-4085-de4f-c463-2489ed47983b","include_queued":"true"}
+    payload = ""
+    headers = {"User-Agent": "insomnia/10.0.0"}
+
+    response = requests.get(url, data=payload, headers=headers, params=querystring)
+    character_data = response.json()
+
+    recent_matches_file = 'recentMatches.json'
+
+    with open(recent_matches_file,'w') as json_file:
+        json.dump(character_data,json_file,indent=4)
+    
+    print(f"Recent matches data has been saved to {recent_matches_file}")
+    
+    return recent_matches_file
 
 def create_players(game): #Creates Player class and adds the player name and team to the class
     teams = assignTeam(game)
@@ -585,6 +602,25 @@ def createAPICharacterLink(player): #Takes in player name,Creates outline for AP
         url = f"https://api.strats.gg/internal/api/v1/games/valorant/accounts/riot/{name}%23{id}/sections/characters"
         return url
 
+def createAPIMatchesLink(player): #Takes in player name,Creates outline for API link, returns link created
+    num_of_spaces = player.count(" ")
+    if num_of_spaces == 2:
+        split = player.split("#")
+        name = split[0]
+        id = split[1]
+        split_name = name.split(" ")
+        name1 = split_name[0]
+        name2 = split_name[1]
+        url = f"https://api.strats.gg/internal/api/v1/games/valorant/accounts/riot/{name1}%20{name2}%23{id}/matches"
+        return url
+    else:
+        split = player.split('#')
+        name = split[0]
+        name = name.replace(" ", "")
+        id = split[1]
+        url = f"https://api.strats.gg/internal/api/v1/games/valorant/accounts/riot/{name}%23{id}/matches"
+        return url
+    
 
 """Unused functions for now"""
 
