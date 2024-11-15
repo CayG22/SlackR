@@ -10,8 +10,9 @@ from PIL import ImageTk, Image
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
 import numpy as np
-
-
+import PySimpleGUI as sg
+import pandas as pd
+from tkinter import filedialog, messagebox, ttk
 
 from stats_file import *  # Import all relevant functions
 from class_file import *  # Import any classes used in stats
@@ -29,21 +30,39 @@ game_url_2 = "https://api.strats.gg/internal/api/v1/games/valorant/accounts/riot
 #player_url = "https://api.strats.gg/internal/api/v1/games/valorant/accounts/riot/PA1NT%23Peak/sections/season"
 #player_character_url = "https://api.strats.gg/internal/api/v1/games/valorant/accounts/riot/PA1NT%23Peak/sections/characters"
 #weapons_file_url = "https://api.strats.gg/internal/api/v1/games/valorant/accounts/riot/PA1NT%23Peak/sections/weapons"
-game_file = 'game.json'
-player_file = 'player.json'
-character_file = 'characters.json'
-weapon_file = 'weapons.json'
-test_game = Game(game_file)
-test_player = Player(player_file,character_file,weapon_file)
+#test_player = Player(player_file,character_file,weapon_file)
 
-test_player.export_to_excel()
+def create_layout():
+    layout = [
+        [sg.Text("Please enter your Riot Username and ID(Name,Space,ID)"),sg.InputText()],
+        [sg.Button("Load Profile"), sg.Button("Close")]
 
-
-
+    ]
+    return layout
 
 
+def main():
+    layout = create_layout()
+    window = sg.Window("SlackR", layout)
+
+    while True:
+        event,values = window.read()
+        if event == sg.WIN_CLOSED or event =="Close":
+            break
+        player_link = createAPIPlayerLink(values[0])
+        print(player_link)
+        weapon_link = createAPIWeaponLink(values[0])
+        character_link = createAPICharacterLink(values[0])
+        player_file = loadPlayerProfile(player_link)
+        weapon_file = loadWeaponStats(weapon_link)
+        character_file = loadCharacterStats(character_link)
+        current_player = Player(values[0],player_file,character_file,weapon_file)
+        current_player.export_to_excel()
 
 
+
+if __name__ == "__main__":
+    main()
 
 
 """MAIN START

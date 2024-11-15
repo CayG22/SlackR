@@ -2,9 +2,12 @@ from stats_file import *
 from utils import openJsonFile
 import pandas as pd
 from rank_config import ARCHETYPES, RANKS #For rank and archetype assignment
+import os
+from openpyxl import load_workbook
 
 class Player: #For current player that is looking at his/her stats
-    def __init__(self,player_file,character_file,weapons_file):
+    def __init__(self,name,player_file,character_file,weapons_file):
+        self.name = name
         self.kd = self.getKD(player_file)
         self.winp = self.getWinPercentage(player_file)
         self.top_agent = self.getTopAgent(character_file)
@@ -141,26 +144,33 @@ class Player: #For current player that is looking at his/her stats
             archetype_list.append("Basic")
         return archetype_list
     
-    def export_to_excel(self,file_name = "player_stats.xlsx"):
+    def export_to_excel(self, file_name="player_stats.xlsx"):
         player_data = {
-            "KD" : self.kd,
-            "Win percentage" : self.winp,
-            "Top Agent" : self.top_agent,
-            "Headshot Percentage" : self.headshot_percentage,
-            "Clutches" : self.clutches,
-            "First Kills" : self.first_kills,
-            "First Deaths" : self.first_deaths,
-            "Knife Kills" : self.knife_kills,
-            "149 Damage Done" : self.one_four_nine_damage_done,
-            "Rank" : self.rank,
-            "Archetype" : self.archetype
+            "Name": self.name,
+            "KD": self.kd,
+            "Win percentage": self.winp,
+            "Top Agent": self.top_agent,
+            "Headshot Percentage": self.headshot_percentage,
+            "Clutches": self.clutches,
+            "First Kills": self.first_kills,
+            "First Deaths": self.first_deaths,
+            "Knife Kills": self.knife_kills,
+            "149 Damage Done": self.one_four_nine_damage_done,
+            "Rank": self.rank,
+            "Archetype": self.archetype,
         }
 
-        #Create dataframe with a single row
+        # Create dataframe with a single row
         df = pd.DataFrame([player_data])
 
-        #Write dataframe to file
-        df.to_excel(file_name,index=False,engine='openpyxl',header=not pd.io.common.file_exists(file_name))
+        if os.path.isfile(file_name):
+            # If the file exists, append data to it
+            with pd.ExcelWriter(file_name, engine="openpyxl", mode="a", if_sheet_exists="overlay") as writer:
+                df.to_excel(writer, index=False, header=False, startrow=writer.sheets["Sheet1"].max_row)
+        else:
+            # If the file does not exist, create it with headers
+            df.to_excel(file_name, index=False, engine="openpyxl")
+        print(f"{self.name}'s stats successfully exported to Excel sheet '{file_name}'.")
 
 
 class Teamate:#Game specific stats both for current player and teamates

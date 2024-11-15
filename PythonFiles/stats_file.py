@@ -13,7 +13,7 @@ import json
 import itertools
 import numpy as np
 import statistics
-from sklearn.preprocessing import MinMaxScaler
+#from sklearn.preprocessing import MinMaxScaler
 from collections import Counter
 from class_file import Player
 from utils import openJsonFile
@@ -349,15 +349,15 @@ def calculateMoneyPercentage(money_list):
     percentages = np.array([perc for _, perc in value_percentage_list]).reshape(-1, 1)  # Reshape for scaler
 
     # Initialize the MinMaxScaler
-    scaler = MinMaxScaler()
+    #scaler = MinMaxScaler()
 
     # Fit and transform the percentages
-    normalized_percentages = scaler.fit_transform(percentages)
+    #normalized_percentages = scaler.fit_transform(percentages)
 
     # Combine the normalized percentages with the original values
-    normalized_value_percentage_list = [(value, norm_perc[0]) for (value, _), norm_perc in zip(value_percentage_list, normalized_percentages)]
+    #normalized_value_percentage_list = [(value, norm_perc[0]) for (value, _), norm_perc in zip(value_percentage_list, normalized_percentages)]
 
-    return normalized_value_percentage_list  # Returns list of tuples with normalized percentages
+    #return normalized_value_percentage_list  # Returns list of tuples with normalized percentages
 
 def calculatePlayerRoundWinPercentage(player, money_list, round_money, round_outcomes):
     name = player.name
@@ -536,12 +536,15 @@ def createAPIPlayerLink(player): #Takes in player name,Creates outline for API l
         name1 = split_name[0]
         name2 = split_name[1]
         url = f"https://api.strats.gg/internal/api/v1/games/valorant/accounts/riot/{name1}%20{name2}%23{id}/sections/season"
+        print("Player Profile API link Created!")
         return url
     else:
         split = player.split('#')
         name = split[0]
+        name = name.replace(" ","")
         id = split[1]
         url = f"https://api.strats.gg/internal/api/v1/games/valorant/accounts/riot/{name}%23{id}/sections/season"
+        print("Player Profile API link Created!")
         return url
 
 def createAPIWeaponLink(player): #Takes in player name,Creates outline for API link, returns link created
@@ -558,6 +561,7 @@ def createAPIWeaponLink(player): #Takes in player name,Creates outline for API l
     else:
         split = player.split('#')
         name = split[0]
+        name = name.replace(" ","")
         id = split[1]
         url = f"https://api.strats.gg/internal/api/v1/games/valorant/accounts/riot/{name}%23{id}/sections/weapons"
         return url
@@ -576,6 +580,7 @@ def createAPICharacterLink(player): #Takes in player name,Creates outline for AP
     else:
         split = player.split('#')
         name = split[0]
+        name = name.replace(" ", "")
         id = split[1]
         url = f"https://api.strats.gg/internal/api/v1/games/valorant/accounts/riot/{name}%23{id}/sections/characters"
         return url
