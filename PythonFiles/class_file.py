@@ -279,26 +279,28 @@ class Teamate:#Game specific stats both for current player and teamates
 
 
 class Game: #Game specific information
-    def __init__(self,gameID):
-        self.JSON_File = gameID
-        self.players = []
-        self.red_Team = []
-        self.blue_team = []
-        self.map_name = ""
+    def __init__(self,game_file):
+        self.players = self.getPlayers(game_file)
+        self.red_team = self.createRedTeam(game_file)
+        self.blue_team = self.createBlueTeam(game_file)
+        self.map_name = self.getMapName(game_file)
     
     def getPlayers(self,game_file):
         try:
+            players_list = []
             data = openJsonFile(game_file)
             players = data['match']["players"]
             for player in players:
                 platform_info = player['platform_info']
                 player_name = platform_info['platform_user_nick']
-                self.players.append(player_name)
+                players_list.append(player_name)
+            return players_list
         except Exception as e:
             print(e)
     
-    def createTeams(self,game_file):
+    def createRedTeam(self,game_file):
         try:
+            red_team = []
             data = openJsonFile(game_file)
             players = data['match']["players"]
             for player in players:
@@ -307,17 +309,33 @@ class Game: #Game specific information
                 metadata = player['metadata']
                 team = metadata['team_id']
                 if "Red" in team:
-                    self.red_Team.append(player_name)
-                else:
-                    self.blue_team.append(player_name)
+                    red_team.append(player_name)
+            return red_team
         except Exception as e:
             print(e)
     
-    def get_map_name(self,game_file):
+    def createBlueTeam(self,game_file):
+        try:
+            blue_team = []
+            data = openJsonFile(game_file)
+            players = data['match']["players"]
+            for player in players:
+                platform_info = player['platform_info']
+                player_name = platform_info['platform_user_nick']
+                metadata = player['metadata']
+                team = metadata['team_id']
+                if "Blue" in team:
+                    blue_team.append(player_name)
+            return blue_team
+        except Exception as e:
+            print(e)
+
+    
+    def getMapName(self,game_file):
         try:
             data = openJsonFile(game_file)
             _map = data['match']['map']
-            self.map_name = _map['name']
+            return _map['name']
         except Exception as e:
             print(e)
 
@@ -326,6 +344,7 @@ class Matches:
         self.names = self.getNames(matches_file)
         self.current_rank = self.getCurrentRank(matches_file)
         self.agents_played = self.getAgents(matches_file)
+        self.gameAPILink = self.getGameID(matches_file)
 
     def getNames(self,matches_file):
         try:
@@ -365,6 +384,19 @@ class Matches:
                 rank = stats['rank_name']
                 current_rank.append(rank)
             return current_rank
+        except Exception as e:
+            print(e)
+    
+    def getGameID(self,matches_file):
+        try:
+            game_id = []
+            data = openJsonFile(matches_file)
+            match_list = data['matches']
+            for match in match_list:
+                metadata = match['metadata']
+                id = metadata['id']
+                game_id.append(id)
+            return game_id
         except Exception as e:
             print(e)
 

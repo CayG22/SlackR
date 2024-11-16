@@ -33,6 +33,7 @@ game_url_2 = "https://api.strats.gg/internal/api/v1/games/valorant/accounts/riot
 #test_player = Player(player_file,character_file,weapon_file)
 
 def create_input_layout():
+    #Layout for input page(USER MUST HAVE "NAME #ID" i.e KAGS #7158)
     layout = [
         [sg.Text(text = "Please enter your Riot Username and ID(Name,Space,ID)",background_color=sg.theme_background_color()),sg.InputText()],
         [sg.Button(button_text = "Load Profile", button_color=sg.theme_background_color()), sg.Button("Close", button_color=sg.theme_background_color())]
@@ -40,7 +41,8 @@ def create_input_layout():
     ]
     return layout
 
-def create_home_page_layout(current_player):
+def create_home_page_layout(current_player,recent_matches):
+    #Data for current players overall stats
     headers = ["Stat", "Number"]
     data = [
         ["KD", current_player.kd],
@@ -55,15 +57,18 @@ def create_home_page_layout(current_player):
         ["Rank", current_player.rank],
         ["Archetype", current_player.archetype],
     ]
+    #Data for last five games player has played
     game_headers = ["Rank", "Map Name", "Agent"]
     game_data = [
-        ["Rank", "Map 1", "Agent 1"],
-        ["Rank", "Map 2", "Agent 2"],
-        ["Rank", "Map 3", "Agent 3"],
-        ["Rank", "Map 4", "Agent 4"],
-        ["Rank", "Map 5", "Agent 5"]
+        [recent_matches.current_rank[0], recent_matches.names[0], recent_matches.agents_played[0]],
+        [recent_matches.current_rank[1], recent_matches.names[1], recent_matches.agents_played[1]],
+        [recent_matches.current_rank[2], recent_matches.names[2], recent_matches.agents_played[2]],
+        [recent_matches.current_rank[3], recent_matches.names[3], recent_matches.agents_played[3]],
+        [recent_matches.current_rank[4], recent_matches.names[4], recent_matches.agents_played[4]]
+
     ]
     
+    #Layout for home page
     tab_layout_1 = [
         [sg.Text(f"Player Profile: {current_player.name}", font=("Helvetica", 16), justification="center")],
         [sg.Table(values=data, expand_y = True, row_height = 40, headings=headers, auto_size_columns=True, justification="left", key="-TABLE-"), sg.Image(source = f"rankImages\{current_player.rank}.png", size = (500,500))],
@@ -71,7 +76,7 @@ def create_home_page_layout(current_player):
     ]
     tab_layout_2 = [
         [sg.Text(text = "Choose a game", justification="center")],
-        [sg.Table(values = game_data, row_height= 50, headings=game_headers, auto_size_columns= True,expand_x= True,justification="center",key="-GAME_TABLE-")]
+        [sg.Table(values = game_data, row_height= 50, headings=game_headers, auto_size_columns= True,expand_x= True,justification="center",key="GAME_TABLE", enable_events=True)]
     ]
 
     layout = [
@@ -94,22 +99,45 @@ def main():
             weapon_link = createAPIWeaponLink(values[0])
             character_link = createAPICharacterLink(values[0])
             recent_matches_link = createAPIMatchesLink(values[0])
+
             player_file = loadPlayerProfile(player_link)
             weapon_file = loadWeaponStats(weapon_link)
             character_file = loadCharacterStats(character_link)
             recent_matches_file = loadRecentMatches(recent_matches_link)
-            match_test = Matches(recent_matches_file)
-            print(match_test.current_rank)
+
+            recent_matches = Matches(recent_matches_file)
             current_player = Player(values[0],player_file,character_file,weapon_file)
+
             current_player.export_to_excel()
             window.close()
-            home_layout = create_home_page_layout(current_player)
+            home_layout = create_home_page_layout(current_player,recent_matches)
             home_window = sg.Window("SlackR-Home Page", home_layout)
 
             while True:
-                home_event,_ = home_window.read()
+                home_event,values = home_window.read()
                 if home_event == sg.WINDOW_CLOSED or home_event == "Close":
                     break
+
+
+                if home_event == "GAME_TABLE":
+                    selected = values["GAME_TABLE"] #Returns what number row was selected in pos 0
+                    if selected[0] == 0:
+                        game_link = createAPIGameLink(current_player.name, recent_matches.gameAPILink[0])
+                    elif selected[0] == 1:
+                        game_link = createAPIGameLink(current_player.name, recent_matches.gameAPILink[1])
+                    elif selected[0] == 2:
+                        game_link = createAPIGameLink(current_player.name, recent_matches.gameAPILink[2])
+                    elif selected[0] == 3:
+                        game_link = createAPIGameLink(current_player.name, recent_matches.gameAPILink[3])
+                    elif selected[0] == 4:
+                        game_link = createAPIGameLink(current_player.name, recent_matches.gameAPILink[4])
+                    else:
+                        print("Something went wrong, please try again")
+                    
+                    game_file = loadGame(game_link)
+                    game = Game(game_file)
+
+
             home_window.close()
             break
 

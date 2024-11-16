@@ -138,6 +138,27 @@ def getGameLinksForStratsGG(link): #Gets LAST FIVE GAMES PLAYED links, uses stra
     strats.quit()
     return game_list[:4] #Return last give games played
 
+def createAPIGameLink(player_name, game_id):
+    num_of_spaces = player_name.count(" ")
+    if num_of_spaces == 2:
+        split = player_name.split("#")
+        name = split[0]
+        id = split[1]
+        split_name = name.split(" ")
+        name1 = split_name[0]
+        name2 = split_name[1]
+        url = f"https://api.strats.gg/internal/api/v1/games/valorant/accounts/riot/{name1}%20{name2}%23{id}/matches/{game_id}"
+        print(url)
+        return url
+    else:
+        split = player_name.split("#")
+        name = split[0]
+        name = name.replace(" ","")
+        id = split[1]
+        url = f"https://api.strats.gg/internal/api/v1/games/valorant/accounts/riot/{name}%23{id}/matches/{game_id}"
+        print(url)
+        return url
+
 
 
 
