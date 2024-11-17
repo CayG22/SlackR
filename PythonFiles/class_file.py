@@ -172,7 +172,102 @@ class Player: #For current player that is looking at his/her stats
             df.to_excel(file_name, index=False, engine="openpyxl")
         print(f"{self.name}'s stats successfully exported to Excel sheet '{file_name}'.")
 
+class Teamate:
+    def __init__(self,game_file,player_name):
+        self.name = player_name
+        self.kills = self.getKills(game_file,player_name)
+        self.deaths = self.getDeaths(game_file,player_name)
+        self.assists = self.getAssists(game_file,player_name)
+        self.hs_perc = self.getHSPercentage(game_file,player_name)
+        self.team = self.getTeam(game_file,player_name)
+        self.agent = self.getAgent(game_file,player_name)
 
+    def getKills(self,game_file,current_player_name):
+        data = openJsonFile(game_file)
+        match = data['match']
+        players = match['players']
+        for player in players:
+            platform_info = player['platform_info']
+            player_name = platform_info['platform_user_nick']
+            if player_name in current_player_name:
+                stats = player['stats']
+                kills = stats['kills']
+                return kills
+            else:
+                continue
+    
+    def getDeaths(self,game_file,current_player_name):
+        data = openJsonFile(game_file)
+        match = data['match']
+        players = match['players']
+        for player in players:
+            platform_info = player['platform_info']
+            player_name = platform_info['platform_user_nick']
+            if player_name in current_player_name:
+                stats = player['stats']
+                deaths = stats['deaths']
+                return deaths
+            else:
+                continue      
+
+    def getAssists(self,game_file,current_player_name):
+        data = openJsonFile(game_file)
+        match = data['match']
+        players = match['players']
+        for player in players:
+            platform_info = player['platform_info']
+            player_name = platform_info['platform_user_nick']
+            if player_name in current_player_name:
+                stats = player['stats']
+                assists = stats['assists']
+                return assists
+            else:
+                continue      
+
+    def getHSPercentage(self,game_file,current_player_name):
+        data = openJsonFile(game_file)
+        match = data['match']
+        players = match['players']
+        for player in players:
+            platform_info = player['platform_info']
+            player_name = platform_info['platform_user_nick']
+            if player_name in current_player_name:
+                stats = player['stats']
+                accuracy = stats['accuracy']
+                hs_perc = accuracy['headshots_percent']
+                return hs_perc
+            else:
+                continue
+        
+    def getTeam(self,game_file,current_player_name):
+            data = openJsonFile(game_file)
+            match = data['match']
+            players = match['players']
+            for player in players:
+                platform_info = player['platform_info']
+                player_name = platform_info['platform_user_nick']
+                if player_name in current_player_name:
+                    metadata = player['metadata']
+                    team = metadata['team_id']
+                    return team
+                else:
+                    continue
+    def getAgent(self,game_file,current_player_name):
+            data = openJsonFile(game_file)
+            match = data['match']
+            players = match['players']
+            for player in players:
+                platform_info = player['platform_info']
+                player_name = platform_info['platform_user_nick']
+                if player_name in current_player_name:
+                    metadata = player['metadata']
+                    character = metadata['character']
+                    agent = character['name']
+                    return agent
+                else:
+                    continue
+
+"""
 class Teamate:#Game specific stats both for current player and teamates
     def __init__(self,name,team):
         self.name = name
@@ -277,7 +372,7 @@ class Teamate:#Game specific stats both for current player and teamates
                 accuracy = stats['accuracy']
                 self.head_shot_perc = accuracy['headshots_percent']
 
-
+"""
 class Game: #Game specific information
     def __init__(self,game_file):
         self.players = self.getPlayers(game_file)

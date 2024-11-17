@@ -85,6 +85,53 @@ def create_home_page_layout(current_player,recent_matches):
 
     return layout
 
+def create_game_page_layout(red_team,blue_team):
+    headers = ['Agent','Name','Kills', 'Deaths', 'Assists', 'HS%']
+
+    red_data = [
+        [red_team[0].agent,red_team[0].name,red_team[0].kills,red_team[0].deaths,red_team[0].assists,red_team[0].hs_perc],
+        [red_team[1].agent,red_team[1].name,red_team[1].kills,red_team[1].deaths,red_team[1].assists,red_team[1].hs_perc],
+        [red_team[2].agent,red_team[2].name,red_team[2].kills,red_team[2].deaths,red_team[2].assists,red_team[2].hs_perc],
+        [red_team[3].agent,red_team[3].name,red_team[3].kills,red_team[3].deaths,red_team[3].assists,red_team[3].hs_perc],
+        [red_team[4].agent,red_team[4].name,red_team[4].kills,red_team[4].deaths,red_team[4].assists,red_team[4].hs_perc]
+    ]
+    blue_data = [
+        [blue_team[0].agent,blue_team[0].name,blue_team[0].kills,blue_team[0].deaths,blue_team[0].assists,blue_team[0].hs_perc],
+        [blue_team[1].agent,blue_team[1].name,blue_team[1].kills,blue_team[1].deaths,blue_team[1].assists,blue_team[1].hs_perc],
+        [blue_team[2].agent,blue_team[2].name,blue_team[2].kills,blue_team[2].deaths,blue_team[2].assists,blue_team[2].hs_perc],
+        [blue_team[3].agent,blue_team[3].name,blue_team[3].kills,blue_team[3].deaths,blue_team[3].assists,blue_team[3].hs_perc],
+        [blue_team[4].agent,blue_team[4].name,blue_team[4].kills,blue_team[4].deaths,blue_team[4].assists,blue_team[4].hs_perc]
+    ]
+
+    layout = [
+        [sg.Table(values = red_data, headings=headers, num_rows=5,row_height=30,auto_size_columns=True, key='RED_TABLE',enable_events=True)],
+        [sg.Table(values=blue_data, headings = headers,num_rows=5,row_height=30,auto_size_columns=True,key = 'BLUE_TABLE',enable_events=True)]
+    ]
+    return layout
+
+def create_secondary_player_layout(current_player):
+    headers = ["Stat", "Number"]
+    data = [
+        ["KD", current_player.kd],
+        ["Win Percentage", current_player.winp],
+        ["Top Agent", current_player.top_agent],
+        ["Headshot Percentage", current_player.headshot_percentage],
+        ["Clutches", current_player.clutches],
+        ["First Kills", current_player.first_kills],
+        ["First Deaths", current_player.first_deaths],
+        ["Knife Kills", current_player.knife_kills],
+        ["149 Damage Done", current_player.one_four_nine_damage_done],
+        ["Rank", current_player.rank],
+        ["Archetype", current_player.archetype],
+    ]  
+    layout = [
+        [sg.Text(f"Player Profile: {current_player.name}", font=("Helvetica", 16), justification="center")],
+        [sg.Table(values=data, expand_y = True, row_height = 40, headings=headers, auto_size_columns=True, justification="left", key="-TABLE-"), sg.Image(source = f"rankImages\{current_player.rank}.png", size = (500,500))],
+        [sg.Button("Close")]
+    ]
+
+    return layout
+
 def main():
     layout = create_input_layout()
     theme = sg.theme("LightPurple")
@@ -136,8 +183,76 @@ def main():
                     
                     game_file = loadGame(game_link)
                     game = Game(game_file)
+                    red_team = []
+                    blue_team = []
+                    for i in range(10):
+                        current_teammate = Teamate(game_file,game.players[i])
+                        if current_teammate.team == 'Red':
+                            red_team.append(current_teammate)
+                        else:
+                            blue_team.append(current_teammate)
+                    game_layout = create_game_page_layout(red_team,blue_team)
+                    game_window = sg.Window("Game Page",game_layout)
+                    while True:
+                        game_event,player_values = game_window.read()
+                        if game_event == sg.WINDOW_CLOSED:
+                            break
+                        
+                        if game_event == "RED_TABLE":
+                            player_selected = player_values['RED_TABLE']
+                            if player_selected[0] == 0:
+                                new_player = red_team[0].name
+                            elif player_selected[0] == 1:
+                                new_player = red_team[1].name
+                            elif player_selected[0] == 2:
+                                new_player = red_team[2].name
+                            elif player_selected[0] == 3:
+                                new_player = red_team[3].name
+                            elif player_selected[0] == 4:
+                                new_player = red_team[4].name
+                        elif game_event == "BLUE_TABLE":
+                            player_selected = player_values['BLUE_TABLE']
+                            if player_selected[0] == 0:
+                                new_player = blue_team[0].name
+                            elif player_selected[0] == 1:
+                                new_player = blue_team[1].name
+                            elif player_selected[0] == 2:
+                                new_player = blue_team[2].name
+                            elif player_selected[0] == 3:
+                                new_player = blue_team[3].name
+                            elif player_selected[0] == 4:
+                                new_player = blue_team[4].name
+                        new_player = new_player.replace("#"," #")
+                        
+                        new_player_player_link = createAPIPlayerLink(new_player)
+                        new_player_weapon_link = createAPIWeaponLink(new_player)
+                        new_player_character_link = createAPICharacterLink(new_player)
+                        
+                        new_player_player_file = loadPlayerProfile(new_player_player_link)
+                        new_player_weapon_file = loadWeaponStats(new_player_weapon_link)
+                        new_player_character_file = loadCharacterStats(new_player_character_link)
+
+                        try:
+                            secondary_player = Player(new_player,new_player_player_file,new_player_character_file,new_player_weapon_file)
+                            secondary_player.export_to_excel()
+                            
+                            secondary_home_layout = create_secondary_player_layout(secondary_player)
+                            secondary_home_window = sg.Window(f"{secondary_player.name} Overiview",secondary_home_layout)
+                            
+                            while True:
+                                secondary_home_event,_ = secondary_home_window.read()
+                                if secondary_home_event == sg.WINDOW_CLOSED:
+                                    break
+                                    
+                                
+
+                        except Exception as e:
+                            print(e)
+                            sg.popup("Profile is private...")
 
 
+
+                    game_window.close()
             home_window.close()
             break
 

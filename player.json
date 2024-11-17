@@ -4,128 +4,128 @@
         "playlist": "competitive"
     },
     "stats": {
-        "time_played_ms": 116273184,
-        "matches_played": 54,
-        "matches_won": 31,
-        "matches_lost": 22,
-        "damage": 167301,
-        "rounds_played": 1154,
-        "kills": 875,
-        "deaths": 869,
-        "assists": 237,
-        "headshots": 605,
-        "headshots_percent": 23.3,
-        "score": 250452,
-        "aces": 3,
-        "clutches": 14,
-        "first_bloods": 138,
-        "flawless": 44,
-        "first_deaths": 156,
-        "score_per_round": 217.0,
-        "kills_per_round": 0.8,
-        "damage_per_round": 145.0,
-        "kd_ratio": 1.01,
-        "kad_ratio": 1.28,
-        "kast_percent": 70.2,
-        "matches_won_percent": 57.4,
-        "max_kills_per_match": 31,
+        "time_played_ms": 139904540,
+        "matches_played": 71,
+        "matches_won": 35,
+        "matches_lost": 35,
+        "damage": 259915,
+        "rounds_played": 1566,
+        "kills": 1345,
+        "deaths": 1229,
+        "assists": 382,
+        "headshots": 1201,
+        "headshots_percent": 33.3,
+        "score": 389580,
+        "aces": 4,
+        "clutches": 29,
+        "first_bloods": 232,
+        "flawless": 42,
+        "first_deaths": 218,
+        "score_per_round": 248.8,
+        "kills_per_round": 0.9,
+        "damage_per_round": 166.0,
+        "kd_ratio": 1.09,
+        "kad_ratio": 1.41,
+        "kast_percent": 74.4,
+        "matches_won_percent": 49.3,
+        "max_kills_per_match": 37,
         "rank": {
-            "name": "Platinum 1",
-            "image_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/189c293e-857b-488c-9ef2-7a069a0f4ecc.png",
-            "ranked_rating": null,
+            "name": "Radiant",
+            "image_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/49a784e4-882b-4230-a331-a9930596053a.png",
+            "ranked_rating": 461,
             "normalized_rating": null,
-            "leaderboard_rank": null,
-            "competitive_tier": 15,
-            "tier_level": "PLATINUM_1",
-            "primary_color": "#79d0dd"
+            "leaderboard_rank": 275,
+            "competitive_tier": 27,
+            "tier_level": "RADIANT",
+            "primary_color": "#f6f6f6"
         },
         "peak_rank": {
-            "name": "Platinum 1",
-            "image_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/189c293e-857b-488c-9ef2-7a069a0f4ecc.png",
-            "ranked_rating": null,
+            "name": "Radiant",
+            "image_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/49a784e4-882b-4230-a331-a9930596053a.png",
+            "ranked_rating": 1006,
             "normalized_rating": null,
-            "leaderboard_rank": null,
-            "competitive_tier": 15,
-            "tier_level": "PLATINUM_1",
-            "primary_color": "#79d0dd",
-            "act_id": "dcde7346-4085-de4f-c463-2489ed47983b",
-            "act_name": "EPISODE 9: ACT 3"
+            "leaderboard_rank": 12,
+            "competitive_tier": 27,
+            "tier_level": "RADIANT",
+            "primary_color": "#f6f6f6",
+            "act_id": "2de5423b-4aad-02ad-8d9b-c0a931958861",
+            "act_name": "EPISODE 6: ACT 3"
         },
-        "damage_per_round_increase_percent": 0,
-        "kd_ratio_increase_percent": 0,
-        "kills_per_round_increase_percent": 0,
-        "matches_won_percent_increase_percent": 0,
-        "matches_won_increase_percent": 0,
-        "kills_increase_percent": 0,
-        "headshots_increase_percent": 0,
-        "deaths_increase_percent": 0,
-        "assists_increase_percent": 0,
-        "score_per_round_increase_percent": 0,
-        "first_bloods_increase_percent": 0,
-        "aces_increase_percent": 0,
-        "clutches_increase_percent": 0,
-        "flawless_increase_percent": 0,
-        "max_kills_per_match_increase_percent": 0
+        "damage_per_round_increase_percent": 6,
+        "kd_ratio_increase_percent": 1,
+        "kills_per_round_increase_percent": 12,
+        "matches_won_percent_increase_percent": -3,
+        "matches_won_increase_percent": -72,
+        "kills_increase_percent": -68,
+        "headshots_increase_percent": -66,
+        "deaths_increase_percent": -69,
+        "assists_increase_percent": -70,
+        "score_per_round_increase_percent": 5,
+        "first_bloods_increase_percent": -70,
+        "aces_increase_percent": -64,
+        "clutches_increase_percent": -61,
+        "flawless_increase_percent": -73,
+        "max_kills_per_match_increase_percent": -10
     },
     "teammates": [
         {
-            "teammate": "Trigger#Mage2",
+            "teammate": "FaNbF4#Brown",
             "platform_info": {
                 "platform_id": "riot",
                 "platform_user_id": null,
-                "platform_user_nick": "Trigger#Mage2",
-                "avatar_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/4e12dcc0-49fe-4d8f-bdc1-d778c82e1fe3.png"
+                "platform_user_nick": "FaNbF4#Brown",
+                "avatar_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/97cf024a-3389-42af-b916-ee89da849c52.png"
             },
             "stats": {
-                "matches_played": 44,
-                "kd_ratio": 0.72,
-                "matches_won_percent": 52.3,
-                "avg_placement": 7.59
+                "matches_played": 14,
+                "kd_ratio": 1.0,
+                "matches_won_percent": 50.0,
+                "avg_placement": 4.64
             }
         },
         {
-            "teammate": "Arsenic#52641",
+            "teammate": "TTV NukeProphet#TIBET",
             "platform_info": {
                 "platform_id": "riot",
                 "platform_user_id": null,
-                "platform_user_nick": "Arsenic#52641",
-                "avatar_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/5ec178a3-9c55-4c0d-baaf-26f08d95d3e7.png"
+                "platform_user_nick": "TTV NukeProphet#TIBET",
+                "avatar_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/d2329e0a-795d-450b-a25d-81908351702a.png"
             },
             "stats": {
-                "matches_played": 27,
-                "kd_ratio": 1.08,
-                "matches_won_percent": 55.6,
-                "avg_placement": 5.59
+                "matches_played": 7,
+                "kd_ratio": 0.89,
+                "matches_won_percent": 42.9,
+                "avg_placement": 6.14
             }
         },
         {
-            "teammate": "V1x3n#vix",
+            "teammate": "DukeDennis#53X",
             "platform_info": {
                 "platform_id": "riot",
                 "platform_user_id": null,
-                "platform_user_nick": "V1x3n#vix",
-                "avatar_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/9ff49cc2-c06f-4675-97ce-fdfb8bbe1ff4.png"
+                "platform_user_nick": "DukeDennis#53X",
+                "avatar_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/a3476612-a5d8-4f04-aa09-31ed4f70e373.png"
             },
             "stats": {
-                "matches_played": 26,
-                "kd_ratio": 1.58,
-                "matches_won_percent": 61.5,
-                "avg_placement": 2.42
+                "matches_played": 7,
+                "kd_ratio": 0.79,
+                "matches_won_percent": 28.6,
+                "avg_placement": 8.0
             }
         },
         {
-            "teammate": "Joser#0001",
+            "teammate": "Kouf#mile",
             "platform_info": {
                 "platform_id": "riot",
                 "platform_user_id": null,
-                "platform_user_nick": "Joser#0001",
-                "avatar_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/f5100e70-a8a2-4d0a-b461-b1661778e376.png"
+                "platform_user_nick": "Kouf#mile",
+                "avatar_url": "https://s3-us-east-2.amazonaws.com/strats-gg.riot-content/images/6471c9d5-a98f-4832-8ab2-ffcaf2a6c5fc.png"
             },
             "stats": {
-                "matches_played": 23,
-                "kd_ratio": 1.17,
-                "matches_won_percent": 47.8,
-                "avg_placement": 4.04
+                "matches_played": 7,
+                "kd_ratio": 1.16,
+                "matches_won_percent": 57.1,
+                "avg_placement": 5.14
             }
         }
     ]
