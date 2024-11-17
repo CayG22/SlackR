@@ -3,7 +3,7 @@ from utils import openJsonFile
 import pandas as pd
 from rank_config import ARCHETYPES, RANKS #For rank and archetype assignment
 import os
-from openpyxl import load_workbook
+
 
 class Player: #For current player that is looking at his/her stats
     def __init__(self,name,player_file,character_file,weapons_file):
@@ -172,7 +172,7 @@ class Player: #For current player that is looking at his/her stats
             df.to_excel(file_name, index=False, engine="openpyxl")
         print(f"{self.name}'s stats successfully exported to Excel sheet '{file_name}'.")
 
-class Teamate:
+class Teamate: #Object for current players team mates, changes each a new game is loaded. Current player also gets a object for this
     def __init__(self,game_file,player_name):
         self.name = player_name
         self.kills = self.getKills(game_file,player_name)
@@ -286,113 +286,6 @@ class Teamate:
             else:
                 continue
         
-        
-"""
-class Teamate:#Game specific stats both for current player and teamates
-    def __init__(self,name,team):
-        self.name = name
-        self.team = team
-        self.kills = 0
-        self.deaths = 0
-        self.assists = 0
-        self.money = 0
-        self.kd = 0
-        self.win_perc = 0
-        self.head_shot_perc = 0
-        self.knife_kills = 0
-
-    def check_team_round_outcome(self,game): #Checks whether players team either wins or loses the roudn
-        data = openJsonFile(game)
-
-        rounds = data['match']['rounds']
-        round_results = []
-        for round_data in rounds:
-            round_num = round_data['round_num']
-            winning_team = round_data['winning_team']
-            round_outcome = round_data['round_result_code']
-
-            if self.team == winning_team:
-                round_results.append(f"Round {round_num}: Won")
-            else:
-                round_results.append(f"Round {round_num}: Lost")
-        
-        return round_results
-    
-    def check_kills_per_round(self, game): #Checks for players kills per round
-        data = openJsonFile(game)
-        players = data['match']['players']
-        round_kills = {}  # Store kills per round for this player
-
-        for player in players:
-            if player['platform_info']['platform_user_nick'] == self.name:
-                rounds = player['round_results']
-                for round_data in rounds:
-                    round_num = round_data['round_num']
-                    kills = round_data['kills']
-                    round_kills[round_num] = kills  # Store kills for this round
-
-        return round_kills  # Return a dictionary of kills per round
-    
-    def calculate_money(self, game): #Calculates total money for game, and a round by round breakdown
-        round_outcomes = self.check_team_round_outcome(game)
-        kills_per_round = self.check_kills_per_round(game)  # Returns a dictionary
-        total_money = 0
-        round_money_list = []
-        win_reward = 3000
-        loss_reward_default = 1900  # Default loss reward
-        kill_reward = 200  # Reward for each kill
-
-        # Track the last three round outcomes for economy calculation
-        recent_losses = []
-
-        for i, outcome in enumerate(round_outcomes):
-            # Calculate money based on round outcome
-            if "Won" in outcome:
-                round_money_list.append(win_reward)
-                total_money += win_reward
-                # Reset the recent losses on a win
-                recent_losses = []
-            else:
-                # Determine the loss reward based on recent losses
-                recent_losses.append(outcome)
-                # Limit the recent losses to the last three rounds
-                if len(recent_losses) > 3:
-                    recent_losses.pop(0)  # Remove the oldest outcome
-
-                # Calculate the loss reward based on consecutive losses
-                if len(recent_losses) == 3 and all("Lost" in x for x in recent_losses):
-                    loss_reward = 2900
-                elif len(recent_losses) == 2 and all("Lost" in x for x in recent_losses[-2:]):
-                    loss_reward = 2400
-                else:
-                    loss_reward = loss_reward_default
-
-                round_money_list.append(loss_reward)
-                total_money += loss_reward
-            
-            # Add money for kills in the current round
-            round_num = i + 1  # Round numbers start from 1
-            kills = kills_per_round.get(round_num, 0)  # Get the number of kills
-            total_money += kills * kill_reward  # Add money for kills
-            round_money_list[-1] += kills * kill_reward  # Update the round money list
-
-        self.money = total_money  # Update player's total money
-        
-        return round_money_list
-    
-    def get_stats(self,game):
-        data = openJsonFile(game)
-        players = data['match']['players']
-        for player in players:
-            if player['platform_info']['platform_user_nick'] == self.name:
-                stats = player['stats']
-                self.kills = stats['kills']
-                self.deaths = stats['deaths']
-                self.assists = stats['assists']
-                accuracy = stats['accuracy']
-                self.head_shot_perc = accuracy['headshots_percent']
-
-"""
 class Game: #Game specific information
     def __init__(self,game_file):
         self.players = self.getPlayers(game_file)
@@ -454,7 +347,7 @@ class Game: #Game specific information
         except Exception as e:
             print(e)
 
-class Matches:
+class Matches: #Class for match history
     def __init__(self,matches_file):
         self.names = self.getNames(matches_file)
         self.current_rank = self.getCurrentRank(matches_file)
@@ -514,4 +407,31 @@ class Matches:
             return game_id
         except Exception as e:
             print(e)
+
+class WinPercentage: #ALL MEMBERS ARE ROUND BY ROUND BASED
+    def __init__(self,blue_team,red_team,game_file):
+        self.blue_starting_win = 50
+        self.blue_kills = []
+        self.blue_wins = []
+
+        self.red_starting_win = 50
+        self.red_kills = []
+        self.red_wins = []
+    
+    def getBlueKillsEcon(self,blue_team,game_file): #IDK my brain is not working
+        data = openJsonFile(game_file)
+        match = data['match']
+        players = match['players']
+        for player in players:
+            platform_info = player['platform_info']
+            player_name = platform_info['platform_user_nick']
+            if player_name in blue_team:
+                round_results = player['round_results']
+                for round in round_results:
+                    kills = round['kills']
+                    round_money = kills * 200
+
+
+
+    
 

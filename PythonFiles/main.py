@@ -191,14 +191,17 @@ def main():
                     game = Game(game_file)
                     red_team = []
                     blue_team = []
+                    
                     for i in range(10):
                         current_teammate = Teamate(game_file,game.players[i])
                         if current_teammate.team == 'Red':
                             red_team.append(current_teammate)
                         else:
                             blue_team.append(current_teammate)
+                    
                     game_layout = create_game_page_layout(red_team,blue_team)
                     game_window = sg.Window("Game Page",game_layout)
+
                     while True:
                         game_event,player_values = game_window.read()
                         if game_event == sg.WINDOW_CLOSED:
