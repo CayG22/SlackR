@@ -181,6 +181,7 @@ class Teamate:
         self.hs_perc = self.getHSPercentage(game_file,player_name)
         self.team = self.getTeam(game_file,player_name)
         self.agent = self.getAgent(game_file,player_name)
+        self.multi_kills = self.getMultiKills(game_file,player_name)
 
     def getKills(self,game_file,current_player_name):
         data = openJsonFile(game_file)
@@ -266,7 +267,26 @@ class Teamate:
                     return agent
                 else:
                     continue
-
+    
+    def getMultiKills(self,game_file,current_player_name):
+        multi_kills = 0
+        data = openJsonFile(game_file)
+        match = data['match']
+        players = match['players']
+        for player in players:
+            round_results = player['round_results']
+            platform_info = player['platform_info']
+            player_name = platform_info['platform_user_nick']
+            if player_name in current_player_name:
+                for round in round_results:
+                    kills = round['kills']
+                    if kills >= 3:
+                        multi_kills += 1
+                return multi_kills
+            else:
+                continue
+        
+        
 """
 class Teamate:#Game specific stats both for current player and teamates
     def __init__(self,name,team):

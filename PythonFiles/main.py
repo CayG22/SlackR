@@ -86,31 +86,34 @@ def create_home_page_layout(current_player,recent_matches):
     return layout
 
 def create_game_page_layout(red_team,blue_team):
-    headers = ['Agent','Name','Kills', 'Deaths', 'Assists', 'HS%']
-
+    
+    #Red team stats
     red_data = [
-        [red_team[0].agent,red_team[0].name,red_team[0].kills,red_team[0].deaths,red_team[0].assists,red_team[0].hs_perc],
-        [red_team[1].agent,red_team[1].name,red_team[1].kills,red_team[1].deaths,red_team[1].assists,red_team[1].hs_perc],
-        [red_team[2].agent,red_team[2].name,red_team[2].kills,red_team[2].deaths,red_team[2].assists,red_team[2].hs_perc],
-        [red_team[3].agent,red_team[3].name,red_team[3].kills,red_team[3].deaths,red_team[3].assists,red_team[3].hs_perc],
-        [red_team[4].agent,red_team[4].name,red_team[4].kills,red_team[4].deaths,red_team[4].assists,red_team[4].hs_perc]
+        [red_team[0].agent,red_team[0].name,red_team[0].kills,red_team[0].deaths,red_team[0].assists,red_team[0].hs_perc,red_team[0].multi_kills],
+        [red_team[1].agent,red_team[1].name,red_team[1].kills,red_team[1].deaths,red_team[1].assists,red_team[1].hs_perc,red_team[1].multi_kills],
+        [red_team[2].agent,red_team[2].name,red_team[2].kills,red_team[2].deaths,red_team[2].assists,red_team[2].hs_perc,red_team[2].multi_kills],
+        [red_team[3].agent,red_team[3].name,red_team[3].kills,red_team[3].deaths,red_team[3].assists,red_team[3].hs_perc,red_team[3].multi_kills],
+        [red_team[4].agent,red_team[4].name,red_team[4].kills,red_team[4].deaths,red_team[4].assists,red_team[4].hs_perc,red_team[4].multi_kills]
     ]
+    
+    #blue team stats
     blue_data = [
-        [blue_team[0].agent,blue_team[0].name,blue_team[0].kills,blue_team[0].deaths,blue_team[0].assists,blue_team[0].hs_perc],
-        [blue_team[1].agent,blue_team[1].name,blue_team[1].kills,blue_team[1].deaths,blue_team[1].assists,blue_team[1].hs_perc],
-        [blue_team[2].agent,blue_team[2].name,blue_team[2].kills,blue_team[2].deaths,blue_team[2].assists,blue_team[2].hs_perc],
-        [blue_team[3].agent,blue_team[3].name,blue_team[3].kills,blue_team[3].deaths,blue_team[3].assists,blue_team[3].hs_perc],
-        [blue_team[4].agent,blue_team[4].name,blue_team[4].kills,blue_team[4].deaths,blue_team[4].assists,blue_team[4].hs_perc]
+        [blue_team[0].agent,blue_team[0].name,blue_team[0].kills,blue_team[0].deaths,blue_team[0].assists,blue_team[0].hs_perc,blue_team[0].multi_kills],
+        [blue_team[1].agent,blue_team[1].name,blue_team[1].kills,blue_team[1].deaths,blue_team[1].assists,blue_team[1].hs_perc,blue_team[1].multi_kills],
+        [blue_team[2].agent,blue_team[2].name,blue_team[2].kills,blue_team[2].deaths,blue_team[2].assists,blue_team[2].hs_perc,blue_team[2].multi_kills],
+        [blue_team[3].agent,blue_team[3].name,blue_team[3].kills,blue_team[3].deaths,blue_team[3].assists,blue_team[3].hs_perc,blue_team[3].multi_kills],
+        [blue_team[4].agent,blue_team[4].name,blue_team[4].kills,blue_team[4].deaths,blue_team[4].assists,blue_team[4].hs_perc,blue_team[4].multi_kills]
     ]
 
+    #Layout for page
+    headers = ['Agent','Name','Kills', 'Deaths', 'Assists', 'HS%',"Multi-Kills"]
     layout = [
-        [sg.Table(values = red_data, headings=headers, num_rows=5,row_height=30,auto_size_columns=True, key='RED_TABLE',enable_events=True)],
-        [sg.Table(values=blue_data, headings = headers,num_rows=5,row_height=30,auto_size_columns=True,key = 'BLUE_TABLE',enable_events=True)]
+        [sg.Table(values = red_data, headings=headers, num_rows=5,row_height=30,auto_size_columns=True, key='RED_TABLE',enable_events=True, background_color='#f28282')],
+        [sg.Table(values=blue_data, headings = headers,num_rows=5,row_height=30,auto_size_columns=True,key = 'BLUE_TABLE',enable_events=True,background_color='#82a7f2')]
     ]
     return layout
 
 def create_secondary_player_layout(current_player):
-    headers = ["Stat", "Number"]
     data = [
         ["KD", current_player.kd],
         ["Win Percentage", current_player.winp],
@@ -124,6 +127,9 @@ def create_secondary_player_layout(current_player):
         ["Rank", current_player.rank],
         ["Archetype", current_player.archetype],
     ]  
+
+    #Layout
+    headers = ["Stat", "Number"]
     layout = [
         [sg.Text(f"Player Profile: {current_player.name}", font=("Helvetica", 16), justification="center")],
         [sg.Table(values=data, expand_y = True, row_height = 40, headings=headers, auto_size_columns=True, justification="left", key="-TABLE-"), sg.Image(source = f"rankImages\{current_player.rank}.png", size = (500,500))],
@@ -243,9 +249,6 @@ def main():
                                 secondary_home_event,_ = secondary_home_window.read()
                                 if secondary_home_event == sg.WINDOW_CLOSED:
                                     break
-                                    
-                                
-
                         except Exception as e:
                             print(e)
                             sg.popup("Profile is private...")
