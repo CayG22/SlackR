@@ -11,7 +11,9 @@ from selenium.common.exceptions import TimeoutException
 import requests
 import json
 import itertools
+import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import statistics
 #from sklearn.preprocessing import MinMaxScaler
 from collections import Counter
@@ -159,7 +161,7 @@ def createAPIGameLink(player_name, game_id):
         print(url)
         return url
 
-
+    
 
 
 """Overview stats functions"""

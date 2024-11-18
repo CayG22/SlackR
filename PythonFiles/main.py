@@ -86,7 +86,7 @@ def create_home_page_layout(current_player,recent_matches):
 
     return layout
 
-def create_game_page_layout(red_team,blue_team):
+def create_game_page_layout(red_team,blue_team,red_econ,blue_econ):
     
     #Red team stats
     red_data = [
@@ -112,6 +112,7 @@ def create_game_page_layout(red_team,blue_team):
         [sg.Table(values = red_data, headings=headers, num_rows=5,row_height=30,auto_size_columns=True, key='RED_TABLE',enable_events=True, background_color='#f28282')],
         [sg.Table(values=blue_data, headings = headers,num_rows=5,row_height=30,auto_size_columns=True,key = 'BLUE_TABLE',enable_events=True,background_color='#82a7f2')]
     ]
+
     return layout
 
 def create_secondary_player_layout(current_player):
@@ -201,8 +202,8 @@ def main():
                             blue_team.append(current_teammate)
                     
                     econ = Economy(game_file,game.red_team,game.blue_team)
- 
-                    game_layout = create_game_page_layout(red_team,blue_team)
+
+                    game_layout = create_game_page_layout(red_team,blue_team,econ.red_economy,econ.red_economy)
                     game_window = sg.Window("Game Page",game_layout)
 
                     while True:
