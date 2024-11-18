@@ -408,29 +408,75 @@ class Matches: #Class for match history
         except Exception as e:
             print(e)
 
-class WinPercentage: #ALL MEMBERS ARE ROUND BY ROUND BASED
-    def __init__(self,blue_team,red_team,game_file):
-        self.blue_starting_win = 50
-        self.blue_kills = []
-        self.blue_wins = []
+class Economy:
+    def __init__(self,game_file,red_team,blue_team):
+        self.red_team = red_team
+        self.red_economy = self.getRedEconomy(game_file,red_team)
+        self.blue_team = blue_team
+        self.blue_economy = self.getBlueEconomy(game_file,blue_team)
 
-        self.red_starting_win = 50
-        self.red_kills = []
-        self.red_wins = []
-    
-    def getBlueKillsEcon(self,blue_team,game_file): #IDK my brain is not working
+    def getBlueEconomy(self,game_file,blue_team):
         data = openJsonFile(game_file)
         match = data['match']
         players = match['players']
+
+        round_econ = [0] * len(match['rounds'])
+        win_econ = [0] * len(match['rounds'])
+        kill_econ = [0] * len(match['rounds'])
+
         for player in players:
             platform_info = player['platform_info']
             player_name = platform_info['platform_user_nick']
             if player_name in blue_team:
-                round_results = player['round_results']
-                for round in round_results:
-                    kills = round['kills']
-                    round_money = kills * 200
+                rounds = match['rounds']
+                for i,round in enumerate(rounds):
+                    winning_team = round['winning_team']
+                    if "Blue" in winning_team:
+                        win_econ[i] += 3000
 
+
+                round_results = player['round_results']
+                for i,result in enumerate(round_results):
+                    kills = result['kills']
+                    kill_bonus = kills * 200
+                    kill_econ[i] += kill_bonus
+        for i,total in enumerate(round_econ):
+            round_econ[i] += kill_econ[i]+win_econ[i]
+
+        #print(round_econ)
+        return round_econ
+    
+    def getRedEconomy(self,game_file,red_team):
+            data = openJsonFile(game_file)
+            match = data['match']
+            players = match['players']
+
+            round_econ = [0] * len(match['rounds'])
+            win_econ = [0] * len(match['rounds'])
+            kill_econ = [0] * len(match['rounds'])
+
+            for player in players:
+                platform_info = player['platform_info']
+                player_name = platform_info['platform_user_nick']
+                if player_name in red_team:
+                    rounds = match['rounds']
+                    for i,round in enumerate(rounds):
+                        winning_team = round['winning_team']
+                        if "Red" in winning_team:
+                            win_econ[i] += 3000
+
+
+                    round_results = player['round_results']
+                    for i,result in enumerate(round_results):
+                        kills = result['kills']
+                        kill_bonus = kills * 200
+                        kill_econ[i] += kill_bonus
+            for i,total in enumerate(round_econ):
+                round_econ[i] += kill_econ[i]+win_econ[i]
+
+            #print(round_econ)
+            return round_econ
+                
 
 
     

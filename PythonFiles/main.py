@@ -57,6 +57,7 @@ def create_home_page_layout(current_player,recent_matches):
         ["Rank", current_player.rank],
         ["Archetype", current_player.archetype],
     ]
+    
     #Data for last five games player has played
     game_headers = ["Rank", "Map Name", "Agent"]
     game_data = [
@@ -199,6 +200,8 @@ def main():
                         else:
                             blue_team.append(current_teammate)
                     
+                    econ = Economy(game_file,game.red_team,game.blue_team)
+ 
                     game_layout = create_game_page_layout(red_team,blue_team)
                     game_window = sg.Window("Game Page",game_layout)
 
