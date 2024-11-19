@@ -433,6 +433,8 @@ class Economy:
                     winning_team = round['winning_team']
                     if "Blue" in winning_team:
                         win_econ[i] += 3000
+                    else:
+                        win_econ[i] += 1900
 
 
                 round_results = player['round_results']
@@ -440,11 +442,13 @@ class Economy:
                     kills = result['kills']
                     kill_bonus = kills * 200
                     kill_econ[i] += kill_bonus
+        econ_data = []
         for i,total in enumerate(round_econ):
-            round_econ[i] += kill_econ[i]+win_econ[i]
+            total_econ = kill_econ[i]+win_econ[i]
+            econ_data.append((i,total_econ))
 
-        #print(round_econ)
-        return round_econ
+        print(econ_data)
+        return econ_data
     
     def getRedEconomy(self,game_file,red_team):
             data = openJsonFile(game_file)
@@ -464,6 +468,8 @@ class Economy:
                         winning_team = round['winning_team']
                         if "Red" in winning_team:
                             win_econ[i] += 3000
+                        else:
+                            win_econ[i] += 1900
 
 
                     round_results = player['round_results']
@@ -471,11 +477,13 @@ class Economy:
                         kills = result['kills']
                         kill_bonus = kills * 200
                         kill_econ[i] += kill_bonus
+            econ_data = []
             for i,total in enumerate(round_econ):
-                round_econ[i] += kill_econ[i]+win_econ[i]
+                total_econ = kill_econ[i]+win_econ[i]
+                econ_data.append((i,total_econ))
 
-            #print(round_econ)
-            return round_econ
+            print(econ_data)
+            return econ_data
                 
 
 

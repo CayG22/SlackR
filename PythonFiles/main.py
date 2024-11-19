@@ -86,7 +86,7 @@ def create_home_page_layout(current_player,recent_matches):
 
     return layout
 
-def create_game_page_layout(red_team,blue_team,red_econ,blue_econ):
+def create_game_page_layout(red_team,blue_team):
     
     #Red team stats
     red_data = [
@@ -106,14 +106,22 @@ def create_game_page_layout(red_team,blue_team,red_econ,blue_econ):
         [blue_team[4].agent,blue_team[4].name,blue_team[4].kills,blue_team[4].deaths,blue_team[4].assists,blue_team[4].hs_perc,blue_team[4].multi_kills]
     ]
 
-    #Layout for page
     headers = ['Agent','Name','Kills', 'Deaths', 'Assists', 'HS%',"Multi-Kills"]
     layout = [
         [sg.Table(values = red_data, headings=headers, num_rows=5,row_height=30,auto_size_columns=True, key='RED_TABLE',enable_events=True, background_color='#f28282')],
-        [sg.Table(values=blue_data, headings = headers,num_rows=5,row_height=30,auto_size_columns=True,key = 'BLUE_TABLE',enable_events=True,background_color='#82a7f2')]
+        [sg.Table(values=blue_data, headings = headers,num_rows=5,row_height=30,auto_size_columns=True,key = 'BLUE_TABLE',enable_events=True,background_color='#82a7f2')],
+        [sg.Button(button_text = "Breakdowns",button_color=sg.theme_background_color())]
     ]
 
     return layout
+
+def create_breakdown_layout(red_econ):
+    layout = [[sg.Graph((800,400),(0,7000),(len(red_econ),16500),background_color="white", key='-GRAPH-')],
+              [sg.Graph((800,400),(0,0),(5,100),background_color='white', key = 'ACC_GRAPH')]
+              
+              ]
+    return layout
+
 
 def create_secondary_player_layout(current_player):
     data = [
@@ -172,7 +180,7 @@ def main():
                 home_event,values = home_window.read()
                 if home_event == sg.WINDOW_CLOSED or home_event == "Close":
                     break
-
+                
 
                 if home_event == "GAME_TABLE":
                     selected = values["GAME_TABLE"] #Returns what number row was selected in pos 0
@@ -203,62 +211,83 @@ def main():
                     
                     econ = Economy(game_file,game.red_team,game.blue_team)
 
-                    game_layout = create_game_page_layout(red_team,blue_team,econ.red_economy,econ.red_economy)
+                    game_layout = create_game_page_layout(red_team,blue_team)
                     game_window = sg.Window("Game Page",game_layout)
 
                     while True:
                         game_event,player_values = game_window.read()
                         if game_event == sg.WINDOW_CLOSED:
                             break
-                        
-                        if game_event == "RED_TABLE":
-                            player_selected = player_values['RED_TABLE']
-                            if player_selected[0] == 0:
-                                new_player = red_team[0].name
-                            elif player_selected[0] == 1:
-                                new_player = red_team[1].name
-                            elif player_selected[0] == 2:
-                                new_player = red_team[2].name
-                            elif player_selected[0] == 3:
-                                new_player = red_team[3].name
-                            elif player_selected[0] == 4:
-                                new_player = red_team[4].name
-                        elif game_event == "BLUE_TABLE":
-                            player_selected = player_values['BLUE_TABLE']
-                            if player_selected[0] == 0:
-                                new_player = blue_team[0].name
-                            elif player_selected[0] == 1:
-                                new_player = blue_team[1].name
-                            elif player_selected[0] == 2:
-                                new_player = blue_team[2].name
-                            elif player_selected[0] == 3:
-                                new_player = blue_team[3].name
-                            elif player_selected[0] == 4:
-                                new_player = blue_team[4].name
-                        new_player = new_player.replace("#"," #")
-                        
-                        new_player_player_link = createAPIPlayerLink(new_player)
-                        new_player_weapon_link = createAPIWeaponLink(new_player)
-                        new_player_character_link = createAPICharacterLink(new_player)
-                        
-                        new_player_player_file = loadPlayerProfile(new_player_player_link)
-                        new_player_weapon_file = loadWeaponStats(new_player_weapon_link)
-                        new_player_character_file = loadCharacterStats(new_player_character_link)
+                        if game_event == "Breakdowns":
+                            breakdown_layout = create_breakdown_layout(econ.red_economy)
+                            breakdown_window = sg.Window("Breakdown Page",layout = breakdown_layout)
+                            breakdown_window.finalize()
+                            graph = breakdown_window['-GRAPH-']
+                            graph.draw_text(text = f"Econ(round based)\n",location = (3,7500))
+                            graph.draw_lines(points = econ.red_economy,color = 'red', width = 3)
+                            for i in econ.red_economy:
+                                graph.draw_point(point = i, size = .3, color='red')
+                            graph.draw_lines(points = econ.blue_economy, color = 'blue', width = 3)
+                            for i in econ.blue_economy:
+                                graph.draw_point(point = i, size = .3, color = 'blue')
 
-                        try:
-                            secondary_player = Player(new_player,new_player_player_file,new_player_character_file,new_player_weapon_file)
-                            secondary_player.export_to_excel()
-                            
-                            secondary_home_layout = create_secondary_player_layout(secondary_player)
-                            secondary_home_window = sg.Window(f"{secondary_player.name} Overiview",secondary_home_layout)
-                            
+                            accuracy_graph = breakdown_window['ACC_GRAPH']
+                            for i,player in enumerate(red_team):
+                                accuracy_graph.draw_rectangle((i,red_team[i].hs_perc),(i+1,0),fill_color = 'red', line_width = 2)
+
                             while True:
-                                secondary_home_event,_ = secondary_home_window.read()
-                                if secondary_home_event == sg.WINDOW_CLOSED:
+                                event,values = breakdown_window.read()
+                                if event == sg.WINDOW_CLOSED:
                                     break
-                        except Exception as e:
-                            print(e)
-                            sg.popup("Profile is private...")
+                        else:
+                            if game_event == "RED_TABLE":
+                                player_selected = player_values['RED_TABLE']
+                                if player_selected[0] == 0:
+                                    new_player = red_team[0].name
+                                elif player_selected[0] == 1:
+                                    new_player = red_team[1].name
+                                elif player_selected[0] == 2:
+                                    new_player = red_team[2].name
+                                elif player_selected[0] == 3:
+                                    new_player = red_team[3].name
+                                elif player_selected[0] == 4:
+                                    new_player = red_team[4].name
+                            elif game_event == "BLUE_TABLE":
+                                player_selected = player_values['BLUE_TABLE']
+                                if player_selected[0] == 0:
+                                    new_player = blue_team[0].name
+                                elif player_selected[0] == 1:
+                                    new_player = blue_team[1].name
+                                elif player_selected[0] == 2:
+                                    new_player = blue_team[2].name
+                                elif player_selected[0] == 3:
+                                    new_player = blue_team[3].name
+                                elif player_selected[0] == 4:
+                                    new_player = blue_team[4].name
+                            new_player = new_player.replace("#"," #")
+                            
+                            new_player_player_link = createAPIPlayerLink(new_player)
+                            new_player_weapon_link = createAPIWeaponLink(new_player)
+                            new_player_character_link = createAPICharacterLink(new_player)
+                            
+                            new_player_player_file = loadPlayerProfile(new_player_player_link)
+                            new_player_weapon_file = loadWeaponStats(new_player_weapon_link)
+                            new_player_character_file = loadCharacterStats(new_player_character_link)
+
+                            try:
+                                secondary_player = Player(new_player,new_player_player_file,new_player_character_file,new_player_weapon_file)
+                                secondary_player.export_to_excel()
+                                
+                                secondary_home_layout = create_secondary_player_layout(secondary_player)
+                                secondary_home_window = sg.Window(f"{secondary_player.name} Overiview",secondary_home_layout)
+                                
+                                while True:
+                                    secondary_home_event,_ = secondary_home_window.read()
+                                    if secondary_home_event == sg.WINDOW_CLOSED:
+                                        break
+                            except Exception as e:
+                                print(e)
+                                sg.popup("Profile is private...")
 
 
 
