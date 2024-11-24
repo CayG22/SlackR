@@ -115,13 +115,28 @@ def create_game_page_layout(red_team,blue_team):
 
     return layout
 
-def create_breakdown_layout(red_econ):
-    layout = [[sg.Graph((800,400),(0,7000),(len(red_econ),16500),background_color="white", key='-GRAPH-')],
-              [sg.Graph((800,400),(0,0),(5,100),background_color='white', key = 'ACC_GRAPH')]
+def create_breakdown_layout(red_econ,blue_econ,map_name):
+    headers = ['Max Economy', 'Min Economy', 'Average Economy']
+    red_max_econ = max(red_econ,key=lambda x:x[1])[1]
+    red_min_econ = min(red_econ,key=lambda x:x[1])[1]
+    red_avg_econ = round(sum(x[1] for x in red_econ)/(len(red_econ)))
+    blue_max_econ = max(blue_econ,key=lambda x:x[1])[1]
+    blue_min_econ = min(blue_econ,key=lambda x:x[1])[1]
+    blue_avg_econ = round(sum(x[1] for x in blue_econ)/(len(blue_econ)))
+    red_econ_table_data = [
+        [red_max_econ,red_min_econ,red_avg_econ]
+    ]
+    blue_econ_table_data = [
+        [blue_max_econ,blue_min_econ,blue_avg_econ]
+    ]
+    layout = [
+              [sg.Table(values = red_econ_table_data, headings = headers, num_rows = 1, row_height = 30, auto_size_columns= True,background_color='#f28282'),sg.Table(values = blue_econ_table_data, headings = headers, num_rows = 1, row_height = 30, auto_size_columns= True,background_color='#82a7f2')],
+              [sg.Graph((500,200),(0,7000),(len(red_econ),16500),background_color="white", key='-GRAPH-',pad=(200,10))]
+              #[sg.Graph((500,200),(0,0),(5,100),background_color='white', key = 'RED_ACC_GRAPH')],
+              #[sg.Graph((500,200),(0,0),(5,100),background_color='white', key = 'BLUE_ACC_GRAPH')]
               
-              ]
+    ]
     return layout
-
 
 def create_secondary_player_layout(current_player):
     data = [
@@ -210,7 +225,7 @@ def main():
                             blue_team.append(current_teammate)
                     
                     econ = Economy(game_file,game.red_team,game.blue_team)
-
+                    map_name = game.map_name
                     game_layout = create_game_page_layout(red_team,blue_team)
                     game_window = sg.Window("Game Page",game_layout)
 
@@ -219,7 +234,7 @@ def main():
                         if game_event == sg.WINDOW_CLOSED:
                             break
                         if game_event == "Breakdowns":
-                            breakdown_layout = create_breakdown_layout(econ.red_economy)
+                            breakdown_layout = create_breakdown_layout(econ.red_economy,econ.blue_economy,map_name)
                             breakdown_window = sg.Window("Breakdown Page",layout = breakdown_layout)
                             breakdown_window.finalize()
                             graph = breakdown_window['-GRAPH-']
@@ -230,10 +245,6 @@ def main():
                             graph.draw_lines(points = econ.blue_economy, color = 'blue', width = 3)
                             for i in econ.blue_economy:
                                 graph.draw_point(point = i, size = .3, color = 'blue')
-
-                            accuracy_graph = breakdown_window['ACC_GRAPH']
-                            for i,player in enumerate(red_team):
-                                accuracy_graph.draw_rectangle((i,red_team[i].hs_perc),(i+1,0),fill_color = 'red', line_width = 2)
 
                             while True:
                                 event,values = breakdown_window.read()
