@@ -35,6 +35,7 @@ game_url_2 = "https://api.strats.gg/internal/api/v1/games/valorant/accounts/riot
 def create_input_layout():
     #Layout for input page(USER MUST HAVE "NAME #ID" i.e KAGS #7158)
     layout = [
+        [sg.Text(text = "Welcome to SlackR! The slightly Comical and stress-reducing Valorant Stat Tracker!")],
         [sg.Text(text = "Please enter your Riot Username and ID(Name,Space,ID)",background_color=sg.theme_background_color()),sg.InputText()],
         [sg.Button(button_text = "Load Profile", button_color=sg.theme_background_color()), sg.Button("Close", button_color=sg.theme_background_color())]
 
