@@ -67,7 +67,6 @@ def create_home_page_layout(current_player,recent_matches):
         [recent_matches.current_rank[2], recent_matches.names[2], recent_matches.agents_played[2]],
         [recent_matches.current_rank[3], recent_matches.names[3], recent_matches.agents_played[3]],
         [recent_matches.current_rank[4], recent_matches.names[4], recent_matches.agents_played[4]]
-
     ]
     
     #Layout for home page
